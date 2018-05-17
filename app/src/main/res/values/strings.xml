@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">StarAutoAssist</string>
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Star Auto Assist</string>
+    <string name="slide_1_desc">Description</string>
+
+</resources>
