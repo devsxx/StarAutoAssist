@@ -1,40 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="15dp"
+    android:weightSum="16.1"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerInParent="true"
-        android:background="#80000000"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
+        android:layout_weight="5"
+        android:id="@+id/logo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_marginTop="30dp"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:srcCompat="@drawable/logo" />
+            android:src="@drawable/logo"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:id="@+id/email_image_layout"
+        android:layout_below="@id/logo_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/email_layout"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/logo_layout"
+        android:layout_toRightOf="@+id/email_image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/ic_email_orange_a700_36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/logetemail"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/log_et_email"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress" />
-
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/pass_layout"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/email_layout"
+        android:layout_toRightOf="@+id/pass_image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/ic_vpn_key_orange_a700_36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:id="@+id/log_et_pass"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="4.3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:layout_weight="0.1"
+            android:id="@+id/log_btn_login"
+            android:textSize="16sp"
+            android:text="LOGIN"
+            android:textColor="#FFFFFF"
+            android:background="#50000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/forgot_layout"
+        android:layout_marginTop="30dp"
+        android:weightSum="2"
+        android:layout_weight="2"
+        android:layout_below="@+id/login_btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/log_tv_forgot"
+            android:textSize="15sp"
+            android:gravity="left"
+            android:textColor="#000000"
+            android:text="Forgot Password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/log_tv_create"
+            android:textSize="15sp"
+            android:gravity="right"
+            android:textColor="#000000"
+            android:text="Create Account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.app.starautoassist.Preference;
+package com.app.starautoassist.Others;
 
 import android.content.Context;
 import android.content.SharedPreferences;

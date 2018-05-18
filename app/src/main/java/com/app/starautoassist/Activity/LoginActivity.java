@@ -1,17 +1,28 @@
-package com.app.starautoassist;
+package com.app.starautoassist.Activity;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.app.starautoassist.R;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -50,17 +61,50 @@ public class LoginActivity extends AppCompatActivity {
     public class MyViewPagerAdapter extends PagerAdapter {
 
         private LayoutInflater layoutInflater;
+        private EditText etemail, etpass;
+        private Button btnlogin;
+        private TextView tvforgot, tvcreate;
 
         public MyViewPagerAdapter() {
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(layouts[position], container, false);
             container.addView(view);
 
+
+            etemail = view.findViewById(R.id.log_et_email);
+            etpass = view.findViewById(R.id.log_et_pass);
+            tvcreate = view.findViewById(R.id.log_tv_create);
+            tvforgot = view.findViewById(R.id.log_tv_forgot);
+            btnlogin = view.findViewById(R.id.log_btn_login);
+
+            btnlogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            tvcreate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+            });
+
+            tvforgot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+            });
             return view;
         }
 

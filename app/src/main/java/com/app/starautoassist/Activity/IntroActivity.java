@@ -1,4 +1,4 @@
-package com.app.starautoassist;
+package com.app.starautoassist.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +18,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.app.starautoassist.Preference.PreferenceManager;
+import com.app.starautoassist.Others.PreferenceManager;
+import com.app.starautoassist.R;
 
 public class IntroActivity extends AppCompatActivity {
     private ViewPager viewPager;
