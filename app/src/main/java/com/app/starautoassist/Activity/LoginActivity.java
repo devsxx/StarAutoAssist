@@ -1,6 +1,7 @@
 package com.app.starautoassist.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.TextInputEditText;
@@ -38,36 +39,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         setContentView(R.layout.activity_login);
+
         changeStatusBarColor();
-          etemail = findViewById(R.id.log_et_email);
-          etpass = findViewById(R.id.log_et_pass);
-          tvcreate = findViewById(R.id.log_tv_create);
-          tvforgot = findViewById(R.id.log_tv_forgot);
-          btnlogin = findViewById(R.id.log_btn_login);
 
-          btnlogin.setOnClickListener(this);
-          /*btnlogin.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
+        etemail = findViewById(R.id.log_et_email);
+        etpass = findViewById(R.id.log_et_pass);
+        tvcreate = findViewById(R.id.log_tv_create);
+        tvforgot = findViewById(R.id.log_tv_forgot);
+        btnlogin = findViewById(R.id.log_btn_login);
 
-              }
-          });*/
-
-          tvcreate.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-
-
-              }
-          });
-
-          tvforgot.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-
-
-              }
-          });
+        btnlogin.setOnClickListener(this);
+        tvcreate.setOnClickListener(this);
+        tvforgot.setOnClickListener(this);
 
       }
 
@@ -83,6 +66,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.log_btn_login:
+                break;
+            case R.id.log_tv_create:
+                Intent registerIntent = new Intent(this, RegisterActivity.class);
+                startActivity(registerIntent);
                 break;
         }
     }
