@@ -24,11 +24,10 @@ import android.widget.Toast;
 
 import com.app.starautoassist.R;
 
-public class LoginActivity extends AppCompatActivity {
-
-    private ViewPager viewPager;
-    private MyViewPagerAdapter myViewPagerAdapter;
-    private int[] layouts;
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private EditText etemail, etpass;
+    private Button btnlogin;
+    private TextView tvforgot, tvcreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,20 +35,41 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         if (Build.VERSION.SDK_INT >= 21) {
-
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
-
         setContentView(R.layout.activity_login);
-
-        viewPager = (ViewPager) findViewById(R.id.login_view_pager);
-        layouts = new int[]{
-                R.layout.login_screen
-        };
         changeStatusBarColor();
-        myViewPagerAdapter = new MyViewPagerAdapter();
-        viewPager.setAdapter(myViewPagerAdapter);
-    }
+          etemail = findViewById(R.id.log_et_email);
+          etpass = findViewById(R.id.log_et_pass);
+          tvcreate = findViewById(R.id.log_tv_create);
+          tvforgot = findViewById(R.id.log_tv_forgot);
+          btnlogin = findViewById(R.id.log_btn_login);
+
+          btnlogin.setOnClickListener(this);
+          /*btnlogin.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+
+              }
+          });*/
+
+          tvcreate.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+
+
+              }
+          });
+
+          tvforgot.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+
+
+              }
+          });
+
+      }
 
     private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -59,71 +79,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public class MyViewPagerAdapter extends PagerAdapter {
-
-        private LayoutInflater layoutInflater;
-        private EditText etemail, etpass;
-        private Button btnlogin;
-        private TextView tvforgot, tvcreate;
-
-        public MyViewPagerAdapter() {
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-
-            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View view = layoutInflater.inflate(layouts[position], container, false);
-            container.addView(view);
-
-
-            etemail = view.findViewById(R.id.log_et_email);
-            etpass = view.findViewById(R.id.log_et_pass);
-            tvcreate = view.findViewById(R.id.log_tv_create);
-            tvforgot = view.findViewById(R.id.log_tv_forgot);
-            btnlogin = view.findViewById(R.id.log_btn_login);
-
-            btnlogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-
-            tvcreate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                }
-            });
-
-            tvforgot.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                }
-            });
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return layouts.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object obj) {
-            return view == obj;
-        }
-
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            View view = (View) object;
-            container.removeView(view);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.log_btn_login:
+                break;
         }
     }
 }

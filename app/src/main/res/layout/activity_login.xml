@@ -1,25 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.LoginActivity">
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    android:padding="15dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:id="@+id/logoimage">
+        <ImageView
+            android:src="@drawable/logo"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/imgmar"
+            android:layout_height="@dimen/imgmar"
+            android:contentDescription="@string/star_auto_assist" />
+</LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_below="@+id/logoimage"
+        android:id="@+id/loginfieldlayout"
+        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:showIn="@layout/activity_intro">
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/email_layout"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/ic_email_orange_a700_36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/log_et_email"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/login_view_pager"
-            android:background="@drawable/bg_1"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/pass_layout"
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/ic_vpn_key_orange_a700_36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/log_et_pass"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginbtn_lay"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/loginfieldlayout">
+        <Button
+            android:id="@+id/log_btn_login"
+            android:textSize="16sp"
+            android:text="LOGIN"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/forgot_layout"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/loginbtn_lay"
+        android:layout_marginTop="10dp"
+        android:weightSum="2"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/log_tv_forgot"
+            android:textSize="15sp"
+            android:gravity="left"
+            android:textColor="#000000"
+            android:text="Forgot Password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/log_tv_create"
+            android:textSize="15sp"
+            android:gravity="right"
+            android:textColor="#000000"
+            android:text="Create Account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</RelativeLayout>
