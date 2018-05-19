@@ -7,27 +7,22 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -81,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.log_btn_login:
                 String email = etemail.getText().toString();
                 String pass = etpass.getText().toString();
-
+                new Login_Async(this,email,pass);
                 break;
             case R.id.log_tv_create:
                 Intent registerIntent = new Intent(this, RegisterActivity.class);
@@ -90,18 +85,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
+
     public class Login_Async extends AsyncTask<String, Integer, String> {
         private Context context;
-        private String username,password;
+        private String username, password;
         private String url = Constants.BaseURL + Constants.login;
         ProgressDialog progress;
         @Nullable
         String user_id;
 
-        public Login_Async(Context ctx,String username,String password) {
+        public Login_Async(Context ctx, String username, String password) {
             context = ctx;
-          this.username=username;
-          this.password=password;
+            this.username = username;
+            this.password = password;
         }
 
         @Override
@@ -121,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Response response = null;
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
-                    .add(Constants.username, username)
+                    .add(Constants.mobileno, username)
                     .add(Constants.password, password)
                     .build();
             Request request = new Request.Builder()
@@ -148,10 +144,76 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
             progress.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "true")) {
+                    GetSet.setIsLogged(true);
+                    GetSet.setEmail(jonj.getString("email"));
+                    GetSet.setPassword(etpass.getText().toString());
+                    GetSet.setUser_type(jonj.getString("type"));
+                    GetSet.setFirstname(jonj.getString("firstname"));
+                    GetSet.setLastname(jonj.getString("lastname"));
+                    GetSet.setCompanyname(jonj.getString("companyname"));
+                    GetSet.setStreet(jonj.getString("street"));
+                    GetSet.setArea(jonj.getString("area"));
+                    GetSet.setLat(jonj.getString("lat"));
+                    GetSet.setLon(jonj.getString("long"));
+                    GetSet.setServices(jonj.getString("servicecategory"));
+                    GetSet.setMobileno(jonj.getString("mobileno"));
+                    GetSet.setImageUrl(jonj.getString("userimage"));
+
+
+                    Constants.editor.putBoolean("isLogged", true);
+                    Constants.editor.putString("email", GetSet.getEmail());
+                    Constants.editor.putString("type", GetSet.getUser_type());
+                    Constants.editor.putString("fname", GetSet.getFirstname());
+                    Constants.editor.putString("lname", GetSet.getLastname());
+                    Constants.editor.putString("mobileno", GetSet.getMobileno());
+                    Constants.editor.putString("password", GetSet.getPassword());
+                    Constants.editor.putString("companyname", GetSet.getCompanyname());
+                    Constants.editor.putString("street", GetSet.getStreet());
+                    Constants.editor.putString("area", GetSet.getArea());
+                    Constants.editor.putString("lat", GetSet.getLat());
+                    Constants.editor.putString("lon", GetSet.getLon());
+                    Constants.editor.putString("userimage", GetSet.getImageUrl());
+                    Constants.editor.putString("services", GetSet.getServices());
+                    Constants.editor.commit();
+                  //  Registernotifi();
+                    finish();
+//                        Intent i = new Intent(LoginActivity.this, FragmentMainActivity.class);
+//                        startActivity(i);
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
 
         }
+        }
+   /* *//**  For register push notification **//*
+    public void  Registernotifi(){
+        Constants.REGISTER_ID = GCMRegistrar.getRegistrationId(getApplicationContext());
+        Log.v("enetered push","registerid="+Constants.REGISTER_ID);
+        Constants.editor.putString("registerId", Constants.REGISTER_ID);
+        Constants.editor.commit();
+
+        if(Constants.REGISTER_ID=="" ||Constants.REGISTER_ID.equals("")){
+            GCMRegistrar.register(this, Constants.SENDER_ID);
+        }else{
+            if (GCMRegistrar.isRegisteredOnServer(this)) {
+                Log.v("GCM", "already registered on device");
+            } else {
+                Log.v("GCM", "Registering in db");
+                JoysaleApplication aController = (JoysaleApplication) getApplicationContext();
+                aController.register(LoginActivity.this);
+            }
+        }
+    }*/
     }
 
 
 
-}
+
+

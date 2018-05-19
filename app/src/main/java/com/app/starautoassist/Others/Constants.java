@@ -12,8 +12,8 @@ public class Constants {
     public static final String App_ID = "526541597734018";
 
     //Keywords
-    public static String username="";
-    public static String password="";
+    public static String mobileno="mobileno";
+    public static String password="password";
 
     /** Twitter App id **/
     public static final String CONSUMER_KEY = "xsAxHRyZ3AoycrRpeK9F1rFqs";
