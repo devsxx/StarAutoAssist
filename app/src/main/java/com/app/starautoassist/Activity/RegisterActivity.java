@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btnuser.setSelected(true);
         relativeLayout.setVisibility(View.VISIBLE);
         linearLayout.setVisibility(View.VISIBLE);
-        
+
     }
     @Override
     public void onClick(View v) {

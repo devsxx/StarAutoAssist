@@ -20,7 +20,7 @@
         <TextView
             android:layout_marginTop="10dp"
             android:text="REGISTRATION"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:layout_alignParentTop="true"
             android:textColor="#1b110c"
             android:textStyle="bold"
