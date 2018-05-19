@@ -36,4 +36,9 @@
         <item>@color/dot_dark_screen4</item>
     </array>
 
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="divider">#e5ebf1</color>
+    <color name="primaryText">#515e6a</color>
+    <color name="secondaryText">#8ea1b2</color>
 </resources>

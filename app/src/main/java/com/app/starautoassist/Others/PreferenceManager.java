@@ -2,6 +2,7 @@ package com.app.starautoassist.Others;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.Settings;
 
 public class PreferenceManager {
 
@@ -13,7 +14,6 @@ public class PreferenceManager {
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
 
     public PreferenceManager(Context contexts) {
-
         this.context = contexts;
         sharedPreferences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = sharedPreferences.edit();
