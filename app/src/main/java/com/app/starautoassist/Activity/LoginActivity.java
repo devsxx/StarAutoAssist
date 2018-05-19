@@ -2,6 +2,7 @@ package com.app.starautoassist.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -29,6 +30,7 @@ import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
     private EditText etemail, etpass;
     private Button btnlogin;
     private TextView tvforgot, tvcreate;
@@ -42,12 +44,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         setContentView(R.layout.activity_login);
+
         changeStatusBarColor();
-        etemail = findViewById(R.id.log_et_email);
-        etpass = findViewById(R.id.log_et_pass);
-        tvcreate = findViewById(R.id.log_tv_create);
-        tvforgot = findViewById(R.id.log_tv_forgot);
-        btnlogin = findViewById(R.id.log_btn_login);
+          etemail = findViewById(R.id.log_et_email);
+          etpass = findViewById(R.id.log_et_pass);
+          tvcreate = findViewById(R.id.log_tv_create);
+          tvforgot = findViewById(R.id.log_tv_forgot);
+          btnlogin = findViewById(R.id.log_btn_login);
 
         btnlogin.setOnClickListener(this);
         tvcreate.setOnClickListener(this);
@@ -72,37 +75,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.log_tv_create:
+                Intent registerIntent = new Intent(this, RegisterActivity.class);
+                startActivity(registerIntent);
                 break;
-            case R.id.log_tv_forgot:
-                break;
-        }
-    }
-}
-    /*public class LoginAsync extends AsyncTask<String, Integer, String> {
-
-        private Context context;
-        private Productinterface_and_cartcount listener;
-        ProgressDialog progress;
-        SessionManager session;
-        Constants config = new Constants();
-        @Nullable
-        String user_id;
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        private String url = config.HOSTURL + config.Get_Product;
-
-        public ProductAsync(Context ctx, Productinterface_and_cartcount listener) {
-            context = ctx;
-            this.listener = listener;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progress = new ProgressDialog(context);
-            progress.setMessage("Please wait ....");
-            progress.setTitle("Loading");
-            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progress.show();
         }
 
         @Nullable
