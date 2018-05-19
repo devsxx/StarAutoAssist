@@ -29,6 +29,15 @@ import android.widget.Toast;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etemail, etpass;
@@ -46,11 +55,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         changeStatusBarColor();
-          etemail = findViewById(R.id.log_et_email);
-          etpass = findViewById(R.id.log_et_pass);
-          tvcreate = findViewById(R.id.log_tv_create);
-          tvforgot = findViewById(R.id.log_tv_forgot);
-          btnlogin = findViewById(R.id.log_btn_login);
+        etemail = findViewById(R.id.log_et_email);
+        etpass = findViewById(R.id.log_et_pass);
+        tvcreate = findViewById(R.id.log_tv_create);
+        tvforgot = findViewById(R.id.log_tv_forgot);
+        btnlogin = findViewById(R.id.log_btn_login);
 
         btnlogin.setOnClickListener(this);
         tvcreate.setOnClickListener(this);
@@ -80,24 +89,47 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
 
+    }
+    public class Login_Async extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String username,password;
+        private String url = Constants.BaseURL + Constants.login;
+        ProgressDialog progress;
+        @Nullable
+        String user_id;
+
+        public Login_Async(Context ctx,String username,String password) {
+            context = ctx;
+          this.username=username;
+          this.password=password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = new ProgressDialog(context);
+            progress.setMessage("Please wait ....");
+            progress.setTitle("Loading");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.show();
+        }
+
         @Nullable
         @Override
         protected String doInBackground(String... params) {
             String jsonData = null;
             Response response = null;
-            session = new SessionManager(context);
-            shared = context.getSharedPreferences("EPOS", 0);
-            user_id = (shared.getString("key_userid", "1"));
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
-                    .add(config.CUSTOMERID, user_id)
-                    .add(config.CAT_ID, Config.sub_categoryid)
+                    .add(Constants.username, username)
+                    .add(Constants.password, password)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
                     .build();
             Call call = client.newCall(request);
+
             try {
                 response = call.execute();
 
@@ -116,6 +148,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
             progress.dismiss();
-            listener.productinterface(jsonData, user_id);
+
         }
-}*/
+    }
+
+
+
+}

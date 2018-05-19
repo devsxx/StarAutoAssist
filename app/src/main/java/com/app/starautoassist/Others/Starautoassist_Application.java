@@ -112,8 +112,8 @@ public class Starautoassist_Application extends Application {
     }private static void networkError(final Dialog dia, final Context ctx){
         try {
 
-            TextView ok = (TextView) dia.findViewById(R.id.alert_button);
-            TextView cancel = (TextView) dia.findViewById(R.id.alert_cancel);
+            TextView ok = dia.findViewById(R.id.alert_button);
+            TextView cancel = dia.findViewById(R.id.alert_cancel);
 
             ok.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -315,10 +315,10 @@ public class Starautoassist_Application extends Application {
         dialog.getWindow().setLayout(display.getWidth()*90/100, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(true);
 
-        TextView alertTitle = (TextView) dialog.findViewById(R.id.alert_title);
-        TextView alertMsg = (TextView) dialog.findViewById(R.id.alert_msg);
-        ImageView alertIcon = (ImageView) dialog.findViewById(R.id.alert_icon);
-        TextView alertOk = (TextView) dialog.findViewById(R.id.alert_button);
+        TextView alertTitle = dialog.findViewById(R.id.alert_title);
+        TextView alertMsg = dialog.findViewById(R.id.alert_msg);
+        ImageView alertIcon = dialog.findViewById(R.id.alert_icon);
+        TextView alertOk = dialog.findViewById(R.id.alert_button);
 
         alertTitle.setText(title);
         alertMsg.setText(content);
@@ -349,11 +349,7 @@ public class Starautoassist_Application extends Application {
     }
 
     public static boolean isRTL(Context context){
-        if (context.getResources().getConfiguration().locale.toString().equals("ar")){
-            return true;
-        } else {
-            return false;
-        }
+        return context.getResources().getConfiguration().locale.toString().equals("ar");
     }
   /*  public static void disabledialog(final Context ctx, final String content){
         ((Activity) ctx).runOnUiThread(new Runnable() {

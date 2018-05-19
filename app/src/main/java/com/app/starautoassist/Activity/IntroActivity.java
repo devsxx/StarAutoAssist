@@ -47,9 +47,9 @@ public class IntroActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_intro);
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        btnNext = (Button) findViewById(R.id.btn_next);
+        viewPager = findViewById(R.id.view_pager);
+        dotsLayout = findViewById(R.id.layoutDots);
+        btnNext = findViewById(R.id.btn_next);
 
         layouts = new int[]{
                 R.layout.intro_screen1,
@@ -118,6 +118,7 @@ public class IntroActivity extends AppCompatActivity {
             if (position == layouts.length - 1) {
 
                 btnNext.setText(getString(R.string.start));
+
 
             } else {
 
