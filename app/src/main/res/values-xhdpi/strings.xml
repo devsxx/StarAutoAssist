@@ -1,0 +1,18 @@
+<resources>
+
+    <string name="app_name">StarAutoAssist</string>
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Star Auto Assist</string>
+    <string name="slide_1_desc">Description</string>
+
+    <string name="err_msg_email">Enter valid Email Address</string>
+    <string name="err_msg_password">Enter your Password</string>
+    <string name="star_auto_assist">Star Auto Assist</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+</resources>
