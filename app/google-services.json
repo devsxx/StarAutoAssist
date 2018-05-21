@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "24023470057",
+    "firebase_url": "https://starautoassist.firebaseio.com",
+    "project_id": "starautoassist",
+    "storage_bucket": "starautoassist.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24023470057:android:3aff1cc8a2a9dab4",
+        "android_client_info": {
+          "package_name": "com.app.starautoassist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24023470057-4aqiegnmv5pd88hh20st11udenk2rbu4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.starautoassist",
+            "certificate_hash": "f76723f3f264b4e63d4f642804013e4799fc506c"
+          }
+        },
+        {
+          "client_id": "24023470057-679jalf7073s499olu5366flji5eqsrj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7YEWMLPEgfONfWbsRX1R7IGgUhxXB8Bo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24023470057-679jalf7073s499olu5366flji5eqsrj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

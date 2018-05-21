@@ -35,7 +35,7 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText etemail, etpass;
+    private EditText mobileno, etpass;
     private Button btnlogin;
     private TextView tvforgot, tvcreate;
 
@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         changeStatusBarColor();
-        etemail = findViewById(R.id.log_et_email);
+        mobileno = findViewById(R.id.log_et_mobileno);
         etpass = findViewById(R.id.log_et_pass);
         tvcreate = findViewById(R.id.log_tv_create);
         tvforgot = findViewById(R.id.log_tv_forgot);
@@ -74,9 +74,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.log_btn_login:
-                String email = etemail.getText().toString();
+                String email = mobileno.getText().toString();
                 String pass = etpass.getText().toString();
-                new Login_Async(this,email,pass);
+                new Login_Async(this,email,pass).execute();
+            Intent intent=new Intent(this,Home.class);
+            startActivity(intent);
                 break;
             case R.id.log_tv_create:
                 Intent registerIntent = new Intent(this, RegisterActivity.class);
@@ -192,25 +194,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
         }
-   /* *//**  For register push notification **//*
-    public void  Registernotifi(){
-        Constants.REGISTER_ID = GCMRegistrar.getRegistrationId(getApplicationContext());
-        Log.v("enetered push","registerid="+Constants.REGISTER_ID);
-        Constants.editor.putString("registerId", Constants.REGISTER_ID);
-        Constants.editor.commit();
 
-        if(Constants.REGISTER_ID=="" ||Constants.REGISTER_ID.equals("")){
-            GCMRegistrar.register(this, Constants.SENDER_ID);
-        }else{
-            if (GCMRegistrar.isRegisteredOnServer(this)) {
-                Log.v("GCM", "already registered on device");
-            } else {
-                Log.v("GCM", "Registering in db");
-                JoysaleApplication aController = (JoysaleApplication) getApplicationContext();
-                aController.register(LoginActivity.this);
-            }
-        }
-    }*/
     }
 
 

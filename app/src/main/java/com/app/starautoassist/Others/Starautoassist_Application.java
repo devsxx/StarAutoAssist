@@ -147,80 +147,9 @@ public class Starautoassist_Application extends Application {
         }
     }
 
-    /** To register the device for push notification **/
-  /*  void register(Context context) {
-
-        // Once GCM returns a registration id, we need to register on our server
-        // As the server might be down, we will retry it a couple
-        // times.
-        for (int i = 1; i <=  5 ; i++) {
-
-            Log.v("Push-Notification", "Attempt #" + i + " to register");
-
-            Thread th = new Thread(new Runnable() {
-                public void run() {
-                    String SOAP_ACTION = Constants.NAMESPACE + Constants.API_PUSH_REGISTER;
-                    SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_PUSH_REGISTER);
-                    req.addProperty(Constants.SOAP_USERNAME, Constants.SOAP_USERNAME_VALUE);
-                    req.addProperty(Constants.SOAP_PASSWORD, Constants.SOAP_PASSWORD_VALUE);
-                    req.addProperty("deviceId", Constants.ANDROID_ID);
-                    req.addProperty("userid", GetSet.getUserId());
-                    req.addProperty("devicetype", "1");
-                    req.addProperty("devicemode", "1");
-                    req.addProperty("lang_type", languageCode);
-                    req.addProperty("deviceToken", Constants.REGISTER_ID);
-
-                    SOAPParsing soap = new SOAPParsing();
-                    String json = soap.getJSONFromUrl(SOAP_ACTION, req);
-
-                    Log.v("json","json"+json);
-                }
-
-            });
-
-            th.start();
-
-            GCMRegistrar.setRegisteredOnServer(context, true);
-
-            return;
-
-        }
-
-    }
-
-    // Unregister this account/device pair within the server.
-    void unregister(final Context context) {
-        Log.v("Register_Id","Register_Id="+Constants.REGISTER_ID);
-        Log.v("unRegister", "unRegister");
 
 
-        Thread th = new Thread(new Runnable() {
-            public void run() {
-                String SOAP_ACTION = Constants.NAMESPACE + Constants.API_PUSH_UNREGISTER;
 
-                SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_PUSH_UNREGISTER);
-                req.addProperty(Constants.SOAP_USERNAME, Constants.SOAP_USERNAME_VALUE);
-                req.addProperty(Constants.SOAP_PASSWORD, Constants.SOAP_PASSWORD_VALUE);
-                req.addProperty("deviceId", Constants.ANDROID_ID);
-
-                SOAPParsing soap = new SOAPParsing();
-                String json = soap.getJSONFromUrl(SOAP_ACTION, req);
-
-                Log.v("json", "json" + json);
-                Constants.REGISTER_ID = "";
-            }
-        });
-        th.start();
-
-        //GCMRegistrar.unregister(context);
-        GCMRegistrar.setRegisteredOnServer(context, false);
-        // At this point the device is unregistered from GCM, but still
-        // registered in the our server.
-        // We could try to unregister again, but it is not necessary:
-        // if the server tries to send a message to the device, it will get
-        // a "NotRegistered" error message and should unregister the device.
-
-    }*/
     public static String loadJSONFromAsset(Context context,String name) {
         String json = null;
         try {
