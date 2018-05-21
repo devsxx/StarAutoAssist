@@ -74,10 +74,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.log_btn_login:
-                String email = mobileno.getText().toString();
+                String phone = mobileno.getText().toString();
                 String pass = etpass.getText().toString();
-                new Login_Async(this,email,pass).execute();
-            Intent intent=new Intent(this,Home.class);
+               /* new Login_Async(this,email,pass).execute();*/
+            Intent intent=new Intent(this,HomeActivity.class);
             startActivity(intent);
                 break;
             case R.id.log_tv_create:

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/border_dialog"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/et_otp_phone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:background="@drawable/border_edittext"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:inputType="phone" />
+
+        <Button
+            android:layout_marginTop="25dp"
+            android:id="@+id/btn_otp"
+            android:text="Get OTP"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/round_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+</LinearLayout>
