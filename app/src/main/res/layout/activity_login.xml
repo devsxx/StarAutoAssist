@@ -42,7 +42,7 @@
 
             <ImageView
                 android:layout_marginTop="8dp"
-                android:src="@drawable/ic_phone_orange_700_36dp"
+                android:src="@drawable/ic_phone_android_orange_700_36dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
