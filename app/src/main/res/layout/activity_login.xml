@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:padding="15dp">
     <ScrollView
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
@@ -40,17 +41,20 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:src="@drawable/ic_email_orange_a700_36dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_phone_orange_700_36dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <EditText
+                android:background="@drawable/border_edittext"
                 android:layout_marginStart="10dp"
                 android:id="@+id/log_et_mobileno"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
+                android:paddingLeft="10dp"
+                android:hint="Phone"
+                android:inputType="phone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="50dp" />
         </LinearLayout>
 
 
@@ -62,17 +66,20 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_marginTop="8dp"
                 android:src="@drawable/ic_vpn_key_orange_a700_36dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <EditText
+                android:background="@drawable/border_edittext"
                 android:layout_marginStart="10dp"
                 android:id="@+id/log_et_pass"
+                android:paddingLeft="10dp"
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="50dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -80,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/loginbtn_lay"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/loginfieldlayout">
         <Button
             android:id="@+id/log_btn_login"
@@ -97,7 +104,7 @@
     <LinearLayout
         android:id="@+id/forgot_layout"
         android:layout_below="@+id/loginbtn_lay"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:weightSum="2"
         android:padding="15dp"
         android:layout_width="match_parent"
@@ -108,7 +115,7 @@
             android:id="@+id/log_tv_forgot"
             android:textSize="15sp"
             android:gravity="left"
-            android:textColor="#000000"
+            android:textColor="#808080"
             android:text="Forgot Password"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -119,7 +126,7 @@
             android:id="@+id/log_tv_create"
             android:textSize="15sp"
             android:gravity="right"
-            android:textColor="#000000"
+            android:textColor="#808080"
             android:text="Create Account"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -7,9 +7,11 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -84,6 +86,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent registerIntent = new Intent(this, RegisterActivity.class);
                 startActivity(registerIntent);
                 break;
+            case R.id.log_tv_forgot:
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                LayoutInflater layoutInflater = this.getLayoutInflater();
+                View view = layoutInflater.inflate(R.layout.forgot_password_layout, null);
+                builder.setView(view);
+                builder.setTitle("Forgot Your Password ?");
+                builder.setCancelable(false);
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                EditText etemail = dialog.findViewById(R.id.et_forgot_email);
+                Button btnsubmit = dialog.findViewById(R.id.btn_forgot_submit);
+
+                btnsubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialog.dismiss();
+                    }
+                });
         }
 
     }

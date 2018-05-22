@@ -13,9 +13,21 @@
             android:icon="@drawable/ic_account_circle_orange_700_18dp"
             android:title="Profile" />
         <item
-            android:id="@+id/nav_history"
+            android:id="@+id/nav_sentrequest"
+            android:icon="@drawable/ic_open_in_browser_orange_700_18dp"
+            android:title="Sent Request" />
+        <item
+            android:id="@+id/nav_acceptedrequest"
+            android:icon="@drawable/ic_system_update_alt_orange_700_18dp"
+            android:title="Accepted Request" />
+        <item
+            android:id="@+id/nav_servicehistory"
             android:icon="@drawable/ic_history_orange_700_18dp"
-            android:title="History" />
+            android:title="Service History" />
+        <item
+            android:id="@+id/nav_paymenthistory"
+            android:icon="@drawable/ic_payment_orange_700_18dp"
+            android:title="Payment History" />
         <item
             android:id="@+id/nav_wallet"
             android:icon="@drawable/ic_account_balance_wallet_orange_700_18dp"

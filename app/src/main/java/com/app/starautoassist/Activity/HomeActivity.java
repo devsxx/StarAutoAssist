@@ -8,9 +8,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,8 +24,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.app.starautoassist.Fragment.HomeFragment;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.NotificationUtilz;
 import com.app.starautoassist.R;
@@ -40,7 +47,11 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("Star Auto Assist");
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, new HomeFragment());
+        fragmentTransaction.commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +107,7 @@ public class HomeActivity extends AppCompatActivity
         else
             Toast.makeText(getApplicationContext(), "Firebase Reg Id is not received yet!", Toast.LENGTH_LONG).show();
     }
+
 
     @Override
     protected void onResume() {
@@ -158,20 +170,95 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        Fragment fragment = null;
+
         if (id == R.id.nav_home) {
-            // Handle the camera action
+
+            fragment = new HomeFragment();
+
         } else if (id == R.id.nav_profile) {
 
-        } else if (id == R.id.nav_history) {
+            Intent profileintent = new Intent(this, ProfileActivity.class);
+            startActivity(profileintent);
+
+        } else if (id == R.id.nav_sentrequest) {
+
+            Intent sentrequestintent = new Intent(this, SentRequestActivity.class);
+            startActivity(sentrequestintent);
+
+        } else if (id == R.id.nav_acceptedrequest) {
+
+            Intent acceptedrequestintent = new Intent(this, AcceptedRequestActivity.class);
+            startActivity(acceptedrequestintent);
+
+        } else if (id == R.id.nav_servicehistory) {
+
+            Intent servicehistoryintent = new Intent(this, ServiceHistoryActivity.class);
+            startActivity(servicehistoryintent);
+
+        } else if (id == R.id.nav_paymenthistory) {
+
+            Intent paymenthistoryintent = new Intent(this, PaymentHistoryActivity.class);
+            startActivity(paymenthistoryintent);
 
         } else if (id == R.id.nav_wallet) {
 
+            Toast.makeText(this, "This feature will be available soon", Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.nav_changepasssword) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View view = layoutInflater.inflate(R.layout.change_password_dialog, null);
+
+            builder.setView(view);
+            builder.setTitle("Reset Your Password :");
+            builder.setCancelable(false);
+
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+
+            final EditText etoldpass = dialog.findViewById(R.id.et_change_oldpass);
+            final EditText etnewpass = dialog.findViewById(R.id.et_change_newpass);
+            final EditText etconfirmpass = dialog.findViewById(R.id.et_change_confirmpass);
+            Button btnchangepass = dialog.findViewById(R.id.btn_changepass);
+
+            btnchangepass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String oldpass = etoldpass.getText().toString();
+                    String newpass = etnewpass.getText().toString();
+                    String confirmpass = etconfirmpass.getText().toString();
+
+                    if (newpass.equals(confirmpass)){
+
+                        //proceed to further code
+                        dialog.dismiss();
+
+                    }else {
+
+                        Toast.makeText(HomeActivity.this, "Password do not Match!", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
 
         } else if (id == R.id.nav_share) {
 
+            Intent shareintent = new Intent(Intent.ACTION_SEND);
+            shareintent.setType("text/plain");
+            startActivity(Intent.createChooser(shareintent, "Share Via"));
+
         } else if (id == R.id.nav_logout) {
 
+        }
+
+        if (fragment != null){
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

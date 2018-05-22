@@ -13,6 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:ems="10"
+            android:hint="Phone"
+            android:paddingLeft="15dp"
             android:background="@drawable/border_edittext"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -24,13 +26,14 @@
             android:layout_marginTop="25dp"
             android:id="@+id/btn_otp"
             android:text="Get OTP"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="15dp"
             android:textColor="#FFFFFF"
-            android:background="@drawable/round_button"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:background="@drawable/round_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
 </LinearLayout>
