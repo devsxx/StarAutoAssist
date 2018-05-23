@@ -72,6 +72,8 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
+        <activity android:name=".Activity.Home" />
+        <activity android:name=".Forget_Password"></activity>
         <activity
             android:name=".Activity.HomeActivity"
             android:label="@string/title_activity_home"

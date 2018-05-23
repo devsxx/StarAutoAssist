@@ -8,8 +8,8 @@
     android:gravity="center"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_confirmotp_code"
+    <EditText
+        android:id="@+id/confirmotp_code"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:ems="10"

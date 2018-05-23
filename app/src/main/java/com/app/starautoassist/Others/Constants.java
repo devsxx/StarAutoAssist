@@ -14,6 +14,12 @@ public class Constants {
     //Keywords
     public static String mobileno="mobileno";
     public static String password="password";
+    public static String otp="otp";
+    public static String serviceid="serviceid";
+    public static String servicename="servicename";
+    public static String serviceimg="serviceimg";
+    public static String servicecharge="servicecharge";
+    public static String priceperkm="priceperkm";
 
     /** Twitter App id **/
     public static final String CONSUMER_KEY = "xsAxHRyZ3AoycrRpeK9F1rFqs";
@@ -35,8 +41,9 @@ public class Constants {
     public static final String SHARED_PREF = "ah_firebase";
 
     //Requests
-    public static String BaseURL="http://starautoassist.com/services";
+    public static String BaseURL="http://starautoassist.com/services/";
     public static String login="login";
+    public static String getotp="getotp";
 
 
 

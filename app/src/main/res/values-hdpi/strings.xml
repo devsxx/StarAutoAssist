@@ -14,5 +14,6 @@
     <string name="star_auto_assist">Star Auto Assist</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="title">Title</string>
 
 </resources>

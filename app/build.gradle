@@ -17,12 +17,12 @@ android {
         }
     }
     //Signing configurations for build variants "release"
-/*signingConfigs {
+signingConfigs {
     release {
-        storeFile file("/home/hitasoft/Devakumar/ApplicationsKeystore/matagrkeystore/matagrkey.jks")
-        storePassword "matagr"
-        keyAlias "matagr"
-        keyPassword "matagr"
+        storeFile file("E:\\Devakumar\\Keystores\\Starautoassist\\saa.jks")
+        storePassword "starautoassist"
+        keyAlias "starautoassist"
+        keyPassword "starautoassist"
     }
 }
 buildTypes {
@@ -32,7 +32,7 @@ buildTypes {
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         signingConfig signingConfigs.release
     }
-}*/
+}
 
     /* dexOptions {
         incremental true
