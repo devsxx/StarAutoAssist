@@ -42,9 +42,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -52,7 +49,7 @@ public class HomeFragment extends Fragment {
     public static ArrayList<HashMap<String, String>> Services_list = new ArrayList<HashMap<String, String>>();
 
     public HomeFragment() {
-        // Required empty public constructor
+
     }
 
 
