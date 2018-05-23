@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_account_circle_orange_700_18dp"
             android:title="Profile" />
         <item
+            android:id="@+id/nav_vechicle"
+            android:icon="@drawable/ic_directions_car_orange_700_18dp"
+            android:title="My Vechicle" />
+        <item
             android:id="@+id/nav_sentrequest"
             android:icon="@drawable/ic_open_in_browser_orange_700_18dp"
             android:title="Sent Request" />
