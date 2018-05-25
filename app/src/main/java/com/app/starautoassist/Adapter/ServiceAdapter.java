@@ -63,7 +63,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
     @Override
     public int getItemCount() {
 
-        return serviceList.size();
+        return 0;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".Activity.VechicleActivity">
+
+    <LinearLayout
+        android:id="@+id/brand_layout"
+        android:weightSum="2"
+        android:background="@drawable/border_edittext"
+        android:layout_marginTop="35dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            app:hintText="Select Brand"
+            android:textAlignment="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/spin_carbrand">
+        </com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext"
+        android:id="@+id/type_layout"
+        android:layout_below="@+id/brand_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:hintText="Select Type"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/spin_cartype">
+        </com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/model_layout"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/type_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:padding="15dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:hint="Enter Model"
+            android:inputType="text"
+            android:id="@+id/vechicle_et_carmodel"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/border_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/plate_layout"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/model_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:padding="15dp"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:hint="Enter Plate No"
+            android:id="@+id/vechicle_et_plateno"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/border_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Submit"
+        android:textSize="18sp"
+        android:id="@+id/vechicle_btn_submit"
+        android:background="@drawable/round_button"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/plate_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

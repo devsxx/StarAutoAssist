@@ -72,8 +72,6 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".Activity.Home" />
-        <activity android:name=".Forget_Password"></activity>
         <activity
             android:name=".Activity.HomeActivity"
             android:label="@string/title_activity_home"
@@ -85,7 +83,7 @@
             android:name=".Activity.SentRequestActivity"
             android:parentActivityName=".Activity.HomeActivity" />
         <activity
-            android:name=".Activity.AcceptedRequestActivity"
+            android:name=".Activity.CancelRequestActivity"
             android:parentActivityName=".Activity.HomeActivity" />
         <activity
             android:name=".Activity.ServiceHistoryActivity"
@@ -93,6 +91,13 @@
         <activity
             android:name=".Activity.PaymentHistoryActivity"
             android:parentActivityName=".Activity.HomeActivity" />
+        <activity
+            android:name=".Activity.VechicleActivity"
+            android:parentActivityName=".Activity.HomeActivity" />
+        <activity
+            android:name=".Home.FuelActivity"
+            android:parentActivityName=".Activity.HomeActivity" />
+        <activity android:name=".Home.TyreActivity"></activity>
     </application>
 
 </manifest>

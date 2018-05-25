@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:orientation="vertical"
+    tools:context=".Home.FuelActivity">
+
+    <ScrollView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/map_layout"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+       <!-- <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />-->
+
+
+    </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:id="@+id/select_layout"
+                android:weightSum="3"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/border_edittext"
+                android:layout_marginRight="10dp"
+                android:layout_below="@+id/map_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/spin_fuel"
+                    app:hintText="Select Fuel"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+            </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/border_edittext"
+        android:layout_marginTop="15dp"
+        android:id="@+id/spin_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/select_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/spin_price"
+            app:hintText="Select Price"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/spin_layout"
+        android:id="@+id/litre_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Litre"
+            android:padding="15dp"
+            android:textAlignment="center"
+           android:id="@+id/fuel_tv_litre"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+    </LinearLayout>
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:text="Send Request"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/fuel_btn_proceed"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_button"
+        android:layout_below="@+id/litre_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

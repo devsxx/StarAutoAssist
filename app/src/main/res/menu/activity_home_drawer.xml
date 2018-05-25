@@ -19,11 +19,11 @@
         <item
             android:id="@+id/nav_sentrequest"
             android:icon="@drawable/ic_open_in_browser_orange_700_18dp"
-            android:title="Sent Request" />
+            android:title="Send Request" />
         <item
-            android:id="@+id/nav_acceptedrequest"
+            android:id="@+id/nav_cancelrequest"
             android:icon="@drawable/ic_system_update_alt_orange_700_18dp"
-            android:title="Accepted Request" />
+            android:title="Cancel Request" />
         <item
             android:id="@+id/nav_servicehistory"
             android:icon="@drawable/ic_history_orange_700_18dp"

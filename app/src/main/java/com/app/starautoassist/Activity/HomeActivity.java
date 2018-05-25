@@ -7,11 +7,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,17 +23,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.app.starautoassist.Fragment.HomeFragment;
+import com.app.starautoassist.Home.FuelActivity;
+import com.app.starautoassist.Home.TyreActivity;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.NotificationUtilz;
 import com.app.starautoassist.R;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -59,8 +56,7 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
 
@@ -185,84 +181,17 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_vechicle) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            LayoutInflater layoutInflater = this.getLayoutInflater();
-            View view = layoutInflater.inflate(R.layout.vechicle_dialog, null);
+            Intent vechicleintent = new Intent(this, VechicleActivity.class);
+            startActivity(vechicleintent);
 
-            builder.setView(view);
-            builder.setTitle("Select Your Car :");
-            builder.setCancelable(false);
-
-            final AlertDialog dialog = builder.create();
-            dialog.show();
-
-            final SearchableSpinner spinnermodel = dialog.findViewById(R.id.spin_carmodel);
-            final SearchableSpinner spinnertype = dialog.findViewById(R.id.spin_cartype);
-            spinnermodel.setTitle("Select");
-            spinnertype.setTitle("Select");
-            spinnermodel.setPositiveButton("OK");
-            spinnertype.setPositiveButton("OK");
-
-            String[] model = { "Alfa Romeo", "Aston Martin", "Audi", "Bentley", "Citroen", "Ferrari",
-                    "BMW", "Bufori", "Caterham", "Chana", "Chery", "Chevrolet", "Fiat" , "Ford",
-                    "Haval", "Honda", "Hyundai", "Infiniti", "Isuzu", "Jaguar", "Jeep", "Kia",
-                    "Lamborghini", "Land Rover", "Lexus", "Lotus", "Mahindra", "Maserati", "Maxus",
-                    "Mazda", "McLaren", "Mercedes-Benz", "MINI", "Mitsubishi", "Nissan", "Perodua",
-                    "Peugeot", "Porsche", "Proton", "Renault", "Rolls-Royce", "Skoda", "SsangYong",
-                    "Subaru", "Suzuki", "Tata", "Toyota", "Volkswagen", "Volvo" };
-
-            String[] type = { "Sedan", "Hatchback", "MPV", "SUV", "Pickup", "Wagon", "Coupe", "Convertible", "Commercial" };
-
-            ArrayAdapter<String> modeladapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, model);
-            modeladapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnermodel.setAdapter(modeladapter);
-
-            ArrayAdapter<String> typeadapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, type);
-            typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnertype.setAdapter(typeadapter);
-
-            spinnermodel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                    Toast.makeText(getApplicationContext(), spinnermodel.getSelectedItem().toString() + "\tis Selected", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            spinnertype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                    Toast.makeText(getApplicationContext(), spinnertype.getSelectedItem().toString()+ "\tis Selected", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-            Button btnsave = dialog.findViewById(R.id.vechicle_btn_save);
-
-            btnsave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    dialog.dismiss();
-                }
-            });
         } else if (id == R.id.nav_sentrequest) {
 
-            Intent sentrequestintent = new Intent(this, SentRequestActivity.class);
+            Intent sentrequestintent = new Intent(this, TyreActivity.class);
             startActivity(sentrequestintent);
 
-        } else if (id == R.id.nav_acceptedrequest) {
+        } else if (id == R.id.nav_cancelrequest) {
 
-            Intent acceptedrequestintent = new Intent(this, AcceptedRequestActivity.class);
+            Intent acceptedrequestintent = new Intent(this, CancelRequestActivity.class);
             startActivity(acceptedrequestintent);
 
         } else if (id == R.id.nav_servicehistory) {
@@ -326,6 +255,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
 
+            startActivity(new Intent(this, FuelActivity.class));
         }
 
         if (fragment != null){
