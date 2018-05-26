@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -36,6 +37,8 @@ import org.acra.annotation.ReportsCrashes;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+
+import javax.crypto.Cipher;
 
 @ReportsCrashes(mailTo = "iamdevshadowws@gmail.com")
 public class Starautoassist_Application extends Application {
@@ -97,6 +100,12 @@ public class Starautoassist_Application extends Application {
             ctx.registerReceiver(networkStateReceiver, filter);
         }
 
+    }
+    public static boolean checkLocationPermission(Context context)
+    {
+        String permission = "android.permission.ACCESS_FINE_LOCATION";
+        int res = context.checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
     }
 
     /** function unregister the network intent checking **/

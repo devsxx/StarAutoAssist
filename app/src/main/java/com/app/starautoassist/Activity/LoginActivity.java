@@ -1,12 +1,18 @@
 package com.app.starautoassist.Activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.LocaleList;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +24,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.app.starautoassist.Helper.GPSTracker;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
@@ -35,12 +43,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.app.starautoassist.Others.Starautoassist_Application.checkLocationPermission;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText mobileno, etpass;
     private Button btnlogin;
     private TextView tvforgot, tvcreate;
-
+    GPSTracker gps;
+    android.app.AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +61,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         setContentView(R.layout.activity_login);
-
+        if(!checkLocationPermission(this)){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
         changeStatusBarColor();
         mobileno = findViewById(R.id.log_et_mobileno);
         etpass = findViewById(R.id.log_et_pass);
@@ -61,7 +74,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnlogin.setOnClickListener(this);
         tvcreate.setOnClickListener(this);
         tvforgot.setOnClickListener(this);
-
+        alertDialog = new android.app.AlertDialog.Builder(LoginActivity.this).create();
+        alertDialog.setTitle(getString(R.string.gps_settings));
+        alertDialog.setMessage(getString(R.string.gps_notenabled));
+        alertDialog.setButton(getString(R.string.settings), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setButton2(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.setCancelable(false);
+        gps = new GPSTracker(LoginActivity.this);
+        if(!gps.canGetLocation()){
+            if (!alertDialog.isShowing()) {
+                alertDialog.show();
+            }
+        }
     }
 
     private void changeStatusBarColor() {
@@ -112,6 +145,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
         }
 
+    }
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(LoginActivity.this, getString(R.string.location_permission_access), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, getString(R.string.need_permission_to_access), Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
     }
 
     public class Login_Async extends AsyncTask<String, Integer, String> {

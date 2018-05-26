@@ -15,12 +15,16 @@
       },
       "oauth_client": [
         {
-          "client_id": "24023470057-4aqiegnmv5pd88hh20st11udenk2rbu4.apps.googleusercontent.com",
+          "client_id": "24023470057-4ceplkn1p8dr15eutcco9khrj2sq5thm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.starautoassist",
-            "certificate_hash": "f76723f3f264b4e63d4f642804013e4799fc506c"
+            "certificate_hash": "c8268aed461927fb01c850527e04a1c58079b473"
           }
+        },
+        {
+          "client_id": "24023470057-679jalf7073s499olu5366flji5eqsrj.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "24023470057-679jalf7073s499olu5366flji5eqsrj.apps.googleusercontent.com",

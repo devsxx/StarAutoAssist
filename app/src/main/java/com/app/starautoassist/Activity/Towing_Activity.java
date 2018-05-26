@@ -57,6 +57,8 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static com.app.starautoassist.Others.Starautoassist_Application.checkLocationPermission;
+
 public class Towing_Activity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, AdapterView.OnItemClickListener, TextWatcher {
     MapView mapView;
     private GoogleMap map;
@@ -97,10 +99,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         setFrom = (TextView) findViewById(R.id.fromset);
         setTo = (TextView) findViewById(R.id.toset);
 
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        checkLocationPermission();
 
         setFrom.setOnClickListener(this);
         setTo.setOnClickListener(this);
@@ -119,24 +119,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         screenHeight = height * 60 / 100;
         screenWidth = weight * 80 / 100;
        // imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        alertDialog = new AlertDialog.Builder(Towing_Activity.this).create();
-        alertDialog.setTitle(getString(R.string.gps_settings));
-        alertDialog.setMessage(getString(R.string.gps_notenabled));
-        alertDialog.setButton(getString(R.string.settings), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        });
-        alertDialog.setButton2(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.setCancelable(false);
-        gps = new GPSTracker(Towing_Activity.this);
-        setLocation();
-
+        Location_Fetch();
 
         from.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -247,25 +230,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         }
 
 
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(Towing_Activity.this, getString(R.string.location_permission_access), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(Towing_Activity.this, getString(R.string.need_permission_to_access), Toast.LENGTH_SHORT).show();
-                }
-                return;
-            }
-        }
-    }
-    public boolean checkLocationPermission()
-    {
-        String permission = "android.permission.ACCESS_FINE_LOCATION";
-        int res = this.checkCallingOrSelfPermission(permission);
-        return (res == PackageManager.PERMISSION_GRANTED);
-    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -317,7 +283,47 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        Starautoassist_Application.registerReceiver(this);
+        Location_Fetch();
 
+    }
+
+    private void Location_Fetch() {
+        alertDialog = new AlertDialog.Builder(Towing_Activity.this).create();
+        alertDialog.setTitle(getString(R.string.gps_settings));
+        alertDialog.setMessage(getString(R.string.gps_notenabled));
+        alertDialog.setButton(getString(R.string.settings), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setButton2(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.setCancelable(false);
+        gps = new GPSTracker(Towing_Activity.this);
+        setLocation();
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapFragment.onDestroy();
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapFragment.onLowMemory();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // For Internet checking disconnect
+        Starautoassist_Application.unregisterReceiver(this);
     }
 
     @Override
@@ -351,6 +357,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         googleMap.setIndoorEnabled(true);
         googleMap.setBuildingsEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
+        Log.d(TAG, "onMapReady: "+flat+ "  " +flon);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(flat,flon),11));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(flat, flon), 15));
         center=googleMap.getCameraPosition().target;
