@@ -4,34 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
     android:orientation="vertical"
     tools:context=".Activity.FuelActivity">
 
-    <ScrollView
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-    <LinearLayout
-        android:id="@+id/map_layout"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/border_edittext"
-        android:layout_width="match_parent"
-        android:layout_height="250dp">
-       <!-- <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="250dp" />-->
-
-
-    </LinearLayout>
 
             <LinearLayout
                 android:layout_marginTop="20dp"
@@ -40,7 +15,6 @@
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/border_edittext"
                 android:layout_marginRight="10dp"
-                android:layout_below="@+id/map_layout"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
@@ -95,14 +69,10 @@
         android:text="Send Request"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="10dp"
         android:id="@+id/fuel_btn_proceed"
-        android:layout_marginRight="10dp"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/round_button"
-        android:layout_below="@+id/litre_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-        </RelativeLayout>
-    </ScrollView>
+
 </RelativeLayout>

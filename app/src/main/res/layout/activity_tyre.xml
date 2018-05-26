@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="15dp"
     android:layout_height="match_parent"
     tools:context=".Activity.TyreActivity">
 
@@ -80,16 +79,16 @@
             android:padding="10dp" />
 
     </LinearLayout>
-
     <Button
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/service_layout"
-        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
         android:text="Send Request"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:id="@+id/tyre_btn_send"
-        android:textColor="#FFFFFF"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/round_button"
-        android:layout_height="50dp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
 </RelativeLayout>
