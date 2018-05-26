@@ -15,5 +15,11 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="title">Title</string>
+    <string name="send_request">Send Request</string>
+    <string name="drop_location">Drop Location</string>
+    <string name="pickup_location">Pickup Location</string>
+    <string name="set_pickup_location">Set Pickup Location</string>
+    <string name="set_drop_location">Set Drop Location</string>
+    <string name="set">SET</string>
 
 </resources>

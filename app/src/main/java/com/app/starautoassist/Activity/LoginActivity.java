@@ -79,8 +79,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 String phone = mobileno.getText().toString();
                 String pass = etpass.getText().toString();
                /* new Login_Async(this,email,pass).execute();*/
-            Intent intent=new Intent(this,HomeActivity.class);
-            startActivity(intent);
+            /*Intent intent=new Intent(this,HomeActivity.class);
+            startActivity(intent);*/
+                Intent intent=new Intent(this,Towing_Activity.class);
+                startActivity(intent);
                 break;
             case R.id.log_tv_create:
                 Intent registerIntent = new Intent(this, RegisterActivity.class);

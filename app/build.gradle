@@ -17,22 +17,22 @@ android {
         }
     }
     //Signing configurations for build variants "release"
-    signingConfigs {
-        release {
-            storeFile file("E:\\Devakumar\\Keystores\\Starautoassist\\saa.jks")
-            storePassword "starautoassist"
-            keyAlias "starautoassist"
-            keyPassword "starautoassist"
-        }
+signingConfigs {
+    release {
+        storeFile file("E:\\Devakumar\\Keystores\\Starautoassist\\saa.jks")
+        storePassword "starautoassist"
+        keyAlias "starautoassist"
+        keyPassword "starautoassist"
     }
-    buildTypes {
-        //link above defined configuration to "release" build type
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
+}
+buildTypes {
+    //link above defined configuration to "release" build type
+    release {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        signingConfig signingConfigs.release
     }
+}
 
     /* dexOptions {
         incremental true
@@ -61,7 +61,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.android.support:design:27.1.1'
-
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

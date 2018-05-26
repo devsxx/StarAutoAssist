@@ -1,4 +1,4 @@
-package com.app.starautoassist.Home;
+package com.app.starautoassist.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

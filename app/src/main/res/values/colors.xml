@@ -37,6 +37,7 @@
     </array>
 
     <color name="white">#ffffff</color>
+    <color name="green">#528c3d</color>
     <color name="black">#000000</color>
     <color name="divider">#e5ebf1</color>
     <color name="primaryText">#515e6a</color>

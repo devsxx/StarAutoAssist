@@ -8,6 +8,8 @@
     <string name="ok">Ok</string>
     <string name="gps_settings">GPS Settings</string>
     <string name="gps_notenabled">GPS is not enabled. Do you want to go to settings menu?</string>
+    <string name="need_permission_to_access">Need permission to access this page</string>
+    <string name="location_permission_access">Now you have a permission to access location</string>
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
     <string name="slide_1_title">Star Auto Assist</string>
@@ -31,5 +33,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title">Title</string>
+    <string name="send_request">Send Request</string>
+    <string name="drop_location">Drop Location</string>
+    <string name="pickup_location">Pickup Location</string>
+    <string name="set_pickup_location">Set Pickup Location</string>
+    <string name="set_drop_location">Set Drop Location</string>
+    <string name="set">SET</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -27,8 +28,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.app.starautoassist.Fragment.HomeFragment;
-import com.app.starautoassist.Home.FuelActivity;
-import com.app.starautoassist.Home.TyreActivity;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.NotificationUtilz;
 import com.app.starautoassist.R;
@@ -56,7 +55,8 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
@@ -188,11 +188,6 @@ public class HomeActivity extends AppCompatActivity
 
             Intent sentrequestintent = new Intent(this, TyreActivity.class);
             startActivity(sentrequestintent);
-
-        } else if (id == R.id.nav_cancelrequest) {
-
-            Intent acceptedrequestintent = new Intent(this, CancelRequestActivity.class);
-            startActivity(acceptedrequestintent);
 
         } else if (id == R.id.nav_servicehistory) {
 

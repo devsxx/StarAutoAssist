@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.Towing_Activity">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+ <!--   <com.google.android.gms.maps.MapView
+        android:id="@+id/map_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
+    <RelativeLayout
+        android:id="@+id/fromlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="5dp"
+        android:elevation="4dp"
+        android:background="@drawable/white_roundcorner">
+
+        <TextView
+            android:id="@+id/fromtextview"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:text="From"
+            android:gravity="center"
+            android:translationZ="2dp"
+            android:layout_centerVertical="true"
+            android:visibility="visible"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/fromaddress"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/white"
+            android:layout_centerVertical="true"
+            android:padding="6dp"
+            android:layout_toEndOf="@+id/fromtextview"
+            android:layout_toStartOf="@+id/fromset"
+            android:hint="@string/pickup_location"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:maxLines="1"
+            android:dropDownWidth="match_parent"
+            android:dropDownAnchor="@+id/view1"
+            android:popupBackground="@drawable/white_roundcorner"/>
+
+        <TextView
+            android:id="@+id/fromset"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/white"
+            android:text="@string/set"
+            android:textColor="@color/green"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#00000000"
+        android:layout_below="@+id/fromlay"
+        android:visibility="visible"/>
+    <RelativeLayout
+        android:id="@+id/droplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fromlay"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="5dp"
+        android:elevation="4dp"
+        android:background="@drawable/white_roundcorner">
+
+        <TextView
+            android:id="@+id/to"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:text="To"
+            android:gravity="center"
+            android:translationZ="2dp"
+            android:layout_centerVertical="true"
+            android:visibility="visible"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/toaddress"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/to"
+            android:layout_toStartOf="@+id/toset"
+            android:padding="6dp"
+            android:hint="@string/drop_location"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:maxLines="1"
+            android:dropDownWidth="match_parent"
+            android:dropDownAnchor="@+id/view2"
+            android:popupBackground="@drawable/white_roundcorner"/>
+
+        <TextView
+            android:id="@+id/toset"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/white"
+            android:text="SET"
+            android:textColor="@color/green"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#00000000"
+        android:layout_below="@+id/droplay"
+        android:visibility="visible"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/marker"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="22dp"
+            android:background="@null"
+            android:tint="@color/colorPrimary"
+            android:src="@drawable/marker" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/my_location"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/currentlocatin"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/bottomLay"
+        android:layout_margin="20dp"/>
+    <RelativeLayout
+        android:id="@+id/bottomLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/apply"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="15sp"
+                android:singleLine="true"
+                android:text="@string/send_request"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
