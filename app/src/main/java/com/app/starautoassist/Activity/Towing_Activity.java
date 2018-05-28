@@ -2,16 +2,20 @@ package com.app.starautoassist.Activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +37,8 @@ import android.widget.Toast;
 
 import com.app.starautoassist.Adapter.PlacesAutoCompleteAdapter;
 import com.app.starautoassist.Helper.GPSTracker;
+import com.app.starautoassist.Helper.GetSet;
+import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,6 +63,13 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 import static com.app.starautoassist.Others.Starautoassist_Application.checkLocationPermission;
 
 public class Towing_Activity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, AdapterView.OnItemClickListener, TextWatcher {
@@ -64,15 +77,15 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     private GoogleMap map;
     String TAG="Towing_Activity";
     GoogleApiClient mGoogleApiClient;
-    Towing_Activity mLastLocation;
-    Marker mCurrLocationMarker;
-    TextView setFrom, setTo,setLoc, remLoc,applytextview;
+    LocationManager locationManager;
+    TextView setFrom, setTo;
     ImageView myLocation;
     int screenHeight, screenWidth;
     public static boolean locationfound = false;
     AlertDialog alertDialog;
     public static String fromlocation = "",tolocation="";
     public static double flat, flon, tlat, tlon;
+    public static double onreslat,onreslon;
     AutoCompleteTextView from, to;
     GPSTracker gps;
     TextView submitbtn;
@@ -81,6 +94,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     private LatLng center;
     SupportMapFragment mapFragment;
     private Geocoder geocoder;
+    public String tow_type="";
     private List<Address> addresses;
     private CountDownTimer mDragTimer;
     private boolean mTimerIsRunning = false;
@@ -100,8 +114,11 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         setFrom = (TextView) findViewById(R.id.fromset);
         setTo = (TextView) findViewById(R.id.toset);
 
+
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         setFrom.setOnClickListener(this);
         setTo.setOnClickListener(this);
@@ -135,22 +152,27 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
             }
         });
         alertDialog.setCancelable(false);
-        gps = new GPSTracker(Towing_Activity.this);
-        if (flat == 0 && flon == 0) {
-            if (gps.canGetLocation()) {
-                if (Starautoassist_Application.isNetworkAvailable(Towing_Activity.this)) {
-                    flat = gps.getLatitude();
-                    flon = gps.getLongitude();
-                    Log.v("lati", "lat" + flat);
-                    Log.v("longi", "longi" + flon);
-                } else {
+        Log.d(TAG, "onCreate: ");
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            gps = new GPSTracker(Towing_Activity.this);
+            if (flat == 0 && flon == 0) {
+                if (gps.canGetLocation()) {
+                    if (Starautoassist_Application.isNetworkAvailable(Towing_Activity.this)) {
+                        flat = gps.getLatitude();
+                        flon = gps.getLongitude();
+                        Log.v("lati", "lat" + flat);
+                        Log.v("longi", "longi" + flon);
+                    } else {
 
+                    }
+                } else {
+                    locationfound = true;
                 }
-            } else {
-                if (!alertDialog.isShowing()) {
-                    alertDialog.show();
-                }
-                locationfound = true;
+            }mapFragment.getMapAsync(this);
+        }else{
+            if (!alertDialog.isShowing()) {
+                alertDialog.show();
             }
         }
 
@@ -166,8 +188,15 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         Double latn[] = new Double[2];
                         if (from.getText().toString().trim().length() != 0) {
                             latn = new getLocationFromString().execute(from.getText().toString().trim()).get();
-                            double lat = latn[0];
-                            double lon = latn[1];
+                            final double lat = latn[0];
+                            final double lon = latn[1];
+                            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                                @Override
+                                public void onMapReady(GoogleMap googleMap) {
+                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),11));
+                                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 15));
+                                }
+                            });
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -206,8 +235,15 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         Double latn[] = new Double[2];
                         if (to.getText().toString().trim().length() != 0) {
                             latn = new getLocationFromString().execute(to.getText().toString().trim()).get();
-                            double lat = latn[0];
-                            double lon = latn[1];
+                            final double lat = latn[0];
+                            final double lon = latn[1];
+                            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                                @Override
+                                public void onMapReady(GoogleMap googleMap) {
+                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),11));
+                                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 15));
+                                }
+                            });
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -248,6 +284,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                     if (Starautoassist_Application.isNetworkAvailable(Towing_Activity.this)) {
                         flat = gps.getLatitude();
                         flon = gps.getLongitude();
+
                         Log.v("lati", "lat" + flat);
                         Log.v("longi", "longi" + flon);
                     } else {
@@ -260,6 +297,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                     locationfound = true;
                 }
             }
+            mapFragment.getMapAsync(this);
         }
 
 
@@ -315,10 +353,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onResume() {
+        Starautoassist_Application.registerReceiver(this);
         super.onResume();
-       /* Starautoassist_Application.registerReceiver(this);
-        Location_Fetch();*/
-
     }
 
     private void Location_Fetch() {
@@ -537,6 +573,84 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                 e.printStackTrace();
             }
             return latn;
+        }
+    }
+    public class Towing_Request_Async extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String towtype;
+        private String url = Constants.BaseURL + Constants.login;
+        ProgressDialog progress;
+        @Nullable
+        String user_id;
+
+        public Towing_Request_Async(Context ctx, String towtype) {
+            context = ctx;
+            this.towtype = towtype;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = new ProgressDialog(context);
+            progress.setMessage("Please wait ....");
+            progress.setTitle("Loading");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.show();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, GetSet.getMobileno())
+                    .add("towtype", towtype)
+                    .add("pickup_location", towtype)
+                    .add("drop_location", towtype)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            progress.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "true")) {
+                   // TODO: request code here
+                    Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
+
+//                        Intent i = new Intent(LoginActivity.this, FragmentMainActivity.class);
+//                        startActivity(i);
+                    finish();
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 
 import com.app.starautoassist.Activity.LoginActivity;
+import com.app.starautoassist.Activity.Towing_Activity;
 import com.app.starautoassist.R;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -108,6 +109,8 @@ public class GPSTracker extends Service implements LocationListener {
 								}
 							}
 						}
+                        Towing_Activity.onreslat=latitude;
+                        Towing_Activity.onreslon = longitude;
 					}
 	            }
 

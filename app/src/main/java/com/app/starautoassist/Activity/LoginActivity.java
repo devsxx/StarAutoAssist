@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.LocaleList;
@@ -53,6 +54,11 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.app.starautoassist.Others.Starautoassist_Application.checkLocationPermission;
+
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText mobileno, etpass;
@@ -61,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     GPSTracker gps;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     android.app.AlertDialog alertDialog;
+    LocationManager locationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +77,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         setContentView(R.layout.activity_login);
+
         permissincheck();
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        permissincheck();
+        alertDialog = new android.app.AlertDialog.Builder(LoginActivity.this).create();
+        alertDialog.setTitle(getString(R.string.gps_settings));
+        alertDialog.setMessage(getString(R.string.gps_notenabled));
+        alertDialog.setButton(getString(R.string.settings), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setButton2(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.setCancelable(false);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+        }else{
+            if (!alertDialog.isShowing()) {
+                alertDialog.show();
+            }
+        }
+
+
         changeStatusBarColor();
         mobileno = findViewById(R.id.log_et_mobileno);
         etpass = findViewById(R.id.log_et_pass);
