@@ -24,6 +24,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
@@ -136,6 +137,35 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         int weight = display.getWidth();
         screenHeight = height * 60 / 100;
         screenWidth = weight * 80 / 100;
+
+        android.support.v7.app.AlertDialog.Builder towbuilder = new android.support.v7.app.AlertDialog.Builder(this);
+        LayoutInflater towlayoutInflater = this.getLayoutInflater();
+        View towview = towlayoutInflater.inflate(R.layout.tow_service_dialog, null);
+
+        towbuilder.setView(towview);
+        towbuilder.setTitle("Select type of Tow Truck :");
+        towbuilder.setCancelable(false);
+
+        final android.support.v7.app.AlertDialog towdialog = towbuilder.create();
+        towdialog.show();
+
+        ImageView ivwheellift = towdialog.findViewById(R.id.tow_iv_wheellift);
+        ImageView ivflatbed = towdialog.findViewById(R.id.tow_iv_flatbed);
+
+        ivwheellift.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                towdialog.dismiss();
+            }
+        });
+        ivflatbed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                towdialog.dismiss();
+            }
+        });
        // imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         alertDialog = new AlertDialog.Builder(Towing_Activity.this).create();
         alertDialog.setTitle(getString(R.string.gps_settings));

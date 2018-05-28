@@ -229,39 +229,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                /* new Login_Async(this,email,pass).execute();*/
             /*Intent intent=new Intent(this,HomeActivity.class);
             startActivity(intent);*/
-                /*Intent intent=new Intent(this,HomeActivity.class);
-                startActivity(intent);*/
+                Intent intent=new Intent(this,Towing_Activity.class);
+                startActivity(intent);
 
-                AlertDialog.Builder towbuilder = new AlertDialog.Builder(this);
-                LayoutInflater towlayoutInflater = this.getLayoutInflater();
-                View towview = towlayoutInflater.inflate(R.layout.tow_service_dialog, null);
 
-                towbuilder.setView(towview);
-                towbuilder.setTitle("Select type of Tow Truck :");
-                towbuilder.setCancelable(false);
-
-                final AlertDialog towdialog = towbuilder.create();
-                towdialog.show();
-
-                ImageView ivwheellift = towdialog.findViewById(R.id.tow_iv_wheellift);
-                ImageView ivflatbed = towdialog.findViewById(R.id.tow_iv_flatbed);
-
-                ivwheellift.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent intent=new Intent(getApplicationContext(),Towing_Activity.class);
-                        startActivity(intent);
-                    }
-                });
-                ivflatbed.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent intent=new Intent(getApplicationContext(),Towing_Activity.class);
-                        startActivity(intent);
-                    }
-                });
                 break;
             case R.id.log_tv_create:
                 Intent registerIntent = new Intent(this, RegisterActivity.class);
