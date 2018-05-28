@@ -24,7 +24,7 @@
             android:layout_width="@dimen/img_width_height"
             android:layout_height="@dimen/img_width_height"
             android:layout_marginTop="150dp"
-            android:src="@drawable/logo" />
+            android:src="@drawable/towingbg" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -15,8 +15,10 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 
+import com.app.starautoassist.Activity.LoginActivity;
 import com.app.starautoassist.R;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -189,7 +191,19 @@ public class GPSTracker extends Service implements LocationListener {
 	        // Showing Alert Message
 	        alertDialog.show();
 	    }
-
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case 102: {
+				// If request is cancelled, the result arrays are empty.
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					Toast.makeText(GPSTracker.this, getString(R.string.location_permission_access), Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(GPSTracker.this, getString(R.string.need_permission_to_access), Toast.LENGTH_SHORT).show();
+				}
+				return;
+			}
+		}
+	}
 	@Override
 	public void onLocationChanged(Location location) {
 	// TODO Auto-generated method stub

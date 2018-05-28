@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.app.starautoassist.R;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
-public class FuelActivity extends AppCompatActivity {
+public class Fuel_Activity extends AppCompatActivity {
 
    /* private MapView mapView;*/
     private SearchableSpinner spinnerprice, spinnerfuel;

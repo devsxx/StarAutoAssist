@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- This app has permission to register and receive data message. -->
@@ -82,7 +84,8 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyB7YEWMLPEgfONfWbsRX1R7IGgUhxXB8Bo" />
 
-        <activity android:name=".Activity.Towing_Activity" />
+        <activity android:name=".Activity.Towing_Activity"
+            android:parentActivityName=".Activity.HomeActivity"/>
 
         <activity
             android:name=".Activity.HomeActivity"
@@ -107,9 +110,10 @@
             android:name=".Activity.VechicleActivity"
             android:parentActivityName=".Activity.HomeActivity" />
         <activity
-            android:name=".Activity.FuelActivity"
+            android:name=".Activity.Fuel_Activity"
             android:parentActivityName=".Activity.HomeActivity" />
-        <activity android:name=".Activity.TyreActivity"></activity>
+        <activity android:name=".Activity.TyreActivity"
+            android:parentActivityName=".Activity.HomeActivity"/>
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 package com.app.starautoassist.Activity;
 
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.LocaleList;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +26,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +39,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.LoggingMXBean;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -43,7 +52,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.app.starautoassist.Others.Starautoassist_Application.checkLocationPermission;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,6 +59,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnlogin;
     private TextView tvforgot, tvcreate;
     GPSTracker gps;
+    final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     android.app.AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         setContentView(R.layout.activity_login);
-        if(!checkLocationPermission(this)){
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
+        permissincheck();
         changeStatusBarColor();
         mobileno = findViewById(R.id.log_et_mobileno);
         etpass = findViewById(R.id.log_et_pass);
@@ -74,27 +81,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnlogin.setOnClickListener(this);
         tvcreate.setOnClickListener(this);
         tvforgot.setOnClickListener(this);
-        alertDialog = new android.app.AlertDialog.Builder(LoginActivity.this).create();
-        alertDialog.setTitle(getString(R.string.gps_settings));
-        alertDialog.setMessage(getString(R.string.gps_notenabled));
-        alertDialog.setButton(getString(R.string.settings), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        });
-        alertDialog.setButton2(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.setCancelable(false);
-        gps = new GPSTracker(LoginActivity.this);
-        if(!gps.canGetLocation()){
-            if (!alertDialog.isShowing()) {
-                alertDialog.show();
-            }
-        }
     }
 
     private void changeStatusBarColor() {
@@ -102,6 +88,101 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
+        }
+    }
+    private void permissincheck() {
+        List<String> permissionsNeeded = new ArrayList<String>();
+
+        final List<String> permissionsList = new ArrayList<String>();
+        if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION))
+            permissionsNeeded.add("Fine Location");
+        if (!addPermission(permissionsList, Manifest.permission.ACCESS_COARSE_LOCATION))
+            permissionsNeeded.add("Coarse Location");
+        if (!addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE))
+            permissionsNeeded.add("Read External Storage");
+        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            permissionsNeeded.add("Write External Storage");
+        if (permissionsList.size() > 0) {
+            if (permissionsNeeded.size() > 0) {
+                // Need Rationale
+                String message = "We need you to grant access to " + permissionsNeeded.get(0);
+                for (int i = 1; i < permissionsNeeded.size(); i++)
+                    message = message + ", " + permissionsNeeded.get(i);
+                showMessageOKCancel(message,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+                                            REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+                                }
+                            }
+                        });
+                return;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+            }
+            return;
+        }
+
+
+    }
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(LoginActivity.this)
+                .setTitle("Permission Request")
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+    @TargetApi(Build.VERSION_CODES.M)
+    private boolean addPermission(List<String> permissionsList, String permission) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsList.add(permission);
+                // Check for Rationale Option
+                if (!shouldShowRequestPermissionRationale(permission))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS:
+            {
+                Map<String, Integer> perms = new HashMap<String, Integer>();
+                // Initial
+                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.ACCESS_COARSE_LOCATION, PackageManager.PERMISSION_GRANTED);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                }
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+
+                // Fill with results
+                for (int i = 0; i < permissions.length; i++)
+                    perms.put(permissions[i], grantResults[i]);
+                // Check for ACCESS_FINE_LOCATION
+                if (perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(LoginActivity.this, "All Permission Granted",Toast.LENGTH_SHORT).show();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(LoginActivity.this, "Some Permission is Denied",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+            break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -114,8 +195,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                /* new Login_Async(this,email,pass).execute();*/
             /*Intent intent=new Intent(this,HomeActivity.class);
             startActivity(intent);*/
-                Intent intent=new Intent(this,Towing_Activity.class);
-                startActivity(intent);
+                /*Intent intent=new Intent(this,HomeActivity.class);
+                startActivity(intent);*/
+
+                AlertDialog.Builder towbuilder = new AlertDialog.Builder(this);
+                LayoutInflater towlayoutInflater = this.getLayoutInflater();
+                View towview = towlayoutInflater.inflate(R.layout.tow_service_dialog, null);
+
+                towbuilder.setView(towview);
+                towbuilder.setTitle("Select type of Tow Truck :");
+                towbuilder.setCancelable(false);
+
+                final AlertDialog towdialog = towbuilder.create();
+                towdialog.show();
+
+                ImageView ivwheellift = towdialog.findViewById(R.id.tow_iv_wheellift);
+                ImageView ivflatbed = towdialog.findViewById(R.id.tow_iv_flatbed);
+
+                ivwheellift.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent=new Intent(getApplicationContext(),Towing_Activity.class);
+                        startActivity(intent);
+                    }
+                });
+                ivflatbed.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent=new Intent(getApplicationContext(),Towing_Activity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.log_tv_create:
                 Intent registerIntent = new Intent(this, RegisterActivity.class);
@@ -146,19 +258,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(LoginActivity.this, getString(R.string.location_permission_access), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LoginActivity.this, getString(R.string.need_permission_to_access), Toast.LENGTH_SHORT).show();
-                }
-                return;
-            }
-        }
-    }
+
 
     public class Login_Async extends AsyncTask<String, Integer, String> {
         private Context context;

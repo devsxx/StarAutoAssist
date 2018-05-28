@@ -250,7 +250,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
 
-            startActivity(new Intent(this, FuelActivity.class));
+            startActivity(new Intent(this, Fuel_Activity.class));
         }
 
         if (fragment != null){

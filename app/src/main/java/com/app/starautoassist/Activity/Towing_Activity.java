@@ -88,6 +88,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("Towing Service");
         setContentView(R.layout.activity_location);
         fromLayout = (RelativeLayout) findViewById(R.id.fromlay);
         toLayout = (RelativeLayout) findViewById(R.id.droplay);
@@ -99,8 +100,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         setFrom = (TextView) findViewById(R.id.fromset);
         setTo = (TextView) findViewById(R.id.toset);
 
-
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         setFrom.setOnClickListener(this);
         setTo.setOnClickListener(this);
@@ -119,7 +120,39 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         screenHeight = height * 60 / 100;
         screenWidth = weight * 80 / 100;
        // imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        Location_Fetch();
+        alertDialog = new AlertDialog.Builder(Towing_Activity.this).create();
+        alertDialog.setTitle(getString(R.string.gps_settings));
+        alertDialog.setMessage(getString(R.string.gps_notenabled));
+        alertDialog.setButton(getString(R.string.settings), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setButton2(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.setCancelable(false);
+        gps = new GPSTracker(Towing_Activity.this);
+        if (flat == 0 && flon == 0) {
+            if (gps.canGetLocation()) {
+                if (Starautoassist_Application.isNetworkAvailable(Towing_Activity.this)) {
+                    flat = gps.getLatitude();
+                    flon = gps.getLongitude();
+                    Log.v("lati", "lat" + flat);
+                    Log.v("longi", "longi" + flon);
+                } else {
+
+                }
+            } else {
+                if (!alertDialog.isShowing()) {
+                    alertDialog.show();
+                }
+                locationfound = true;
+            }
+        }
 
         from.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -283,8 +316,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        Starautoassist_Application.registerReceiver(this);
-        Location_Fetch();
+       /* Starautoassist_Application.registerReceiver(this);
+        Location_Fetch();*/
 
     }
 
