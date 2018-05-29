@@ -29,7 +29,7 @@ public class Constants {
     public static final String SENDER_ID = "24023470057";
     public static String REGISTER_ID="";
     public static String ANDROID_ID="";
-    // PUSH API KEY AIzaSyCkLhEp3wrc-txK7FtecyxsnQBduR8jL48 //
+    // PUSH API KEY AIzaSyCrpkOI5Trgk_GS7fqnE3o3I9ua7NXdXoU //
     // global topic to receive app wide push notifications
     public static final String TOPIC_GLOBAL = "global";
     // broadcast receiver intent filters
@@ -42,8 +42,8 @@ public class Constants {
 
     //Requests
     public static String BaseURL="http://starautoassist.com/services/";
-    public static String login="login";
     public static String uploadimage="uploadimage";
+    public static String login="login";
     public static String getotp="getotp";
 
 

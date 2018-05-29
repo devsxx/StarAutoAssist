@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private MaterialEditText etemail, etfirstname, etlastname, etpassword, etconfirmpassword;
     private Button btnregister;
     private RelativeLayout relativeLayout;
-    private LinearLayout linearLayout;
+
 
 
     @Override
@@ -58,11 +58,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etpassword = findViewById(R.id.reg_et_password);
         etconfirmpassword = findViewById(R.id.reg_et_confirmpassword);
         btnregister = findViewById(R.id.reg_btn_register);
-        linearLayout = findViewById(R.id.google_facebook_layout);
-        relativeLayout = findViewById(R.id.or_layout);
         btnregister.setOnClickListener(this);
-        relativeLayout.setVisibility(View.VISIBLE);
-        linearLayout.setVisibility(View.VISIBLE);
 
     }
 

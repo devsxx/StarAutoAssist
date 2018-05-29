@@ -251,7 +251,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 View view = layoutInflater.inflate(R.layout.forgot_password_layout, null);
                 builder.setView(view);
                 builder.setTitle("Forgot Your Password ?");
-                builder.setCancelable(false);
+                builder.setCancelable(true);
 
                 final AlertDialog dialog = builder.create();
                 dialog.show();
