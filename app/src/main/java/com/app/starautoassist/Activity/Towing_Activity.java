@@ -31,6 +31,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -149,13 +150,12 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         final android.support.v7.app.AlertDialog towdialog = towbuilder.create();
         towdialog.show();
 
-        ImageView ivwheellift = towdialog.findViewById(R.id.tow_iv_wheellift);
-        ImageView ivflatbed = towdialog.findViewById(R.id.tow_iv_flatbed);
+        ImageButton ivwheellift = towdialog.findViewById(R.id.tow_iv_wheellift);
+        ImageButton ivflatbed = towdialog.findViewById(R.id.tow_iv_flatbed);
 
         ivwheellift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 towdialog.dismiss();
             }
         });
@@ -372,7 +372,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         Log.d(TAG, "From Towing_Activity: "+from.getText().toString().trim());
                         Log.d(TAG, "To Towing_Activity: "+to.getText().toString().trim());
                         Toast.makeText(this, "Request sent", Toast.LENGTH_SHORT).show();
-
+                    Intent intent=new Intent(this,TyreActivity.class);
+                    startActivity(intent);
                       //  new SendRequest_Async().execute();
                     }
 
@@ -387,26 +388,6 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         super.onResume();
     }
 
-    private void Location_Fetch() {
-        alertDialog = new AlertDialog.Builder(Towing_Activity.this).create();
-        alertDialog.setTitle(getString(R.string.gps_settings));
-        alertDialog.setMessage(getString(R.string.gps_notenabled));
-        alertDialog.setButton(getString(R.string.settings), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        });
-        alertDialog.setButton2(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.setCancelable(false);
-        gps = new GPSTracker(Towing_Activity.this);
-        setLocation();
-        mapFragment.getMapAsync(this);
-    }
 
     @Override
     protected void onDestroy() {

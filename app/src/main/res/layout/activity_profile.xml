@@ -18,17 +18,16 @@
                 android:id="@+id/profileimage">
 
                 <com.mikhaellopez.circularimageview.CircularImageView
-                    android:src="@drawable/logo"
                     android:id="@+id/civ_profile"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/logo"
                     app:civ_border_color="@color/colorPrimaryDark"
                     app:civ_border_width="2dp"
                     app:civ_shadow="true"
-                    app:civ_shadow_radius="10"
                     app:civ_shadow_color="@color/colorAccent"
-                    android:layout_gravity="center"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    />
+                    app:civ_shadow_radius="10" />
 
             </LinearLayout>
             <LinearLayout

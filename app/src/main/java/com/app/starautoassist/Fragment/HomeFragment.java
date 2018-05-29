@@ -64,7 +64,6 @@ public class HomeFragment extends Fragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(serviceAdapter);
-
         return view;
     }
 

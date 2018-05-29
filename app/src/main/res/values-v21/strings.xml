@@ -1,5 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="app_name">Star Auto Assist</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+    <string name="ok">Ok</string>
+    <string name="gps_settings">GPS Settings</string>
+    <string name="gps_notenabled">GPS is not enabled. Do you want to go to settings menu?</string>
+    <string name="need_permission_to_access">Need permission to access this page</string>
+    <string name="location_permission_access">Now you have a permission to access location</string>
+    <string name="settings">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="slide_1_title">Towing</string>
+    <string name="slide_1_desc">Our towing practices are designed around three principles. Customer safety, vehicle safety, and pedestrian safety.</string>
+    <string name="network_error">Network Error!</string>
+    <string name="network_error_des">Please check your internet connection</string>
+    <string name="go_settings">Go to Settings</string>
+    <string name="err_msg_email">Enter valid Email Address</string>
+    <string name="err_msg_password">Enter your Password</string>
+    <string name="star_auto_assist">Star Auto Assist</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title">Title</string>
     <string name="send_request">Send Request</string>
     <string name="drop_location">Drop Location</string>
@@ -7,4 +38,17 @@
     <string name="set_pickup_location">Set Pickup Location</string>
     <string name="set_drop_location">Set Drop Location</string>
     <string name="set">SET</string>
+    <string name="slide_title2">Fuel Service</string>
+    <string name="slide_intro_des2">If you’ve ever been stuck on the road when a car ran out of fuel, you know how hard it can be to get help late at night. Walking along a dark road in hopes of finding a fuel station can be dangerous, and waiting on hold with the customer service from your roadside assistance club can be frustrating. A new roadside service app, Star Auto Assist sends help faster whether your car ran out of gas or broke down.</string>
+    <string name="intro_slide_title3">Jumpstart Service</string>
+    <string name="intro_des_slide3">Your car’s battery can fail for many reasons, including extended lack of use, interior lights left on, or cold weather. No matter the cause, having a dead car battery can derail your plans and leave you stranded. Get quick help with a dead car battery from Star Auto Assist, a better alternative for roadside assistance now available across the Malaysia</string>
+    <string name="intro_title4">Flat Tyre</string>
+    <string name="intro_des_slide4">When your tire goes flat or blows out on the side of the highway, you are stranded until help arrives. If you have the right tools and enough strength, you may be able to pry off the busted tire, put on your doughnut, and drive to a tire repair shop. If you can’t do this, you’re stuck until help arrives. Even then, you may be paying unreasonable fees for roadside service.</string>
+    <string name="fuel_service">Fuel Service</string>
+    <string name="camera_not_found">Camera not found</string>
+    <string name="storage_permission_access">Now you have a permission to access storage</string>
+    <string name="camera_permission_access">Now you have a permission to access camera</string>
+    <string name="storage_camera_permisssion">Now you have a permission to access camera and storage</string>
+    <string name="please_take_snap">Please take a snap</string>
+    <string name="your_device_doesnt_flash">Your device doesn\'t have flash</string>
 </resources>

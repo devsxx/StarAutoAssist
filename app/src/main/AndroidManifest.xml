@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
 
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -49,6 +52,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Helper.EditProfilePhoto" />
         <activity
             android:name=".Activity.RegisterActivity"
             android:parentActivityName=".Activity.LoginActivity" />

@@ -17,7 +17,7 @@ import com.app.starautoassist.R;
 
 public class SplashActivity extends Activity {
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private static int SPLASH_TIME_OUT = 1000;
+    private static int SPLASH_TIME_OUT = 3000;
     private static Dialog settingsDialog;
     public static SharedPreferences pref;
     public static Editor editor;

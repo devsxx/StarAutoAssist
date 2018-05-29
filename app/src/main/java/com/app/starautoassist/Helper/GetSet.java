@@ -36,44 +36,18 @@ public class GetSet {
         Licenceimg = licenceimg;
     }
 
-    public static String getStreet() {
-        return street;
+    public static String getAddress() {
+        return address;
     }
 
-    public static void setStreet(String street) {
-        GetSet.street = street;
+    public static void setAddress(String address) {
+        GetSet.address = address;
     }
 
-    public static String getArea() {
-        return area;
-    }
-
-    public static void setArea(String area) {
-        GetSet.area = area;
-    }
-
-    public static String getLat() {
-        return lat;
-    }
-
-    public static void setLat(String lat) {
-        GetSet.lat = lat;
-    }
-
-    public static String getLon() {
-        return lon;
-    }
-
-    public static void setLon(String lon) {
-        GetSet.lon = lon;
-    }
 
     private static String Companyname = null;
     private static String Licenceimg = null;
-    private static String street = null;
-    private static String area = null;
-    private static String lat = null;
-    private static String lon = null;
+    private static String address = null;
 
     public static String getUser_type() {
         return User_type;

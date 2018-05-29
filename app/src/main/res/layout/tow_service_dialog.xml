@@ -13,23 +13,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/tow_iv_wheellift"
             android:src="@drawable/tow2"
-            android:clickable="true"
+            android:elevation="4dp"
+            android:translationZ="2dp"
+            android:padding="5dp"
+            android:layout_margin="2dp"
+            android:scaleType="fitCenter"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_weight="1"
-            android:layout_marginRight="25dp"
             android:layout_width="100dp"
             android:layout_height="100dp" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/tow_iv_flatbed"
             android:layout_gravity="center"
             android:src="@drawable/tow1"
+            android:elevation="4dp"
+            android:translationZ="2dp"
+            android:padding="5dp"
+            android:layout_margin="3dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
             android:layout_weight="1"
-            android:clickable="true"
-            android:layout_width="60dp"
-            android:layout_height="60dp" />
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
 
     </LinearLayout>
 

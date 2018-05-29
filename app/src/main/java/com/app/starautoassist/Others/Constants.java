@@ -43,6 +43,7 @@ public class Constants {
     //Requests
     public static String BaseURL="http://starautoassist.com/services/";
     public static String login="login";
+    public static String uploadimage="uploadimage";
     public static String getotp="getotp";
 
 
