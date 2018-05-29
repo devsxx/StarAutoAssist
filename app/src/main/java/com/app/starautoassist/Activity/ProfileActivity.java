@@ -34,6 +34,7 @@ import com.app.starautoassist.R;
 import com.bumptech.glide.Glide;
 import com.facebook.CallbackManager;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,8 +60,7 @@ import static android.graphics.BitmapFactory.decodeFile;
 public class ProfileActivity extends AppCompatActivity {
 
     private CircularImageView circularImageView;
-    private TextView tvphone;
-    private EditText etfirstname, etlastname, etaddress,etemail;
+    private MaterialEditText etfirstname, etlastname, etaddress, etphone, etemail;
     private static final int PICK_PICTURE = 1;
     private static final String TAG = "ProfileActivity";
     CallbackManager callbackManager;
@@ -71,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         circularImageView = findViewById(R.id.civ_profile);
-        tvphone = findViewById(R.id.tv_profile_phone);
+        etphone = findViewById(R.id.tv_profile_phone);
         etfirstname = findViewById(R.id.et_profile_firstname);
         etlastname = findViewById(R.id.et_profile_lastname);
         etaddress = findViewById(R.id.et_profile_address);
@@ -136,6 +136,7 @@ public class ProfileActivity extends AppCompatActivity {
             dialog.show();
         }
     }
+
     public class Get_Profile_Async extends AsyncTask<String, Integer, String> {
         private Context context;
         private String mobileno;

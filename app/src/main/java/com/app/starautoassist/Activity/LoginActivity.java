@@ -2,6 +2,7 @@ package com.app.starautoassist.Activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,9 +12,11 @@ import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.LocaleList;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,7 @@ import com.app.starautoassist.Helper.GPSTracker;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
+import com.hsalf.smilerating.SmileRating;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.LoggingMXBean;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -49,10 +55,15 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.app.starautoassist.Others.Starautoassist_Application.checkLocationPermission;
+
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText mobileno, etpass;
-    private Button btnlogin;
+    private Button btnlogin, btngoogle, btnfacebook;
     private TextView tvforgot, tvcreate;
     GPSTracker gps;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
@@ -67,6 +78,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         setContentView(R.layout.activity_login);
+
+        permissincheck();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         permissincheck();
         alertDialog = new android.app.AlertDialog.Builder(LoginActivity.this).create();
@@ -99,10 +112,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tvcreate = findViewById(R.id.log_tv_create);
         tvforgot = findViewById(R.id.log_tv_forgot);
         btnlogin = findViewById(R.id.log_btn_login);
-
+        btngoogle = findViewById(R.id.btn_google);
+        btnfacebook = findViewById(R.id.btn_facebook);
         btnlogin.setOnClickListener(this);
         tvcreate.setOnClickListener(this);
         tvforgot.setOnClickListener(this);
+        btngoogle.setOnClickListener(this);
+        btnfacebook.setOnClickListener(this);
+
+
     }
 
     private void changeStatusBarColor() {
@@ -248,6 +266,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         dialog.dismiss();
                     }
                 });
+                break;
+            case R.id.btn_google:
+
+               /* final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                LayoutInflater layoutInflater = this.getLayoutInflater();
+                View view = layoutInflater.inflate(R.layout.rating_alert_dialog, null);
+
+                builder.setView(view);
+                builder.setTitle("Rate & Review Us :");
+                builder.setCancelable(false);
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                final MultiAutoCompleteTextView review = dialog.findViewById(R.id.review);
+                final SmileRating smileRating = dialog.findViewById(R.id.smile_rating);
+                Button btnsubmit = dialog.findViewById(R.id.btn_submit_rating);
+
+                btnsubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+                smileRating.setOnRatingSelectedListener(new SmileRating.OnRatingSelectedListener() {
+                    @Override
+                    public void onRatingSelected(int level, boolean reselected) {
+
+                        review.setText(level + "");
+                    }
+                });
+*/
+
+                break;
+            case R.id.btn_facebook:
+
+
+                break;
         }
 
     }

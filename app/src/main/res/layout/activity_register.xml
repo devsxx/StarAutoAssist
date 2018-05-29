@@ -34,36 +34,38 @@
             android:layout_marginTop="30dp"
             android:id="@+id/name_layout"
             android:weightSum="2"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_below="@+id/tv_regiter_heading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <EditText
+            <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_weight="1"
                 android:id="@+id/reg_et_firstname"
                 android:layout_width="130dp"
                 android:background="@drawable/border_edittext"
-                android:layout_height="50dp"
-                android:ems="10"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="?colorAccent"
                 android:layout_marginRight="10dp"
                 android:hint="First Name"
                 android:paddingLeft="10dp"
                 android:inputType="textPersonName" />
 
-            <EditText
+            <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_weight="1"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="?colorAccent"
                 android:paddingLeft="10dp"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/border_edittext"
                 android:id="@+id/reg_et_lastname"
                 android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="15dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:ems="10"
                 android:hint="Last Name"
                 android:inputType="textPersonName" />
 
@@ -75,53 +77,56 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:background="@drawable/border_edittext"
             android:id="@+id/reg_et_email"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="10dp"
             android:paddingLeft="10dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:ems="10"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="?colorAccent"
             android:hint="Email"
             android:inputType="textEmailAddress" />
 
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:paddingLeft="10dp"
             android:layout_below="@+id/reg_et_email"
             android:id="@+id/reg_et_password"
             android:background="@drawable/border_edittext"
             android:layout_width="match_parent"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:ems="10"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="?colorAccent"
             android:hint="Password"
             android:inputType="textPassword" />
 
-        <EditText
-            android:layout_marginRight="15dp"
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_marginRight="10dp"
             android:paddingLeft="10dp"
-            android:layout_marginLeft="15dp"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="?colorAccent"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/border_edittext"
             android:layout_below="@+id/reg_et_password"
             android:id="@+id/reg_et_confirmpassword"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:ems="10"
             android:hint="Confirm Password"
             android:inputType="textPassword" />
 
         <Button
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="25dp"
             android:id="@+id/reg_btn_register"
             android:text="Register"
             android:paddingLeft="10dp"
@@ -140,60 +145,6 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:visibility="visible"
-            android:id="@+id/or_layout"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/user_relative_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="--or--"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_marginTop="20dp"
-            android:weightSum="2"
-            android:layout_below="@+id/or_layout"
-            android:id="@+id/google_facebook_layout"
-            android:layout_width="match_parent"
-            android:visibility="visible"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_weight="1"
-                android:id="@+id/btn_google"
-                android:text="Google"
-                android:layout_marginRight="10dp"
-                android:textColor="#ffffff"
-                android:layout_marginLeft="15dp"
-                android:textStyle="bold"
-                android:background="@drawable/google_button"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content" />
-
-
-            <Button
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:id="@+id/btn_facebook"
-                android:textStyle="bold"
-                android:layout_marginRight="15dp"
-                android:textColor="#ffffff"
-                android:background="@drawable/facebook_button"
-                android:text="Facebook"
-                android:layout_alignParentRight="true"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
 
     </RelativeLayout>
 

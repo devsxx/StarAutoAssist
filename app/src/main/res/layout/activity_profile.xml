@@ -9,9 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
+            android:background="#20000000"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
+                android:layout_marginTop="10dp"
+                android:background="#FFFFFF"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -40,78 +45,97 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:background="#FFFFFF"
                     android:id="@+id/email_layout"
                     android:layout_marginTop="15dp"
                     android:layout_weight="2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <EditText
+                    <com.rengwuxian.materialedittext.MaterialEditText
                         android:background="@drawable/border_edittext"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:paddingLeft="5dp"
+                        android:layout_marginBottom="5dp"
                         android:hint="First Name"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="?colorAccent"
                         android:id="@+id/et_profile_firstname"
                         android:inputType="text"
                         android:layout_width="130dp"
-                        android:layout_height="40dp" />
+                        android:layout_height="wrap_content" />
 
-                    <EditText
+                    <com.rengwuxian.materialedittext.MaterialEditText
                         android:background="@drawable/border_edittext"
                         android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:hint="Last Name"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="?colorAccent"
                         android:layout_marginLeft="10dp"
                         android:paddingLeft="5dp"
                         android:id="@+id/et_profile_lastname"
                         android:inputType="text"
                         android:layout_width="130dp"
-                        android:layout_height="40dp" />
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:background="#FFFFFF"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:orientation="vertical"
                     android:id="@+id/profile_layout"
-                    android:layout_marginTop="5dp"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <EditText
+                    <com.rengwuxian.materialedittext.MaterialEditText
                         android:background="@drawable/border_edittext"
                         android:id="@+id/et_profile_email"
                         android:paddingLeft="5dp"
                         android:hint="Email"
-                        android:layout_marginTop="15dp"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="?colorAccent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:inputType="textEmailAddress"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp" />
+                        android:layout_height="wrap_content" />
 
-                    <TextView
+                    <com.rengwuxian.materialedittext.MaterialEditText
                         android:layout_marginTop="15dp"
                         android:background="@drawable/border_edittext"
                         android:id="@+id/tv_profile_phone"
                         android:inputType="phone"
                         android:paddingLeft="5dp"
+                        android:layout_marginBottom="5dp"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="?colorAccent"
                         android:hint="Phone"
                         android:padding="5dp"
-                        android:textSize="18sp"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp" />
+                        android:layout_height="wrap_content" />
 
-                    <EditText
+                    <com.rengwuxian.materialedittext.MaterialEditText
                         android:layout_marginTop="15dp"
                         android:background="@drawable/border_edittext"
                         android:id="@+id/et_profile_address"
                         android:inputType="textMultiLine"
                         android:paddingLeft="5dp"
                         android:hint="Address"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="?colorAccent"
                         android:paddingBottom="40dp"
                         android:maxLines="3"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -120,7 +144,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/loginbtn_lay"
-                android:layout_marginTop="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="25dp"
                 android:layout_below="@+id/loginfieldlayout">
                 <Button
                     android:id="@+id/btn_profile_save"

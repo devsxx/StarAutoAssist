@@ -24,6 +24,7 @@ import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
 import com.hsalf.smilerating.SmileRating;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,8 +40,8 @@ import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText etemail, etfirstname, etlastname, etpassword, etconfirmpassword;
-    private Button btnregister, btngoogle, btnfacebook;
+    private MaterialEditText etemail, etfirstname, etlastname, etpassword, etconfirmpassword;
+    private Button btnregister;
     private RelativeLayout relativeLayout;
     private LinearLayout linearLayout;
 
@@ -57,14 +58,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etpassword = findViewById(R.id.reg_et_password);
         etconfirmpassword = findViewById(R.id.reg_et_confirmpassword);
         btnregister = findViewById(R.id.reg_btn_register);
-        btngoogle = findViewById(R.id.btn_google);
-        btnfacebook = findViewById(R.id.btn_facebook);
         linearLayout = findViewById(R.id.google_facebook_layout);
         relativeLayout = findViewById(R.id.or_layout);
         btnregister.setOnClickListener(this);
-        btngoogle.setOnClickListener(this);
-        btnfacebook.setOnClickListener(this);
-
         relativeLayout.setVisibility(View.VISIBLE);
         linearLayout.setVisibility(View.VISIBLE);
 
@@ -101,45 +97,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 });
 
                 break;
-            case R.id.btn_google:
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                LayoutInflater layoutInflater = this.getLayoutInflater();
-                View view = layoutInflater.inflate(R.layout.rating_alert_dialog, null);
-
-                builder.setView(view);
-                builder.setTitle("Rate & Review Us :");
-                builder.setCancelable(false);
-
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-
-                final MultiAutoCompleteTextView review = dialog.findViewById(R.id.review);
-                final SmileRating smileRating = dialog.findViewById(R.id.smile_rating);
-                Button btnsubmit = dialog.findViewById(R.id.btn_submit_rating);
-
-                btnsubmit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        dialog.dismiss();
-                    }
-                });
-
-                smileRating.setOnRatingSelectedListener(new SmileRating.OnRatingSelectedListener() {
-                    @Override
-                    public void onRatingSelected(int level, boolean reselected) {
-
-                        review.setText(level + "");
-                    }
-                });
-
-
-                break;
-            case R.id.btn_facebook:
-
-
-                break;
         }
     }
 
