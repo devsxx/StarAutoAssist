@@ -15,9 +15,13 @@ public class Constants {
     public static String mobileno="mobileno";
     public static String password="password";
     public static String otp="otp";
+    public static String firstname="firstname";
+    public static String lastname="lastname";
+    public static String email="email";
+
     public static String serviceid="serviceid";
     public static String servicename="servicename";
-    public static String serviceimg="serviceimg";
+    public static String serviceimg="serviceimgurl";
     public static String servicecharge="servicecharge";
     public static String priceperkm="priceperkm";
 
@@ -41,10 +45,21 @@ public class Constants {
     public static final String SHARED_PREF = "ah_firebase";
 
     //Requests
-    public static String BaseURL="http://starautoassist.com/services/";
+    //public static String BaseURL="http://starautoassist.com/services/";
+    public static String BaseURL="http://towbago.shadowws.in/jsons/";
     public static String uploadimage="uploadimage";
-    public static String login="login";
-    public static String getotp="getotp";
+    public static String login="login.php?";
+    public static String getOTP="getotp.php?";
+    public static String verifyOTP="verifyotp.php?";
+    public static String profile="profile.php?";
+    public static String registration="registration.php?";
+    public static String getprofile="getprofile.php?";
+    public static String getservices="getservices.php?";
+    public static String uploadprofileimage="uploadprofileimage.php?";
+    public static String changepassword="changepassword.php?";
+    public static String forgotpassword="forgotpassword.php?";
+
+
 
 
 

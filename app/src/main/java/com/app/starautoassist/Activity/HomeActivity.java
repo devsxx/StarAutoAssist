@@ -1,10 +1,13 @@
 package com.app.starautoassist.Activity;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +17,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,19 +28,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.app.starautoassist.Fragment.HomeFragment;
+import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.NotificationUtilz;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
@@ -46,6 +55,7 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setTitle("Star Auto Assist");
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content_frame, new HomeFragment());
@@ -72,21 +82,16 @@ public class HomeActivity extends AppCompatActivity
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
                 // checking for type intent filter
                 if (intent.getAction().equals(Constants.REGISTRATION_COMPLETE)) {
                     // gcm successfully registered
                     // now subscribe to `global` topic to receive app wide notifications
                     FirebaseMessaging.getInstance().subscribeToTopic(Constants.TOPIC_GLOBAL);
-
                     displayFirebaseRegId();
-
                 } else if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
-
                     String message = intent.getStringExtra("message");
                     Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
-
                 }
             }
         };
@@ -97,7 +102,6 @@ public class HomeActivity extends AppCompatActivity
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
-
         Log.e("Registered", "Firebase reg id: " + regId);
 
         if (!TextUtils.isEmpty(regId))
@@ -249,8 +253,7 @@ public class HomeActivity extends AppCompatActivity
             startActivity(Intent.createChooser(shareintent, "Share Via"));
 
         } else if (id == R.id.nav_logout) {
-
-            startActivity(new Intent(this, Fuel_Activity.class));
+            signoutdialog();
         }
 
         if (fragment != null){
@@ -262,5 +265,55 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /** dialog for confirm the user to signout **/
+    public void signoutdialog() {
+        final Dialog dialog = new Dialog(HomeActivity.this ,R.style.AlertDialog);
+        Display display = getWindowManager().getDefaultDisplay();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.default_dialog);
+        dialog.getWindow().setLayout(display.getWidth()*90/100, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
+
+        TextView alertTitle = (TextView) dialog.findViewById(R.id.alert_title);
+        TextView alertMsg = (TextView) dialog.findViewById(R.id.alert_msg);
+        ImageView alertIcon = (ImageView) dialog.findViewById(R.id.alert_icon);
+        TextView alertOk = (TextView) dialog.findViewById(R.id.alert_button);
+        TextView alertCancel = (TextView) dialog.findViewById(R.id.cancel_button);
+
+        alertMsg.setText(getString(R.string.reallySignOut));
+        alertOk.setText(getString(R.string.yes));
+        alertCancel.setText(getString(R.string.no));
+
+        alertCancel.setVisibility(View.VISIBLE);
+
+        alertOk.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Starautoassist_Application aController = new Starautoassist_Application();
+                aController.unregister(HomeActivity.this);
+                Constants.editor.clear();
+                Constants.editor.commit();
+                GetSet.reset();
+                finish();
+                Intent p = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(p);
+            }
+        });
+
+        alertCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        if(!dialog.isShowing()){
+            dialog.show();
+        }
     }
 }

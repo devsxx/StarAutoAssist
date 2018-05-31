@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import dmax.dialog.SpotsDialog;
 import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -43,7 +44,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private MaterialEditText etemail, etfirstname, etlastname, etpassword, etconfirmpassword;
     private Button btnregister;
     private RelativeLayout relativeLayout;
-
+    Boolean verified=false;
+    String mobile_no="";
+    private SpotsDialog progressDialog;
+    EditText etotpphone,confirmotpcode;
+    Button btnotp,btnconfirm;
+    LinearLayout otpLay;
 
 
     @Override
@@ -58,8 +64,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etpassword = findViewById(R.id.reg_et_password);
         etconfirmpassword = findViewById(R.id.reg_et_confirmpassword);
         btnregister = findViewById(R.id.reg_btn_register);
+        otpLay=(LinearLayout)findViewById(R.id.otplayout);
+        relativeLayout=(RelativeLayout) findViewById(R.id.relative_layout);
         btnregister.setOnClickListener(this);
+        progressDialog = new SpotsDialog(this, R.style.Custom);
 
+        etotpphone = findViewById(R.id.et_otp_phone);
+        btnotp = findViewById(R.id.btn_otp);
+        confirmotpcode = findViewById(R.id.confirmotp_code);
+        btnconfirm = findViewById(R.id.btn_confirm);
+        btnotp.setOnClickListener(this);
+        btnconfirm.setOnClickListener(this);
     }
 
     @Override
@@ -68,30 +83,49 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
 
             case R.id.reg_btn_register:
+                String fname=etfirstname.getText().toString().trim();
+                String lname=etlastname.getText().toString().trim();
+                String email=etemail.getText().toString().trim();
+                String password=etpassword.getText().toString().trim();
+                String confirmpassword=etconfirmpassword.getText().toString().trim();
+                if(fname.equals("")){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                }else if(lname.equals("")){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                }else if(email.equals("")){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                }else if(password.equals("")){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                }else if(confirmpassword.equals("")){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                }else if(!confirmpassword.equals(password)){
+                    Toast.makeText(RegisterActivity.this, "Password not match", Toast.LENGTH_SHORT).show();
+                }else {
+                    relativeLayout.setVisibility(View.GONE);
+                    otpLay.setVisibility(View.VISIBLE);
+                }
 
-                AlertDialog.Builder otpbuilder = new AlertDialog.Builder(this);
-                LayoutInflater otpinflater = this.getLayoutInflater();
-                View otpview = otpinflater.inflate(R.layout.otp_dialog, null);
-
-                otpbuilder.setView(otpview);
-                otpbuilder.setTitle("Verify Your Number :");
-                otpbuilder.setCancelable(false);
-
-                final AlertDialog otpdialog = otpbuilder.create();
-                otpdialog.show();
-
-                final EditText etotpphone = otpdialog.findViewById(R.id.et_otp_phone);
-                Button btnotp = otpdialog.findViewById(R.id.btn_otp);
-
-                btnotp.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String mobileno = etotpphone.getText().toString().trim();
-                        new GetOTP(getApplicationContext(), mobileno).execute();
-                        otpdialog.dismiss();
+                break;
+            case R.id.btn_otp:
+                if(!etotpphone.getText().toString().equals("")&&etotpphone.getText().toString().length()>6) {
+                    mobile_no = etotpphone.getText().toString().trim();
+                    // new GetOTP(getApplicationContext(), mobile_no).execute();
+                    //Toast.makeText(getApplicationContext(),"Otp sent to your mobile successfully",Toast.LENGTH_SHORT).show();
+                    try {
+                        etotpphone.setVisibility(View.GONE);
+                        btnotp.setVisibility(View.GONE);
+                        confirmotpcode.setVisibility(View.VISIBLE);
+                        btnconfirm.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
 
+                }else Toast.makeText(RegisterActivity.this,"Check your no",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_confirm:
+                String otp = confirmotpcode.getText().toString().trim();
+                //   new VerifyOTP(getApplicationContext(), GetSet.getMobileno(), otp).execute();
+                new VerifyOTP(RegisterActivity.this, mobile_no, "1234").execute();
                 break;
 
         }
@@ -100,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public class GetOTP extends AsyncTask<String, Integer, String> {
         private Context context;
         private String mobileno;
-        private String url = Constants.BaseURL + Constants.getotp;
+        private String url = Constants.BaseURL + Constants.getOTP;
         ProgressDialog progress;
         @Nullable
         String user_id;
@@ -159,6 +193,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "true")) {
+                    mobile_no=mobileno;
                     //Toast.makeText(getApplicationContext(),"Otp sent to your mobile successfully",Toast.LENGTH_SHORT).show();
                     AlertDialog.Builder confirmotpbuilder = new AlertDialog.Builder(getApplicationContext());
                     LayoutInflater confirmotpinflater;
@@ -176,13 +211,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onClick(View v) {
                             String otp = confirmotpcode.getText().toString().trim();
-                            new VerifyOTP(getApplicationContext(), GetSet.getMobileno(), otp).execute();
+                        //   new VerifyOTP(getApplicationContext(), GetSet.getMobileno(), otp).execute();
                             confirmotpdialog.dismiss();
+                           new VerifyOTP(RegisterActivity.this, mobile_no, "1234").execute();
+
                         }
                     });
 
                 } else {
-                    Toast.makeText(getApplicationContext(), jonj.getString("message").trim(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, jonj.getString("message").trim(), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -194,8 +231,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public class VerifyOTP extends AsyncTask<String, Integer, String> {
         private Context context;
         private String mobileno, otp;
-        private String url = Constants.BaseURL + Constants.getotp;
-        ProgressDialog progress;
+        private String url = Constants.BaseURL + Constants.verifyOTP;
         @Nullable
         String user_id;
 
@@ -208,11 +244,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progress = new ProgressDialog(context);
-            progress.setMessage("Please wait ....");
-            progress.setTitle("Loading");
-            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progress.show();
+
         }
 
         @Nullable
@@ -248,17 +280,88 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
-            progress.dismiss();
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
-                    Toast.makeText(getApplicationContext(),"Otp verified successfully",Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+                        "success")) {
+                        verified=true;
+                        new Register_Asyc(context).execute();
+                    }else Toast.makeText(getApplicationContext(),"Otp not verified",Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public class Register_Asyc extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String url = Constants.BaseURL + Constants.registration;
+
+        @Nullable
+        String user_id;
+
+        public Register_Asyc(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        //    progressDialog.show();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, mobile_no)
+                    .add(Constants.firstname, etfirstname.getText().toString().trim())
+                    .add(Constants.lastname, etlastname.getText().toString().trim())
+                    .add(Constants.email, etemail.getText().toString().trim())
+                    .add(Constants.password, etconfirmpassword.getText().toString().trim())
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+           // progressDialog.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    Toast.makeText(getApplicationContext(),"Registration successfully",Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(context,HomeActivity.class);
                     startActivity(intent);
                     finish();
+
+                }else
+                {
+                    Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

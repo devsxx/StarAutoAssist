@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
@@ -28,15 +29,18 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.starautoassist.Helper.GPSTracker;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.hsalf.smilerating.SmileRating;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,6 +73,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     android.app.AlertDialog alertDialog;
     LocationManager locationManager;
+    RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +83,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         setContentView(R.layout.activity_login);
-
+        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
+        Constants.editor = Constants.pref.edit();
+        relativeLayout=(RelativeLayout)findViewById(R.id.main);
+        Starautoassist_Application.setupUI(LoginActivity.this,relativeLayout);
         permissincheck();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         permissincheck();
@@ -232,12 +240,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.log_btn_login:
                 String phone = mobileno.getText().toString();
                 String pass = etpass.getText().toString();
-               /* new Login_Async(this,email,pass).execute();*/
-            /*Intent intent=new Intent(this,HomeActivity.class);
-            startActivity(intent);*/
-                Intent intent=new Intent(this,HomeActivity.class);
-                startActivity(intent);
-
+                new Login_Async(this,phone,pass).execute();
 
                 break;
             case R.id.log_tv_create:
@@ -374,37 +377,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
+                        "success")) {
+                    String data=jonj.getString("message");
+                    JSONArray array=new JSONArray(data);
+                    JSONObject jcat = array.getJSONObject(0);
                     GetSet.setIsLogged(true);
-                    GetSet.setEmail(jonj.getString("email"));
-                    GetSet.setPassword(etpass.getText().toString());
-                    GetSet.setUser_type(jonj.getString("type"));
-                    GetSet.setFirstname(jonj.getString("firstname"));
-                    GetSet.setLastname(jonj.getString("lastname"));
-                    GetSet.setCompanyname(jonj.getString("companyname"));
-                    GetSet.setAddress(jonj.getString("address"));
-                    GetSet.setServices(jonj.getString("servicecategory"));
-                    GetSet.setMobileno(jonj.getString("mobileno"));
-                    GetSet.setImageUrl(jonj.getString("userimage"));
+                    GetSet.setClientid(jcat.getString("client_id"));
+                    GetSet.setEmail(jcat.getString("email"));
+                    GetSet.setFirstname(jcat.getString("firstname"));
+                    GetSet.setLastname(jcat.getString("lastname"));
+                    GetSet.setAddress(jcat.getString("address"));
+                    GetSet.setMobileno(jcat.getString("mobileno"));
+                    GetSet.setImageUrl(jcat.getString("userimage"));
 
 
                     Constants.editor.putBoolean("isLogged", true);
+                    Constants.editor.putString("client_id", GetSet.getClientid());
+                    Constants.editor.putString("firstname", GetSet.getFirstname());
+                    Constants.editor.putString("lastname", GetSet.getLastname());
                     Constants.editor.putString("email", GetSet.getEmail());
-                    Constants.editor.putString("type", GetSet.getUser_type());
-                    Constants.editor.putString("fname", GetSet.getFirstname());
-                    Constants.editor.putString("lname", GetSet.getLastname());
                     Constants.editor.putString("mobileno", GetSet.getMobileno());
-                    Constants.editor.putString("password", GetSet.getPassword());
-                    Constants.editor.putString("companyname", GetSet.getCompanyname());
                     Constants.editor.putString("address", GetSet.getAddress());
                     Constants.editor.putString("userimage", GetSet.getImageUrl());
-                    Constants.editor.putString("services", GetSet.getServices());
                     Constants.editor.commit();
-                  //  Registernotifi();
+
+                    Intent intent=new Intent(context,HomeActivity.class);
+                    startActivity(intent);
                     finish();
-//                        Intent i = new Intent(LoginActivity.this, FragmentMainActivity.class);
-//                        startActivity(i);
-                }
+                }else  Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();
             }catch (JSONException e) {
                 e.printStackTrace();
             }

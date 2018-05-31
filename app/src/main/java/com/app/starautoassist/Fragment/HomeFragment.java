@@ -52,18 +52,13 @@ public class HomeFragment extends Fragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        new Get_Services_Async(getActivity()).execute();
         recyclerView = view.findViewById(R.id.rv_home);
-        serviceAdapter = new ServiceAdapter(getActivity(), Services_list);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(serviceAdapter);
         return view;
     }
 
@@ -107,17 +102,15 @@ public class HomeFragment extends Fragment {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
-    public class Get_Services extends AsyncTask<String, Integer, String> {
+    public class Get_Services_Async extends AsyncTask<String, Integer, String> {
         private Context context;
-        private String mobileno;
-        private String url = Constants.BaseURL + Constants.login;
+        private String url = Constants.BaseURL + Constants.getservices;
         ProgressDialog progress;
         @Nullable
         String user_id;
         HashMap<String, String> map;
-        public Get_Services(Context ctx, String mobileno) {
+        public Get_Services_Async(Context ctx) {
             context = ctx;
-            this.mobileno = mobileno;
         }
 
         @Override
@@ -136,12 +129,8 @@ public class HomeFragment extends Fragment {
             String jsonData = null;
             Response response = null;
             OkHttpClient client = new OkHttpClient();
-            RequestBody body = new FormBody.Builder()
-                    .add(Constants.mobileno, mobileno)
-                    .build();
             Request request = new Request.Builder()
                     .url(url)
-                    .post(body)
                     .build();
             Call call = client.newCall(request);
 
@@ -169,25 +158,28 @@ public class HomeFragment extends Fragment {
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
+                        "success")) {
                     String data=jonj.getString("data");
                     JSONArray array=new JSONArray(data);
-                    for(int i=0;i<=array.length();i++){
+                    Services_list.clear();
+                    for(int i=0;i<array.length();i++){
                         map = new HashMap<String, String>();
                         JSONObject object=array.getJSONObject(i);
                         sid=object.getString(Constants.serviceid);
                         sname=object.getString(Constants.servicename);
                         simg=object.getString(Constants.serviceimg);
-                        scharge=object.getString(Constants.servicecharge);
-                        sprice=object.getString(Constants.priceperkm);
+
 
                         map.put(Constants.serviceid,sid);
                         map.put(Constants.servicename,sname);
                         map.put(Constants.serviceimg,simg);
-                        map.put(Constants.servicecharge,scharge);
-                        map.put(Constants.priceperkm,sprice);
                         Services_list.add(map);
                     }
+                    serviceAdapter = new ServiceAdapter(getActivity(), Services_list);
+                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                    recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    recyclerView.setAdapter(serviceAdapter);
                 }
             }catch (JSONException e) {
                 e.printStackTrace();

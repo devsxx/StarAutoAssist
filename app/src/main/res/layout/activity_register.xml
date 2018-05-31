@@ -12,9 +12,13 @@
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/relative_layout"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -140,9 +144,77 @@
             android:layout_height="wrap_content" />
 
         </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/otplayout"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border_dialog"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_height="match_parent">
 
+            <EditText
+                android:id="@+id/et_otp_phone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:hint="Phone"
+                android:paddingLeft="15dp"
+                android:background="@drawable/border_edittext"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:inputType="phone" />
+            <EditText
+                android:id="@+id/confirmotp_code"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:hint="Enter OTP"
+                android:paddingLeft="15dp"
+                android:background="@drawable/border_edittext"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:inputType="phone" />
 
+            <Button
+                android:layout_marginTop="25dp"
+                android:id="@+id/btn_otp"
+                android:text="Get OTP"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="15dp"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:visibility="visible"
+                android:background="@drawable/round_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:layout_marginTop="25dp"
+                android:id="@+id/btn_confirm"
+                android:text="Confirm"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="15dp"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="20dp"
+                android:visibility="gone"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/round_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
+        </LinearLayout>
+
+        </RelativeLayout>
 
     </ScrollView>
 

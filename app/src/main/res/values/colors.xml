@@ -42,4 +42,9 @@
     <color name="divider">#e5ebf1</color>
     <color name="primaryText">#515e6a</color>
     <color name="secondaryText">#8ea1b2</color>
+
+    <color name="colorIcons">#FFFFFF</color>
+    <color name="colorDivider">#737373</color>
+    <color name="colorMap">#FAE6D6</color>
+    <color name="gray">#eac9c9c9</color>
 </resources>

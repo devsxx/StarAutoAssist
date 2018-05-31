@@ -10,6 +10,16 @@ public class GetSet {
     private static String Firstname = null;
     private static String Lastname = null;
 
+    public static String getClientid() {
+        return clientid;
+    }
+
+    public static void setClientid(String clientid) {
+        GetSet.clientid = clientid;
+    }
+
+    private static String clientid = null;
+
     public static String getServices() {
         return services;
     }

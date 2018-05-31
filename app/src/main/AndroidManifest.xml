@@ -41,22 +41,19 @@
         <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".Activity.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.LoginActivity" />
-        <activity android:name=".Helper.EditProfilePhoto" />
-        <activity
-            android:name=".Activity.RegisterActivity"
-            android:parentActivityName=".Activity.LoginActivity" />
+        <activity android:name=".Activity.LoginActivity"/>
+        <activity android:name=".Helper.EditProfilePhoto"/>
+        <activity android:name=".Activity.RegisterActivity"
+            android:parentActivityName=".Activity.LoginActivity"/>
 
         <!-- Firebase Notifications -->
         <service android:name=".Services.MyFirebaseMessagingService">
@@ -122,6 +119,11 @@
             android:parentActivityName=".Activity.HomeActivity" />
         <activity android:name=".Activity.NotificationServiceActivity"
             android:parentActivityName=".Activity.HomeActivity"/>
+        <service
+            android:name=".Services.Tracker_Service"
+            android:enabled="true"
+            android:exported="true">
+        </service>
     </application>
 
 </manifest>

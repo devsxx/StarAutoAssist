@@ -52,4 +52,14 @@
     <string name="storage_camera_permisssion">Now you have a permission to access camera and storage</string>
     <string name="please_take_snap">Please take a snap</string>
     <string name="your_device_doesnt_flash">Your device doesn\'t have flash</string>
+    <string name="notification_text">Tracking, tap to cancel</string>
+    <string name="route_distance">Distance</string>
+    <string name="route_distance_value">40.2 Km</string>
+    <string name="route_duration">Duration</string>
+    <string name="route_duration_value">48 mins</string>
+    <string name="server_error">Server error. Something when wrong with the server</string>
+    <string name="please_fill_all">Please fill all the field</string>
+    <string name="reallySignOut">Do you really want to SignOut\u003F</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

@@ -157,7 +157,39 @@ public class Starautoassist_Application extends Application {
     }
 
 
+    // Unregister this account/device pair within the server.
+  public   void unregister(final Context context) {
+        Log.v("Register_Id","Register_Id="+Constants.REGISTER_ID);
+        Log.v("unRegister", "unRegister");
 
+
+        Thread th = new Thread(new Runnable() {
+            public void run() {
+                /*String SOAP_ACTION = Constants.NAMESPACE + Constants.API_PUSH_UNREGISTER;
+
+                SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_PUSH_UNREGISTER);
+                req.addProperty(Constants.SOAP_USERNAME, Constants.SOAP_USERNAME_VALUE);
+                req.addProperty(Constants.SOAP_PASSWORD, Constants.SOAP_PASSWORD_VALUE);
+                req.addProperty("deviceId", Constants.ANDROID_ID);
+
+                SOAPParsing soap = new SOAPParsing();
+                String json = soap.getJSONFromUrl(SOAP_ACTION, req);*/
+
+              //  Log.v("json", "json" + json);
+                Constants.REGISTER_ID = "";
+            }
+        });
+        th.start();
+
+        //GCMRegistrar.unregister(context);
+    //    GCMRegistrar.setRegisteredOnServer(context, false);
+        // At this point the device is unregistered from GCM, but still
+        // registered in the our server.
+        // We could try to unregister again, but it is not necessary:
+        // if the server tries to send a message to the device, it will get
+        // a "NotRegistered" error message and should unregister the device.
+
+    }
 
     public static String loadJSONFromAsset(Context context,String name) {
         String json = null;

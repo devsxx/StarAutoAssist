@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.PreferenceManager;
 import com.app.starautoassist.R;
 
@@ -105,8 +107,18 @@ public class IntroActivity extends AppCompatActivity {
 
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(IntroActivity.this, LoginActivity.class));
-        finish();
+        Log.d("intro", "IsLogged: "+GetSet.isIsLogged());
+        if(GetSet.isIsLogged()) {
+            Intent i = new Intent(IntroActivity.this,
+                    HomeActivity.class);
+            startActivity(i);
+            finish();
+        }else{
+            Intent i = new Intent(IntroActivity.this,
+                    LoginActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
