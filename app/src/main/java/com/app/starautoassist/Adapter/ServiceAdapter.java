@@ -1,6 +1,8 @@
 package com.app.starautoassist.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.starautoassist.Activity.Fuel_Activity;
+import com.app.starautoassist.Activity.Towing_Activity;
+import com.app.starautoassist.Activity.TyreActivity;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
 import com.bumptech.glide.Glide;
@@ -49,8 +54,23 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-               Toast.makeText(mContext, "You have selected\t :\t" + "service" ,Toast.LENGTH_SHORT).show();
+                if(itemMap.get(Constants.servicename).equalsIgnoreCase("towing")){
+                    Intent intent=new Intent(mContext, Towing_Activity.class);
+                    mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
+                }else  if(itemMap.get(Constants.servicename).equalsIgnoreCase("out of fuel")){
+                    Intent intent=new Intent(mContext, Fuel_Activity.class);
+                    mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
+                }/*else  if(itemMap.get(Constants.servicename).equalsIgnoreCase("jump start")){
+                    Intent intent=new Intent(mContext, Towing_Activity.class);
+                    mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
+                }*/else  if(itemMap.get(Constants.servicename).equalsIgnoreCase("flat tyre")){
+                    Intent intent=new Intent(mContext, TyreActivity.class);
+                    mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
+                }else  Toast.makeText(mContext, "Your selection invalid" ,Toast.LENGTH_SHORT).show();
             }
         });
 

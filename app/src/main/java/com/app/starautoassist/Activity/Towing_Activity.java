@@ -128,7 +128,28 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         next.setOnClickListener(this);
         from.setOnItemClickListener(this);
         to.setOnItemClickListener(this);
-        from.addTextChangedListener(this);
+        from.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()==0){
+                    setFrom.setEnabled(true);
+                    setFrom.setTextColor(getResources().getColor(R.color.green));
+                }else {
+                    setFrom.setEnabled(false);
+                    setFrom.setTextColor(getResources().getColor(R.color.gray));
+                }
+            }
+        });
         to.addTextChangedListener(this);
         from.setAdapter(new PlacesAutoCompleteAdapter(Towing_Activity.this, R.layout.mapsuggestiontextview_layout));
         to.setAdapter(new PlacesAutoCompleteAdapter(Towing_Activity.this, R.layout.mapsuggestiontextview_layout));
@@ -418,7 +439,13 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+    if(s.length()==0){
+        setTo.setEnabled(true);
+        setTo.setTextColor(getResources().getColor(R.color.green));
+    }else {
+        setTo.setEnabled(false);
+        setTo.setTextColor(getResources().getColor(R.color.gray));
+    }
     }
 
     @Override
