@@ -3,9 +3,9 @@ package com.app.starautoassist.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +29,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class TyreActivity extends AppCompatActivity {
+public class JumpstartActivity extends AppCompatActivity {
 
     private TextView tvfare, tvcharge;
     private Button btnsend;
@@ -54,7 +54,7 @@ public class TyreActivity extends AppCompatActivity {
         btnsend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TyreActivity.this, "LatLon"+latlon, Toast.LENGTH_SHORT).show();
+                Toast.makeText(JumpstartActivity.this, "LatLon"+latlon, Toast.LENGTH_SHORT).show();
          //   new Flattyre_Request_Async(TyreActivity.this).execute();
 
             }

@@ -1,60 +1,81 @@
 package com.app.starautoassist.Activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Loader;
+import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.app.starautoassist.Helper.GetSet;
+import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class Fuel_Activity extends AppCompatActivity {
 
    /* private MapView mapView;*/
-    private SearchableSpinner spinnerprice, spinnerfuel;
+    private Spinner spinnerprice, spinnerfuel;
     private TextView tvlitre;
     private Button btnproceed;
-    String[] price = { "RM10", "RM30", "RM50", "RM70", "RM90", "RM110", "RM130", "RM150"};
-    String[] fuel = { "RON 95", "RON 97", "Diesel"};
-    float fuelprice;
-    int setprice0 = 10, setprice1 = 30, setprice2 = 50, setprice3 = 70, setprice4 = 90, setprice5 = 110, setprice6 = 130, setprice7 = 150;
+    List<String> avail_amount=new ArrayList<String>();
+    List<String> fuletype=new ArrayList<String>();
+    List<String> perltr=new ArrayList<String>();
+    String fuelprice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Fuel Service");
         setContentView(R.layout.activity_fuel);
-
+        new Get_Fuel_Service(Fuel_Activity.this).execute();
         /*mapView = findViewById(R.id.mapView);*/
         spinnerprice = findViewById(R.id.spin_price);
         spinnerfuel = findViewById(R.id.spin_fuel);
         tvlitre = findViewById(R.id.fuel_tv_litre);
         btnproceed = findViewById(R.id.fuel_btn_proceed);
 
-        spinnerprice.setPositiveButton("OK");
-        spinnerfuel.setPositiveButton("OK");
-
-        ArrayAdapter<String> adapterprice = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, price);
-        adapterprice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerprice.setAdapter(adapterprice);
-
-        ArrayAdapter<String> adapterfuel = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fuel);
-        adapterfuel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerfuel.setAdapter(adapterfuel);
-
         spinnerfuel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                if (position == 0){
-                     fuelprice = (float) 2.20;
-                }else if (position == 1){
-                    fuelprice = (float) 2.47;
-                }else if (position == 2){
-                    fuelprice = (float) 2.18;
+                ArrayAdapter<String> adapterprice = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, avail_amount);
+                adapterprice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerprice.setAdapter(adapterprice);
+                if(position==0){
+                  fuelprice=perltr.get(0);
+                }
+                else if (fuletype.get(position).equalsIgnoreCase("petrol")){
+                     fuelprice = perltr.get(position);
+                }else if (fuletype.get(position).equalsIgnoreCase("diesel")){
+                    fuelprice = perltr.get(position);
+                }else if (fuletype.get(position).equalsIgnoreCase("gas")){
+                    fuelprice = perltr.get(position);
                 }
                 Toast.makeText(getApplicationContext(), spinnerfuel.getSelectedItem().toString() + "\tis Selected", Toast.LENGTH_SHORT).show();
             }
@@ -68,49 +89,8 @@ public class Fuel_Activity extends AppCompatActivity {
         spinnerprice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                if (position == 0){
-                    float result = (setprice0 / fuelprice);
-                    String price = String.format("%.2f", result);
-                    tvlitre.setText(price + "\tLitres");
-
-                }else if (position == 1){
-                    float result = (setprice1 / fuelprice);
-                    String price = String.format("%.2f", result);
-                    tvlitre.setText(price + "\tLitres");
-
-                }else if (position == 2){
-                    float result = (setprice2 / fuelprice);
-                    String price = String.format("%.2f", result);
-                    tvlitre.setText(price + "\tLitres");
-
-                }else if (position == 3){
-                    float result = (setprice3 / fuelprice);
-                    String price = String.format("%.2f", result);
-                    tvlitre.setText(price + "\tLitres");
-
-                }else if (position == 4){
-                    float result = (setprice4 / fuelprice);
-                    String price = String.format("%.2f", result);
-                    tvlitre.setText(price + "\tLitres");
-
-                }else if (position == 5){
-                    float result = (setprice5 / fuelprice);
-                    String price = String.format("%.2f", result);
-                    tvlitre.setText(price + "\tLitres");
-
-                }else if (position == 6){
-                    float result = (setprice6 / fuelprice);
-                    String price = String.format("%.2f", result);
-                    tvlitre.setText(price + "\tLitres");
-
-                }else if (position == 7){
-                    float result = (setprice7 / fuelprice);
-                    String price = String.format("%.2f", result);
-                    tvlitre.setText(price + "\tLitres");
-
-                }
-                Toast.makeText(getApplicationContext(), spinnerprice.getSelectedItem().toString() + "\tis Selected", Toast.LENGTH_SHORT).show();
+               Float ltr= Float.valueOf(avail_amount.get(position))/Float.valueOf(fuelprice);
+               tvlitre.setText(String.format("%.2f",ltr));
             }
 
             @Override
@@ -118,5 +98,92 @@ public class Fuel_Activity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+    public class Get_Fuel_Service extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String url = Constants.BaseURL + Constants.get_fuel_request;
+        ProgressDialog progress;
+        @Nullable
+        String user_id;
+
+        public Get_Fuel_Service(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = new ProgressDialog(context);
+            progress.setMessage("Please wait ....");
+            progress.setTitle("Loading");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.show();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            progress.dismiss();
+            Log.v("result", "" + jsonData);
+            HashMap<String, String> map;
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    String data=jonj.getString("data");
+                    JSONArray array=new JSONArray(data);
+                    fuletype.add(0,"Select Fuel Type");
+                    perltr.add(0,"0");
+                    for(int i=0;i<array.length();i++) {
+                        JSONObject object = array.getJSONObject(i);
+                        String type = object.getString("sub_category");
+                        String price = object.getString("price");
+                        fuletype.add(type);
+                        perltr.add(price);
+                    }
+
+                    JSONObject obj=array.getJSONObject(1);
+                    String amout=obj.getString("rate");
+                    avail_amount.add(0,"Select amount");
+                    avail_amount = Arrays.asList(amout.split(","));
+                    ArrayAdapter<String> adapterfuel = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,fuletype);
+                    adapterfuel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerfuel.setAdapter(adapterfuel);
+                }else  Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }

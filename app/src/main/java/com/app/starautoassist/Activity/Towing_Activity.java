@@ -177,13 +177,14 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         ivwheellift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tow_type="wheel_lift";
                 towdialog.dismiss();
             }
         });
         ivflatbed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                tow_type="flatbed";
                 towdialog.dismiss();
             }
         });
@@ -241,6 +242,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                             latn = new getLocationFromString().execute(from.getText().toString().trim()).get();
                             final double lat = latn[0];
                             final double lon = latn[1];
+                            flat=lat;
+                            flon=lon;
                             mapFragment.getMapAsync(new OnMapReadyCallback() {
                                 @Override
                                 public void onMapReady(GoogleMap googleMap) {
@@ -288,6 +291,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                             latn = new getLocationFromString().execute(to.getText().toString().trim()).get();
                             final double lat = latn[0];
                             final double lon = latn[1];
+                            tlat=lat;
+                            tlon=lon;
                             mapFragment.getMapAsync(new OnMapReadyCallback() {
                                 @Override
                                 public void onMapReady(GoogleMap googleMap) {
@@ -392,13 +397,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         Log.d(TAG, "T.Lat&Lon: "+tlat+" "+tlon);
                         Log.d(TAG, "From Towing_Activity: "+from.getText().toString().trim());
                         Log.d(TAG, "To Towing_Activity: "+to.getText().toString().trim());
-                        Toast.makeText(this, "Request sent", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(this,TyreActivity.class);
-                    startActivity(intent);
-                      //  new SendRequest_Async().execute();
+                        new Towing_Request_Async(Towing_Activity.this,tow_type).execute();
                     }
-
-                buttonstring=submitbtn.getText().toString().trim();
                 break;
         }
     }
@@ -409,6 +409,10 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         super.onResume();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     @Override
     protected void onDestroy() {
@@ -616,7 +620,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     public class Towing_Request_Async extends AsyncTask<String, Integer, String> {
         private Context context;
         private String towtype;
-        private String url = Constants.BaseURL + Constants.login;
+        private String url = Constants.BaseURL + Constants.send_req_towing;
         ProgressDialog progress;
         @Nullable
         String user_id;
@@ -644,9 +648,10 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
                     .add(Constants.mobileno, GetSet.getMobileno())
+                    .add("servicename", "towing")
                     .add("towtype", towtype)
-                    .add("pickup_location", towtype)
-                    .add("drop_location", towtype)
+                    .add("pickup_location", flat+","+flon)
+                    .add("drop_location", tlat+","+tlon)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -677,14 +682,13 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
+                        "success")) {
                    // TODO: request code here
                     Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
-
-//                        Intent i = new Intent(LoginActivity.this, FragmentMainActivity.class);
-//                        startActivity(i);
                     finish();
-                }
+                    Intent i = new Intent(Towing_Activity.this, SentRequestActivity.class);
+                    startActivity(i);
+                }else  Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
             }catch (JSONException e) {
                 e.printStackTrace();
             }

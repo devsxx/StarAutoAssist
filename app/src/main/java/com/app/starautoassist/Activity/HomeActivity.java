@@ -8,7 +8,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -42,6 +44,18 @@ import com.app.starautoassist.Others.NotificationUtilz;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -153,9 +167,6 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -228,14 +239,13 @@ public class HomeActivity extends AppCompatActivity
             btnchangepass.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     String oldpass = etoldpass.getText().toString();
                     String newpass = etnewpass.getText().toString();
                     String confirmpass = etconfirmpass.getText().toString();
 
                     if (newpass.equals(confirmpass)){
-
                         //proceed to further code
+                        new Change_Password(HomeActivity.this,GetSet.getMobileno(),oldpass,newpass).execute();
                         dialog.dismiss();
 
                     }else {
@@ -314,6 +324,72 @@ public class HomeActivity extends AppCompatActivity
 
         if(!dialog.isShowing()){
             dialog.show();
+        }
+    }
+    public class Change_Password extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String mobileno, oldpass,newpass;
+        private String url = Constants.BaseURL + Constants.changepassword;
+
+        public Change_Password(Context ctx, String mobileno, String oldpass,String newpass) {
+            context = ctx;
+            this.mobileno = mobileno;
+            this.oldpass = oldpass;
+            this.newpass = newpass;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, mobileno)
+                    .add("oldpassword", oldpass)
+                    .add("newpassword", newpass)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    Toast.makeText(getApplicationContext(),"Password changed successfully",Toast.LENGTH_SHORT).show();
+
+                }else Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

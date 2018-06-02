@@ -11,57 +11,97 @@
             <LinearLayout
                 android:layout_marginTop="20dp"
                 android:id="@+id/select_layout"
-                android:weightSum="3"
+                android:weightSum="2"
+                android:padding="5dp"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/border_edittext"
                 android:layout_marginRight="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Fuel Type"
+                    android:padding="15dp"
+                    android:id="@+id/texttype"
+                    android:textSize="15sp"
+                    android:layout_weight="0.8"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+                <Spinner
+                    android:background="@drawable/border_edittext"
                     android:id="@+id/spin_fuel"
-                    app:hintText="Select Fuel"
+                    android:layout_weight="1.2"
                     android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                </com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+                </Spinner>
             </LinearLayout>
 
     <LinearLayout
-        android:background="@drawable/border_edittext"
+
         android:layout_marginTop="15dp"
         android:id="@+id/spin_layout"
+        android:weightSum="5"
+        android:padding="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@+id/select_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Amount"
+            android:padding="15dp"
+            android:id="@+id/textprice"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+        <TextView
+            android:text="RM"
+            android:padding="15dp"
+            android:id="@+id/sign"
+            android:textSize="15sp"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+        <Spinner
+            android:background="@drawable/border_edittext"
             android:id="@+id/spin_price"
-            app:hintText="Select Price"
-            android:textAlignment="center"
+            android:paddingStart="5dp"
+            android:gravity="start"
+            android:layout_weight="2"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+        </Spinner>
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="15dp"
         android:layout_below="@+id/spin_layout"
         android:id="@+id/litre_layout"
         android:layout_marginLeft="10dp"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="2"
         android:layout_marginRight="10dp"
-        android:background="@drawable/border_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <TextView
-            android:text="Litre"
+            android:text="Unit of Fuel"
             android:padding="15dp"
-            android:textAlignment="center"
-           android:id="@+id/fuel_tv_litre"
+            android:id="@+id/textltr"
+            android:textSize="15sp"
+            android:layout_weight="0.8"
             android:layout_width="match_parent"
             android:layout_height="50dp" />
+        <TextView
+            android:text="Liter"
+            android:background="@drawable/border_edittext"
+            android:padding="15dp"
+            android:textAlignment="center"
+            android:layout_weight="1.2"
+           android:id="@+id/fuel_tv_litre"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <Button

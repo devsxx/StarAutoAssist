@@ -6,7 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="15dp">
     <ScrollView
+        android:id="@+id/loginscroll"
         android:layout_marginTop="20dp"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
@@ -195,4 +197,130 @@
 
         </RelativeLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/otplayout"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_dialog"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/et_otp_phone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="Phone"
+            android:paddingLeft="15dp"
+            android:background="@drawable/border_edittext"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:inputType="phone" />
+        <EditText
+            android:id="@+id/confirmotp_code"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="Enter OTP"
+            android:paddingLeft="15dp"
+            android:background="@drawable/border_edittext"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:inputType="phone" />
+
+        <Button
+            android:layout_marginTop="25dp"
+            android:id="@+id/btn_otp"
+            android:text="Get OTP"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"
+            android:textColor="#FFFFFF"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="visible"
+            android:background="@drawable/round_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_marginTop="25dp"
+            android:id="@+id/btn_confirm"
+            android:text="Confirm"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"
+            android:textColor="#FFFFFF"
+            android:layout_marginLeft="20dp"
+            android:visibility="gone"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/round_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/resetpasswordlayout"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_dialog"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/newpass"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="New Password"
+            android:paddingLeft="15dp"
+            android:background="@drawable/border_edittext"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/confirmpass"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="Confirm Password"
+            android:paddingLeft="15dp"
+            android:background="@drawable/border_edittext"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:inputType="textPassword" />
+
+        <Button
+            android:layout_marginTop="25dp"
+            android:id="@+id/update_password"
+            android:text="Update Password"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"
+            android:textColor="#FFFFFF"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="visible"
+            android:background="@drawable/round_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
 </RelativeLayout>

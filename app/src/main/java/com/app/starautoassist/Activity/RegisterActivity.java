@@ -294,6 +294,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         }
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
     public class Register_Asyc extends AsyncTask<String, Integer, String> {
         private Context context;
         private String url = Constants.BaseURL + Constants.registration;

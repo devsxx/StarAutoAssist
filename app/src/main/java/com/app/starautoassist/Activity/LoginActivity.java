@@ -2,22 +2,19 @@ package com.app.starautoassist.Activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.LocaleList;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,8 +25,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +36,6 @@ import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
-import com.hsalf.smilerating.SmileRating;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +46,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.LoggingMXBean;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -59,20 +55,20 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static com.app.starautoassist.Others.Starautoassist_Application.checkLocationPermission;
-
-
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText mobileno, etpass;
-    private Button btnlogin, btngoogle, btnfacebook;
+    private EditText mobileno,mobilenoforget, etpass,new_password,confirm_password;
+    private Button btnlogin, btngoogle, btnfacebook,updatepassbtn;
     private TextView tvforgot, tvcreate;
     GPSTracker gps;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     android.app.AlertDialog alertDialog;
     LocationManager locationManager;
+    ScrollView scrollView;
+    EditText etotpphone,confirmotpcode;
+    String mobile_no="";
+    Button btnotp,btnconfirm;
+    LinearLayout linearLayout,resetpasslayout;
     RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +111,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         changeStatusBarColor();
+        scrollView = findViewById(R.id.loginscroll);
+        linearLayout = findViewById(R.id.otplayout);
+        resetpasslayout = findViewById(R.id.resetpasswordlayout);
         mobileno = findViewById(R.id.log_et_mobileno);
         etpass = findViewById(R.id.log_et_pass);
         tvcreate = findViewById(R.id.log_tv_create);
@@ -122,13 +121,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnlogin = findViewById(R.id.log_btn_login);
         btngoogle = findViewById(R.id.btn_google);
         btnfacebook = findViewById(R.id.btn_facebook);
+        mobilenoforget = findViewById(R.id.et_otp_phone);
+        new_password = findViewById(R.id.newpass);
+        confirm_password = findViewById(R.id.confirmpass);
+        updatepassbtn = findViewById(R.id.update_password);
+        btnotp = findViewById(R.id.btn_otp);
+        confirmotpcode = findViewById(R.id.confirmotp_code);
+        btnconfirm = findViewById(R.id.btn_confirm);
+        btnotp.setOnClickListener(this);
+        btnconfirm.setOnClickListener(this);
+        updatepassbtn.setOnClickListener(this);
         btnlogin.setOnClickListener(this);
         tvcreate.setOnClickListener(this);
         tvforgot.setOnClickListener(this);
         btngoogle.setOnClickListener(this);
         btnfacebook.setOnClickListener(this);
-
-
     }
 
     private void changeStatusBarColor() {
@@ -247,28 +254,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent registerIntent = new Intent(this, RegisterActivity.class);
                 startActivity(registerIntent);
                 break;
-            case R.id.log_tv_forgot:
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                LayoutInflater layoutInflater = this.getLayoutInflater();
-                View view = layoutInflater.inflate(R.layout.forgot_password_layout, null);
-                builder.setView(view);
-                builder.setTitle("Forgot Your Password ?");
-                builder.setCancelable(true);
-
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-
-                EditText etemail = dialog.findViewById(R.id.et_forgot_email);
-                Button btnsubmit = dialog.findViewById(R.id.btn_forgot_submit);
-
-                btnsubmit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        dialog.dismiss();
+            case R.id.update_password:
+                new Forget_Password(LoginActivity.this,mobile_no,confirm_password.getText().toString().trim()).execute();
+                break;
+            case R.id.btn_otp:
+                if(!mobilenoforget.getText().toString().equals("")&&mobilenoforget.getText().toString().length()>6) {
+                    mobile_no = mobilenoforget.getText().toString().trim();
+                    // new GetOTP(getApplicationContext(), mobile_no).execute();
+                    //Toast.makeText(getApplicationContext(),"Otp sent to your mobile successfully",Toast.LENGTH_SHORT).show();
+                    try {
+                        mobilenoforget.setVisibility(View.GONE);
+                        btnotp.setVisibility(View.GONE);
+                        confirmotpcode.setVisibility(View.VISIBLE);
+                        btnconfirm.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
+                }else Toast.makeText(LoginActivity.this,"Check your no",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_confirm:
+                String otp = confirmotpcode.getText().toString().trim();
+                //   new VerifyOTP(getApplicationContext(), GetSet.getMobileno(), otp).execute();
+                new VerifyOTP(LoginActivity.this, mobile_no, "1234").execute();
+                break;
+            case R.id.log_tv_forgot:
+                scrollView.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_google:
 
@@ -313,7 +324,92 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    @Override
+    public void onBackPressed() {
 
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
+        alertDialog.setTitle("Exiting App Confirmation");
+        alertDialog.setMessage("Are you sure you want to Exit?");
+        alertDialog.setIcon(R.drawable.exit);
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(@NonNull DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+    public class VerifyOTP extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String mobileno, otp;
+        private String url = Constants.BaseURL + Constants.verifyOTP;
+        @Nullable
+        String user_id;
+
+        public VerifyOTP(Context ctx, String mobileno, String otp) {
+            context = ctx;
+            this.mobileno = mobileno;
+            this.otp = otp;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, mobileno)
+                    .add(Constants.otp, otp)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    scrollView.setVisibility(View.GONE);
+                    linearLayout.setVisibility(View.GONE);
+                    resetpasslayout.setVisibility(View.VISIBLE);
+                }else Toast.makeText(getApplicationContext(),"Otp not verified",Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public class Login_Async extends AsyncTask<String, Integer, String> {
         private Context context;
         private String username, password;
@@ -404,14 +500,80 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Intent intent=new Intent(context,HomeActivity.class);
                     startActivity(intent);
                     finish();
-                }else  Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();
+                }else  Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
             }catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
         }
+    public class Forget_Password extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String mobileno,password;
+        private String url = Constants.BaseURL + Constants.forgotpassword;
 
+        public Forget_Password(Context ctx, String mobileno,String password) {
+            context = ctx;
+            this.mobileno = mobileno;
+            this.password = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, mobileno)
+                    .add("newpassword", password)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    Intent intent=new Intent(context,LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(getApplicationContext(),"Password changed successfully",Toast.LENGTH_SHORT).show();
+
+                }else Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     }
 
 

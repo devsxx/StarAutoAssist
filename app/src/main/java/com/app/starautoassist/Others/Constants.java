@@ -55,6 +55,8 @@ public class Constants {
     public static String registration="registration.php?";
     public static String getprofile="getprofile.php?";
     public static String getservices="getservices.php?";
+    public static String get_fuel_request="getfueldetails.php?";
+    public static String send_req_towing="send_request_towing.php?";
     public static String uploadprofileimage="uploadprofileimage.php?";
     public static String changepassword="changepassword.php?";
     public static String forgotpassword="forgotpassword.php?";
