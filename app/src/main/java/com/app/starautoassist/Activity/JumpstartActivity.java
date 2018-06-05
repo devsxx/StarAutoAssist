@@ -2,6 +2,7 @@ package com.app.starautoassist.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,7 +37,6 @@ public class JumpstartActivity extends AppCompatActivity {
     GPSTracker gpsTracker;
     Double lat=0.0,lon=0.0;
     String latlon;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +50,12 @@ public class JumpstartActivity extends AppCompatActivity {
         lat=gpsTracker.getLatitude();
         lon=gpsTracker.getLongitude();
         latlon=lat.toString().trim()+lon.toString().trim();
-
+        String chrg=getIntent().getStringExtra("");
         btnsend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(JumpstartActivity.this, "LatLon"+latlon, Toast.LENGTH_SHORT).show();
-         //   new Flattyre_Request_Async(TyreActivity.this).execute();
+            new Jumpstart_Request_Async(JumpstartActivity.this).execute();
 
             }
         });
@@ -68,14 +68,14 @@ public class JumpstartActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    public class Flattyre_Request_Async extends AsyncTask<String, Integer, String> {
+    public class Jumpstart_Request_Async extends AsyncTask<String, Integer, String> {
         private Context context;
-        private String url = Constants.BaseURL + Constants.login;
+        private String url = Constants.BaseURL + Constants.send_req_jumpstart;
         ProgressDialog progress;
         @Nullable
         String user_id;
 
-        public Flattyre_Request_Async(Context ctx) {
+        public Jumpstart_Request_Async(Context ctx) {
             context = ctx;
         }
 
@@ -97,7 +97,8 @@ public class JumpstartActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
                     .add(Constants.mobileno, GetSet.getMobileno())
-                    .add("pickup_location", latlon)
+                    .add("servicename", "Jump Start")
+                    .add("client_location", lat+","+lon)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -129,12 +130,15 @@ public class JumpstartActivity extends AppCompatActivity {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "true")) {
-                    // TODO: request code here
                     Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
-
-//                        Intent i = new Intent(LoginActivity.this, FragmentMainActivity.class);
-//                        startActivity(i);
                     finish();
+                    Intent i = new Intent(JumpstartActivity.this, SentRequestActivity.class);
+                    startActivity(i);
+                }else {
+                    Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
+                    finish();
+                    Intent i = new Intent(JumpstartActivity.this, HomeActivity.class);
+                    startActivity(i);
                 }
             }catch (JSONException e) {
                 e.printStackTrace();

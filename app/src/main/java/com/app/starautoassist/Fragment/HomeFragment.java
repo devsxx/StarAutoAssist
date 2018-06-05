@@ -1,6 +1,7 @@
 package com.app.starautoassist.Fragment;
 
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -102,6 +103,7 @@ public class HomeFragment extends Fragment {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
+    @SuppressLint("StaticFieldLeak")
     public class Get_Services_Async extends AsyncTask<String, Integer, String> {
         private Context context;
         private String url = Constants.BaseURL + Constants.getservices;
@@ -168,11 +170,13 @@ public class HomeFragment extends Fragment {
                         sid=object.getString(Constants.serviceid);
                         sname=object.getString(Constants.servicename);
                         simg=object.getString(Constants.serviceimg);
+                        scharge=object.getString(Constants.servicecharge);
 
 
                         map.put(Constants.serviceid,sid);
                         map.put(Constants.servicename,sname);
                         map.put(Constants.serviceimg,simg);
+                        map.put(Constants.servicecharge,scharge);
                         Services_list.add(map);
                     }
                     serviceAdapter = new ServiceAdapter(getActivity(), Services_list);

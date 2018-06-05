@@ -22,7 +22,7 @@ public class Constants {
     public static String serviceid="serviceid";
     public static String servicename="servicename";
     public static String serviceimg="serviceimgurl";
-    public static String servicecharge="servicecharge";
+    public static String servicecharge="serviceamount";
     public static String priceperkm="priceperkm";
 
     /** Twitter App id **/
@@ -47,16 +47,21 @@ public class Constants {
     //Requests
     //public static String BaseURL="http://starautoassist.com/services/";
     public static String BaseURL="http://towbago.shadowws.in/jsons/";
-    public static String uploadimage="uploadimage";
+    public static String uploadimage="uploadprofileimage.php?";
+    public static String addcar="addcar.php?";
     public static String login="login.php?";
     public static String getOTP="getotp.php?";
     public static String verifyOTP="verifyotp.php?";
     public static String profile="profile.php?";
     public static String registration="registration.php?";
+    public static String registration_pushid="FCMRegistration.php?";
     public static String getprofile="getprofile.php?";
     public static String getservices="getservices.php?";
     public static String get_fuel_request="getfueldetails.php?";
     public static String send_req_towing="send_request_towing.php?";
+    public static String send_req_flattyre="send_request_tyre.php?";
+    public static String send_req_jumpstart="send_request_jumpstart.php?";
+    public static String send_req_fuel="send_request_fuel.php?";
     public static String uploadprofileimage="uploadprofileimage.php?";
     public static String changepassword="changepassword.php?";
     public static String forgotpassword="forgotpassword.php?";

@@ -56,7 +56,7 @@ public class VechicleActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("My Vechicle");
         setContentView(R.layout.activity_vechicle);
 
-        pref = getApplicationContext().getSharedPreferences("JoysalePref",
+        pref = getApplicationContext().getSharedPreferences("StarAutoAssist",
                 MODE_PRIVATE);
         editor = pref.edit();
         mobileno=pref.getString("mobileno",null);
@@ -65,10 +65,17 @@ public class VechicleActivity extends AppCompatActivity {
         etplate = findViewById(R.id.vechicle_et_plateno);
         spinnerbrand = findViewById(R.id.spin_carbrand);
         spinnerbrand.setPositiveButton("OK");
+        ArrayAdapter<String> brandadapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, brand);
+        brandadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerbrand.setAdapter(brandadapter);
         Boolean isCarAdded=pref.getBoolean("isCarAdded",false);
         if(isCarAdded) {
             Integer pos = pref.getInt("brandposition", 0);
-            spinnerbrand.setSelection(pos);
+           /* String brand=pref.getString("brand", null);
+            if ( brand!= null) {
+                int spinnerPosition = brandadapter.getPosition(brand);
+                spinnerbrand.setSelection(spinnerPosition);
+            }*/
             etmodel.setText(pref.getString("model", null));
             etplate.setText(pref.getString("plateno", null));
             btnsubmit.setText("Update");
@@ -90,9 +97,7 @@ public class VechicleActivity extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<String> brandadapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, brand);
-        brandadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerbrand.setAdapter(brandadapter);
+
 
 
         spinnerbrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -111,11 +116,11 @@ public class VechicleActivity extends AppCompatActivity {
 
     }
     public class Add_Vechicle_Async extends AsyncTask<String, Integer, String> {
-        private Context context;
+        Context context;
         private String mobileno,brand,model,plateno;
-        private String url = Constants.BaseURL + Constants.forgotpassword;
+        private String url = Constants.BaseURL + Constants.addcar;
 
-        public Add_Vechicle_Async(Context ctx, String mobileno,String brand,String model,String plateno) {
+        private Add_Vechicle_Async(Context ctx, String mobileno,String brand,String model,String plateno) {
             context = ctx;
             this.mobileno = mobileno;
             this.brand = brand;
@@ -175,7 +180,9 @@ public class VechicleActivity extends AppCompatActivity {
                     editor.putInt("brandposition",brandposition);
                     editor.putString("model",modelname);
                     editor.putString("plateno",plateno);
-                    Intent intent=new Intent(context,VechicleActivity.class);
+                    editor.commit();
+                    editor.apply();
+                    Intent intent=new Intent(context,HomeActivity.class);
                     startActivity(intent);
                     finish();
                     Toast.makeText(getApplicationContext(),"Car details added successfully",Toast.LENGTH_SHORT).show();

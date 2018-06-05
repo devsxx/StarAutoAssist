@@ -36,6 +36,9 @@ import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
+import com.app.starautoassist.Services.FirebaseInstanceIDService;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -326,22 +329,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
+        if ((scrollView.getVisibility() == View.GONE) && (linearLayout.getVisibility() == View.VISIBLE)) {
+            linearLayout.setVisibility(View.GONE);
+            scrollView.setVisibility(View.VISIBLE);
+        } else {
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
-        alertDialog.setTitle("Exiting App Confirmation");
-        alertDialog.setMessage("Are you sure you want to Exit?");
-        alertDialog.setIcon(R.drawable.exit);
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            public void onClick(@NonNull DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.show();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
+            alertDialog.setTitle("Exiting App Confirmation");
+            alertDialog.setMessage("Are you sure you want to Exit?");
+            alertDialog.setIcon(R.drawable.exit);
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(@NonNull DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            alertDialog.show();
+        }
     }
     public class VerifyOTP extends AsyncTask<String, Integer, String> {
         private Context context;
@@ -474,6 +482,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
+
                     String data=jonj.getString("message");
                     JSONArray array=new JSONArray(data);
                     JSONObject jcat = array.getJSONObject(0);
@@ -496,7 +505,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Constants.editor.putString("address", GetSet.getAddress());
                     Constants.editor.putString("userimage", GetSet.getImageUrl());
                     Constants.editor.commit();
-
+                    if(!Constants.REGISTER_ID.equalsIgnoreCase(FirebaseInstanceId.getInstance().getToken()))
+                        Registernotifi();
                     Intent intent=new Intent(context,HomeActivity.class);
                     startActivity(intent);
                     finish();
@@ -572,6 +582,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    /**  For register push notification **/
+    public void  Registernotifi(){
+        Starautoassist_Application aController = null;
+        Constants.REGISTER_ID=FirebaseInstanceId.getInstance().getToken();
+        Log.v("enetered push","registerid="+Constants.REGISTER_ID);
+        Constants.editor.putString("regId", Constants.REGISTER_ID);
+        Constants.editor.commit();
+
+        if(Constants.REGISTER_ID!="" || !Constants.REGISTER_ID.equals("")){
+            aController = (Starautoassist_Application) getApplicationContext();
+            Log.i("Login", "Device registered: regId = " + Constants.REGISTER_ID);
+            // Log.d("NAME", MainActivity.name);
+            aController.register(getApplicationContext());
+            Log.e("Login", "sendRegistrationToServer: " + Constants.REGISTER_ID);
         }
     }
     }

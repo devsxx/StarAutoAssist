@@ -2,6 +2,7 @@ package com.app.starautoassist.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
@@ -16,8 +17,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.starautoassist.Helper.GPSTracker;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
@@ -48,6 +51,8 @@ public class Fuel_Activity extends AppCompatActivity {
     List<String> fuletype=new ArrayList<String>();
     List<String> perltr=new ArrayList<String>();
     String fuelprice;
+    Double lat=0.0,lon=0.0;
+    GPSTracker gps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +65,25 @@ public class Fuel_Activity extends AppCompatActivity {
         spinnerfuel = findViewById(R.id.spin_fuel);
         tvlitre = findViewById(R.id.fuel_tv_litre);
         btnproceed = findViewById(R.id.fuel_btn_proceed);
+        btnproceed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Fuel_Request_Async(Fuel_Activity.this).execute();
+            }
+        });
+        gps = new GPSTracker(Fuel_Activity.this);
+        if (lat == 0 && lon == 0) {
+            if (gps.canGetLocation()) {
+                if (Starautoassist_Application.isNetworkAvailable(Fuel_Activity.this)) {
+                    lat = gps.getLatitude();
+                    lon = gps.getLongitude();
+                    Log.v("lati", "lat" + lat);
+                    Log.v("longi", "longi" + lon);
+                } else {
 
+                }
+            }
+        }
         spinnerfuel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -180,6 +203,88 @@ public class Fuel_Activity extends AppCompatActivity {
                     adapterfuel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerfuel.setAdapter(adapterfuel);
                 }else  Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+    public class Fuel_Request_Async extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String fueltype;
+        private String url = Constants.BaseURL + Constants.send_req_fuel;
+        ProgressDialog progress;
+        @Nullable
+        String user_id;
+
+        public Fuel_Request_Async(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = new ProgressDialog(context);
+            progress.setMessage("Please wait ....");
+            progress.setTitle("Loading");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.show();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, GetSet.getMobileno())
+                    .add("servicename", "Out of Fuel")
+                    .add("fueltype", spinnerfuel.getSelectedItem().toString())
+                    .add("amount", spinnerprice.getSelectedItem().toString())
+                    .add("client_location", lat+","+lon)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            progress.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    // TODO: request code here
+                    Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
+                    finish();
+                    Intent i = new Intent(Fuel_Activity.this, SentRequestActivity.class);
+                    startActivity(i);
+                }else {
+                    Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
+                    finish();
+                    Intent i = new Intent(Fuel_Activity.this, HomeActivity.class);
+                    startActivity(i);
+                }
             }catch (JSONException e) {
                 e.printStackTrace();
             }

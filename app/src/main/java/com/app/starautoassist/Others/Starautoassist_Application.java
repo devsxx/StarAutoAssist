@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -28,17 +29,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.R;
+import com.app.starautoassist.Services.FirebaseInstanceIDService;
 import com.facebook.FacebookSdk;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 @ReportsCrashes(mailTo = "iamdevshadowws@gmail.com")
 public class Starautoassist_Application extends Application {
@@ -155,7 +168,73 @@ public class Starautoassist_Application extends Application {
             e.printStackTrace();
         }
     }
+    /** To register the device for push notification **/
+    public void  register(Context context) {
 
+
+        // Once GCM returns a registration id, we need to register on our server
+        // As the server might be down, we will retry it a couple
+        // times.
+        for (int i = 1; i <=  5 ; i++) {
+
+            Log.v("Push-Notification", "Attempt #" + i + " to register");
+
+            Thread th = new Thread(new Runnable() {
+                public void run() {
+                    String URL = Constants.BaseURL + Constants.registration_pushid;
+                    String jsonData = null;
+                    Response response = null;
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormBody.Builder()
+                            .add(Constants.mobileno, GetSet.getMobileno())
+                            .add("pushid", Constants.REGISTER_ID)
+                            .add("deviceid", Constants.ANDROID_ID)
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(URL)
+                            .post(body)
+                            .build();
+                    Call call = client.newCall(request);
+
+                    try {
+                        response = call.execute();
+
+                        if (response.isSuccessful()) {
+                            jsonData = response.body().string();
+                        } else {
+                            jsonData = null;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    JSONObject object=null;
+                    try {
+                        object=new JSONObject(jsonData);
+
+                        if(object.getString("status").equalsIgnoreCase("success")){
+                            SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString("regId", Constants.REGISTER_ID);
+                            editor.putBoolean("isPushregisters", true);
+                            editor.commit();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.v("json","json"+jsonData);
+                }
+
+            });
+
+            th.start();
+
+            return;
+
+        }
+
+    }
 
     // Unregister this account/device pair within the server.
   public   void unregister(final Context context) {

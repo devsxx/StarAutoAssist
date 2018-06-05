@@ -115,6 +115,9 @@
             android:name=".Activity.Fuel_Activity"
             android:parentActivityName=".Activity.HomeActivity" />
         <activity
+            android:name=".Activity.JumpstartActivity"
+            android:parentActivityName=".Activity.HomeActivity" />
+        <activity
             android:name=".Activity.TyreActivity"
             android:parentActivityName=".Activity.HomeActivity" />
         <activity android:name=".Activity.NotificationServiceActivity"

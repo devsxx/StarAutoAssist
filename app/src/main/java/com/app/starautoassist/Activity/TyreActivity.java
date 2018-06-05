@@ -2,6 +2,7 @@ package com.app.starautoassist.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -55,7 +56,7 @@ public class TyreActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(TyreActivity.this, "LatLon"+latlon, Toast.LENGTH_SHORT).show();
-         //   new Flattyre_Request_Async(TyreActivity.this).execute();
+            new Flattyre_Request_Async(TyreActivity.this).execute();
 
             }
         });
@@ -70,7 +71,7 @@ public class TyreActivity extends AppCompatActivity {
 
     public class Flattyre_Request_Async extends AsyncTask<String, Integer, String> {
         private Context context;
-        private String url = Constants.BaseURL + Constants.login;
+        private String url = Constants.BaseURL + Constants.send_req_flattyre;
         ProgressDialog progress;
         @Nullable
         String user_id;
@@ -97,7 +98,8 @@ public class TyreActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
                     .add(Constants.mobileno, GetSet.getMobileno())
-                    .add("pickup_location", latlon)
+                    .add("servicename", "Flat Tyre")
+                    .add("client_location", lat+","+lon)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -128,13 +130,16 @@ public class TyreActivity extends AppCompatActivity {
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
-                    // TODO: request code here
+                        "success")) {
                     Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
-
-//                        Intent i = new Intent(LoginActivity.this, FragmentMainActivity.class);
-//                        startActivity(i);
                     finish();
+                    Intent i = new Intent(TyreActivity.this, SentRequestActivity.class);
+                    startActivity(i);
+                }else {
+                    Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
+                    finish();
+                    Intent i = new Intent(TyreActivity.this, HomeActivity.class);
+                    startActivity(i);
                 }
             }catch (JSONException e) {
                 e.printStackTrace();

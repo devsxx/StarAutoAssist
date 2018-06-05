@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +31,9 @@ import android.widget.Toast;
 
 import com.app.starautoassist.Helper.EditProfilePhoto;
 import com.app.starautoassist.Helper.GetSet;
+import com.app.starautoassist.Helper.Image_Upload;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.bumptech.glide.Glide;
 import com.facebook.CallbackManager;
@@ -39,12 +43,21 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -62,8 +75,19 @@ public class ProfileActivity extends AppCompatActivity {
     private CircularImageView circularImageView;
     private MaterialEditText etfirstname, etlastname, etaddress, etphone, etemail;
     private static final int PICK_PICTURE = 1;
+    private Bitmap bitmap, bitmapRotate;
+    String imagepath = "";
+    private Uri selectedImage = null;
+    private Boolean upflag = false;
+    String fname;
+    String image;
+    Button submitbtn;
+    File file;
+    String uploadedImage = "", viewUrl = "";
+    private ProgressDialog pDialog;
     private static final String TAG = "ProfileActivity";
     CallbackManager callbackManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +100,35 @@ public class ProfileActivity extends AppCompatActivity {
         etlastname = findViewById(R.id.et_profile_lastname);
         etaddress = findViewById(R.id.et_profile_address);
         etemail = findViewById(R.id.et_profile_email);
+        submitbtn=(Button) findViewById(R.id.btn_profile_save);
+        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
+        Constants.editor = Constants.pref.edit();
+        if(GetSet.isIsLogged()){
+            String imgurl=Constants.pref.getString("userimage",null);
+            Glide
+                    .with(ProfileActivity.this)
+                    .load(Constants.BaseURL + "images/users/" + imgurl)
+                    .into(circularImageView);
+            etphone.setText(GetSet.getMobileno());
+            etphone.setEnabled(false);
+            etfirstname.setText(GetSet.getFirstname());
+            etlastname.setText(GetSet.getLastname());
+            etemail.setText(GetSet.getEmail());
+            etaddress.setText(GetSet.getAddress());
+
+        }
 
 
         circularImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-        gallerydialog();
+                gallerydialog();
+            }
+        });
+        submitbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Edit_Profile_Async(ProfileActivity.this,GetSet.getMobileno()).execute();
             }
         });
 
@@ -91,12 +138,15 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (EditProfilePhoto.editPhoto){
+        if (EditProfilePhoto.editPhoto) {
             EditProfilePhoto.editPhoto = false;
-         //   new UploadImage().execute(EditProfilePhoto.imgPath);
+            //   new UploadImage().execute(EditProfilePhoto.imgPath);
         }
     }
-    /** for user choose the dp from camera or gallery **/
+
+    /**
+     * for user choose the dp from camera or gallery
+     **/
     public void gallerydialog() {
         final Dialog dialog = new Dialog(ProfileActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -137,7 +187,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public class Get_Profile_Async extends AsyncTask<String, Integer, String> {
+ /*   public class Get_Profile_Async extends AsyncTask<String, Integer, String> {
         private Context context;
         private String mobileno;
         private String url = Constants.BaseURL + Constants.login;
@@ -222,12 +272,13 @@ public class ProfileActivity extends AppCompatActivity {
 //                        Intent i = new Intent(LoginActivity.this, FragmentMainActivity.class);
 //                        startActivity(i);
                 }
-            }catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
-    }
+    }*/
+
     private Bitmap decodeFile(String fPath) {
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
@@ -251,6 +302,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Bitmap.Config.RGB_565, false);
         return bm;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -269,7 +321,7 @@ public class ProfileActivity extends AppCompatActivity {
                     c.close();
                     Bitmap thumbnail = decodeFile(picturePath);
                     Log.v("gallery code bitmap", "" + thumbnail);
-                    new UploadImg(ProfileActivity.this,picturePath).execute();
+                    new UploadImg().execute(picturePath);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -281,13 +333,14 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             Log.v("else" + requestCode, "result" + resultCode);
         }
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-
     }
+
+
+
     public class Edit_Profile_Async extends AsyncTask<String, Integer, String> {
         private Context context;
         private String mobileno;
-        private String url = Constants.BaseURL + Constants.login;
+        private String url = Constants.BaseURL + Constants.profile;
         ProgressDialog progress;
         @Nullable
         String user_id;
@@ -311,11 +364,11 @@ public class ProfileActivity extends AppCompatActivity {
         @Nullable
         @Override
         protected String doInBackground(String... params) {
-            String firstname,lastname,email,address;
-            firstname=etfirstname.getText().toString().trim();
-            lastname=etlastname.getText().toString().trim();
-            address=etaddress.getText().toString().trim();
-            email=etemail.getText().toString().trim();
+            String firstname, lastname, email, address;
+            firstname = etfirstname.getText().toString().trim();
+            lastname = etlastname.getText().toString().trim();
+            address = etaddress.getText().toString().trim();
+            email = etemail.getText().toString().trim();
             String jsonData = null;
             Response response = null;
             OkHttpClient client = new OkHttpClient();
@@ -325,6 +378,7 @@ public class ProfileActivity extends AppCompatActivity {
                     .add("lastname", lastname)
                     .add("email", email)
                     .add("address", address)
+                    .add("userimage", image)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -355,7 +409,7 @@ public class ProfileActivity extends AppCompatActivity {
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
+                        "success")) {
                     GetSet.setIsLogged(true);
                     GetSet.setImageUrl(jonj.getString("userimage"));
                     GetSet.setFirstname(jonj.getString("firstname"));
@@ -372,12 +426,12 @@ public class ProfileActivity extends AppCompatActivity {
                     Constants.editor.putString("email", GetSet.getEmail());
                     Constants.editor.putString("address", GetSet.getAddress());
                     Constants.editor.commit();
-                    //  Registernotifi();
-                    finish();
-//                        Intent i = new Intent(LoginActivity.this, FragmentMainActivity.class);
-//                        startActivity(i);
+
+                        finish();
+                        Intent i = new Intent(ProfileActivity.this, HomeActivity.class);
+                        startActivity(i);
                 }
-            }catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -390,6 +444,48 @@ public class ProfileActivity extends AppCompatActivity {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, contentUri);
         sendBroadcast(mediaScanIntent);
     }
+
+    class DoFileUpload extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+
+            pDialog = new ProgressDialog(ProfileActivity.this);
+            pDialog.setMessage("wait uploading Image..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                // Set your file path here
+                FileInputStream fstrm = new FileInputStream(imagepath);
+                // Set your server page url (and the file title/description)
+                Image_Upload hfu = new Image_Upload(Constants.BaseURL + Constants.uploadimage, fname);
+                upflag = hfu.Send_Now(fstrm);
+            } catch (FileNotFoundException e) {
+                // Error: File not found
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String file_url) {
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+            if (upflag) {
+                Toast.makeText(getApplicationContext(), "Uploading Complete", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Unfortunately file is not Uploaded..", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
     public File saveBitmapToFile(File file) {
         try {
@@ -442,88 +538,130 @@ public class ProfileActivity extends AppCompatActivity {
             return null;
         }
     }
+
     public class UploadImg extends AsyncTask<String, Integer, String> {
-        Context context;
-        String path;
-
-        public UploadImg(Context ctx, String path) {
-            context = ctx;
-            this.path = path;
-
-        }
+        JSONObject jsonobject = null;
+        String Json = "";
+        String status;
+        ProgressDialog pd;
 
         ProgressDialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(ProfileActivity.this);
-            progressDialog.setMessage("Please Wait....");
-            progressDialog.show();
+            pd = new ProgressDialog(ProfileActivity.this);
+            pd.setMessage("Image uploading please wait...");
+            pd.show();
         }
 
         @Override
-        protected String doInBackground(String... str) {
-
-            String res = null;
+        protected String doInBackground(String... imgpath) {
+            HttpURLConnection conn = null;
+            DataOutputStream dos = null;
+            DataInputStream inStream = null;
+            StringBuilder builder = new StringBuilder();
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary = "*****";
+            int bytesRead, bytesAvailable, bufferSize;
+            byte[] buffer;
+            int maxBufferSize = 1 * 1024 * 1024;
+            String urlString = Constants.BaseURL + Constants.uploadimage;
             try {
-                File sourceFile = new File(path);
-                Log.d("TAG", "File...::::" + sourceFile + " : " + sourceFile.exists());
-                final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/*");
-                String filename = path.substring(path.lastIndexOf("/") + 1);
-                RequestBody requestBody = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("imagename", filename, RequestBody.create(MEDIA_TYPE_PNG, sourceFile))
-                        .build();
+                String exsistingFileName = imgpath[0];
+                Log.v(" exsistingFileName", exsistingFileName);
+                FileInputStream fileInputStream = new FileInputStream(saveBitmapToFile(new File(exsistingFileName)));
+                URL url = new URL(urlString);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+                conn.setUseCaches(false);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                dos = new DataOutputStream(conn.getOutputStream());
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"images\";filename=\""
+                        + exsistingFileName + "\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                Log.e("MediaPlayer", "Headers are written");
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
 
-                Request request = new Request.Builder()
-                        .url(Constants.BaseURL + Constants.uploadimage)
-                        .post(requestBody)
-                        .build();
+                Log.v("buffer", "buffer" + buffer);
 
-                OkHttpClient client = new OkHttpClient();
-                okhttp3.Response response = client.newCall(request).execute();
-                res = response.body().string();
-                Log.e("TAG", "Response : " + res);
-                return res;
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                while (bytesRead > 0) {
+                    dos.write(buffer, 0, bufferSize);
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
 
-            } catch (UnknownHostException | UnsupportedEncodingException e) {
-                Log.e("TAG", "Error: " + e.getLocalizedMessage());
-            } catch (Exception e) {
-                Log.e("TAG", "Other Error: " + e.getLocalizedMessage());
+                    Log.v("bytesRead", "bytesRead" + bytesRead);
+                }
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        conn.getInputStream()));
+                String inputLine;
+                Log.v("in", "" + in);
+                while ((inputLine = in.readLine()) != null)
+                    builder.append(inputLine);
+
+                Log.e("MediaPlayer", "File is written");
+                fileInputStream.close();
+                Json = builder.toString();
+                dos.flush();
+                dos.close();
+
+            } catch (MalformedURLException ex) {
+                Log.e("MediaPlayer", "error: " + ex.getMessage(), ex);
+            } catch (IOException ioe) {
+                Log.e("MediaPlayer", "error: " + ioe.getMessage(), ioe);
             }
-            return res;
+            try {
+                inStream = new DataInputStream(conn.getInputStream());
+                String str;
+                while ((str = inStream.readLine()) != null) {
+                    Log.e("MediaPlayer", "Server Response" + str);
+                }
+                inStream.close();
+            } catch (IOException ioex) {
+                Log.e("MediaPlayer", "error: " + ioex.getMessage(), ioex);
+            }
+            try {
+                jsonobject = new JSONObject(Json);
+                Log.v("json", "json" + Json);
+                status = jsonobject.getString("status");
+                if (status.equals("success")) {
+                    image = jsonobject.getString("image");
+                    viewUrl = Constants.BaseURL + "images/users/" + image;
+
+                }
+
+            } catch (JSONException e) {
+                status = "false";
+                e.printStackTrace();
+            } catch (NullPointerException e) {
+                status = "false";
+                e.printStackTrace();
+            } catch (Exception e) {
+                status = "false";
+                e.printStackTrace();
+            }
+            return null;
 
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
-            if (progressDialog != null)
-                progressDialog.dismiss();
-
-            if (response != null) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.getString("status").equals("success")) {
-                      String  uploadedImage = jsonObject.getString("imagename");
-                      String  viewUrl = jsonObject.getString("imageurl");
-                        Glide
-                                .with(context)
-                                .load(viewUrl)
-                                .placeholder(R.drawable.logo)
-                                .into(circularImageView);
-
-                    } else {
-                        Toast.makeText(ProfileActivity.this, "" + jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(ProfileActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
-            }
-
+            Log.v("editprofile", "imageupload" + uploadedImage);
+            Glide.with(ProfileActivity.this).load(viewUrl).into(circularImageView);
+            pd.dismiss();
         }
+
     }
 }

@@ -298,6 +298,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onBackPressed() {
         super.onBackPressed();
     }
+
     public class Register_Asyc extends AsyncTask<String, Integer, String> {
         private Context context;
         private String url = Constants.BaseURL + Constants.registration;
