@@ -17,13 +17,17 @@ public class Constants {
     public static String otp="otp";
     public static String firstname="firstname";
     public static String lastname="lastname";
+    public static String status="status";
+    public static String timestamp="timestamp";
     public static String email="email";
 
     public static String serviceid="serviceid";
     public static String servicename="servicename";
+    public static String service_name="service_name";
     public static String serviceimg="serviceimgurl";
     public static String servicecharge="serviceamount";
     public static String priceperkm="priceperkm";
+    public static String Requested_Time="reqtime";
 
     /** Twitter App id **/
     public static final String CONSUMER_KEY = "xsAxHRyZ3AoycrRpeK9F1rFqs";
@@ -50,6 +54,7 @@ public class Constants {
     public static String uploadimage="uploadprofileimage.php?";
     public static String addcar="addcar.php?";
     public static String login="login.php?";
+    public static String cancel_req="cancel_request.php?";
     public static String getOTP="getotp.php?";
     public static String verifyOTP="verifyotp.php?";
     public static String profile="profile.php?";
@@ -57,6 +62,7 @@ public class Constants {
     public static String registration_pushid="FCMRegistration.php?";
     public static String getprofile="getprofile.php?";
     public static String getservices="getservices.php?";
+    public static String get_req_status="get_req_status.php?";
     public static String get_fuel_request="getfueldetails.php?";
     public static String send_req_towing="send_request_towing.php?";
     public static String send_req_flattyre="send_request_tyre.php?";

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.app.starautoassist.Activity.HomeActivity;
+import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -35,12 +36,16 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         super.onTokenRefresh();
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-
+        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
+        Constants.editor = Constants.pref.edit();
         // Saving reg id to shared preferences
         storeRegIdInPref(refreshedToken);
 
         // sending reg id to your server
-     sendRegistrationToServer(refreshedToken);
+        if(!Constants.pref.getString("regId","").equalsIgnoreCase(refreshedToken)) {
+         if(!GetSet.getMobileno().equalsIgnoreCase(""))
+            sendRegistrationToServer(refreshedToken);
+        }
 
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(Constants.REGISTRATION_COMPLETE);

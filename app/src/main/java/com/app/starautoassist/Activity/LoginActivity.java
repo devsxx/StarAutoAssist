@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Constants.editor = Constants.pref.edit();
         relativeLayout=(RelativeLayout)findViewById(R.id.main);
         Starautoassist_Application.setupUI(LoginActivity.this,relativeLayout);
-        permissincheck();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         permissincheck();
         alertDialog = new android.app.AlertDialog.Builder(LoginActivity.this).create();
@@ -150,7 +149,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     private void permissincheck() {
         List<String> permissionsNeeded = new ArrayList<String>();
-
         final List<String> permissionsList = new ArrayList<String>();
         if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION))
             permissionsNeeded.add("Fine Location");
@@ -593,11 +591,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Constants.editor.commit();
 
         if(Constants.REGISTER_ID!="" || !Constants.REGISTER_ID.equals("")){
-            aController = (Starautoassist_Application) getApplicationContext();
-            Log.i("Login", "Device registered: regId = " + Constants.REGISTER_ID);
-            // Log.d("NAME", MainActivity.name);
-            aController.register(getApplicationContext());
-            Log.e("Login", "sendRegistrationToServer: " + Constants.REGISTER_ID);
+            if(!Constants.pref.getString("regId","").equalsIgnoreCase("")) {
+                aController = (Starautoassist_Application) getApplicationContext();
+                Log.i("Login", "Device registered: regId = " + Constants.REGISTER_ID);
+                aController.register(getApplicationContext());
+                Log.e("Login", "sendRegistrationToServer: " + Constants.REGISTER_ID);
+            }else Log.d("Login", "Push id already registered");
         }
     }
     }

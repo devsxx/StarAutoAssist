@@ -205,28 +205,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         });
         alertDialog.setCancelable(false);
         Log.d(TAG, "onCreate: ");
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
-            gps = new GPSTracker(Towing_Activity.this);
-            if (flat == 0 && flon == 0) {
-                if (gps.canGetLocation()) {
-                    if (Starautoassist_Application.isNetworkAvailable(Towing_Activity.this)) {
-                        flat = gps.getLatitude();
-                        flon = gps.getLongitude();
-                        Log.v("lati", "lat" + flat);
-                        Log.v("longi", "longi" + flon);
-                    } else {
 
-                    }
-                } else {
-                    locationfound = true;
-                }
-            }mapFragment.getMapAsync(this);
-        }else{
-            if (!alertDialog.isShowing()) {
-                alertDialog.show();
-            }
-        }
 
         from.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -406,6 +385,28 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         Starautoassist_Application.registerReceiver(this);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            gps = new GPSTracker(Towing_Activity.this);
+            if (flat == 0 && flon == 0) {
+                if (gps.canGetLocation()) {
+                    if (Starautoassist_Application.isNetworkAvailable(Towing_Activity.this)) {
+                        flat = gps.getLatitude();
+                        flon = gps.getLongitude();
+                        Log.v("lati", "lat" + flat);
+                        Log.v("longi", "longi" + flon);
+                    } else {
+
+                    }
+                } else {
+                    locationfound = true;
+                }
+            }mapFragment.getMapAsync(this);
+        }else{
+            if (!alertDialog.isShowing()) {
+                alertDialog.show();
+            }
+        }
         super.onResume();
     }
 
@@ -688,7 +689,12 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                     finish();
                     Intent i = new Intent(Towing_Activity.this, SentRequestActivity.class);
                     startActivity(i);
-                }else  Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
+                    finish();
+                    Intent i = new Intent(Towing_Activity.this, HomeActivity.class);
+                    startActivity(i);
+                }
             }catch (JSONException e) {
                 e.printStackTrace();
             }

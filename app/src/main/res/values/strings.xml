@@ -64,4 +64,20 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <string name="time_ago_prefix"></string>
+    <string name="time_ago_suffix">ago</string>
+    <string name="time_ago_seconds">Just now</string>
+    <string name="time_ago_minute">1 minute</string>
+    <string name="time_ago_minutes">%d minutes</string>
+    <string name="time_ago_hour">1 hour</string>
+    <string name="time_ago_hours">%d hours</string>
+    <string name="time_ago_day">1 day</string>
+    <string name="time_ago_days">%d days</string>
+    <string name="time_ago_month">1 month</string>
+    <string name="time_ago_months">%d months</string>
+    <string name="time_ago_year">1 year</string>
+    <string name="time_ago_years">%d years</string>
+    <string name="track_now">Track Now</string>
+    <string name="default_notification_channel_id">Services</string>
+
 </resources>

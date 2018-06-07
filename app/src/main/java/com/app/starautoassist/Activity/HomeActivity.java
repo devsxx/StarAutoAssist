@@ -132,12 +132,10 @@ public class HomeActivity extends AppCompatActivity
         // register GCM registration complete receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(Constants.REGISTRATION_COMPLETE));
-
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
-
         // clear the notification area when the app is opened
         NotificationUtilz.clearNotifications(getApplicationContext());
     }
@@ -201,7 +199,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_sentrequest) {
 
-            Intent sentrequestintent = new Intent(this, TyreActivity.class);
+            Intent sentrequestintent = new Intent(this, SentRequestActivity.class);
             startActivity(sentrequestintent);
 
         } else if (id == R.id.nav_servicehistory) {

@@ -129,7 +129,7 @@ public class JumpstartActivity extends AppCompatActivity {
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
+                        "success")) {
                     Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
                     finish();
                     Intent i = new Intent(JumpstartActivity.this, SentRequestActivity.class);
