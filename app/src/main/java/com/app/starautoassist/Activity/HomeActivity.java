@@ -224,7 +224,7 @@ public class HomeActivity extends AppCompatActivity
 
             builder.setView(view);
             builder.setTitle("Reset Your Password :");
-            builder.setCancelable(false);
+            builder.setCancelable(true);
 
             final AlertDialog dialog = builder.create();
             dialog.show();

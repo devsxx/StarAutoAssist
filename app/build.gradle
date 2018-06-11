@@ -19,7 +19,7 @@ android {
     //Signing configurations for build variants "release"
     signingConfigs {
         release {
-            storeFile file("E:\\Project\\KeyStore\\Starautoassist\\saa.jks")
+            storeFile file("/home/system11/Devakumar/Projects/Keystores/Starautoassist/saa.jks")
             storePassword "starautoassist"
             keyAlias "starautoassist"
             keyPassword "starautoassist"
