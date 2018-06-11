@@ -61,18 +61,22 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
                     Intent intent=new Intent(mContext, Towing_Activity.class);
                     intent.putExtra("service_chrg",chrg);
                     mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
                 }else  if(name.equalsIgnoreCase("out of fuel")){
                     Intent intent=new Intent(mContext, Fuel_Activity.class);
                     intent.putExtra("service_chrg",chrg);
                     mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
                 }else  if(itemMap.get(Constants.servicename).equalsIgnoreCase("jump start")){
                     Intent intent=new Intent(mContext, JumpstartActivity.class);
                     intent.putExtra("service_chrg",chrg);
                     mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
                 }else  if(name.equalsIgnoreCase("flat tyre")){
                     Intent intent=new Intent(mContext, TyreActivity.class);
                     intent.putExtra("service_chrg",chrg);
                     mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
                 }else  Toast.makeText(mContext, "Your selection invalid" ,Toast.LENGTH_SHORT).show();
             }
         });

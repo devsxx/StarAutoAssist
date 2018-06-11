@@ -40,6 +40,7 @@ import com.facebook.CallbackManager;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,19 +75,14 @@ public class ProfileActivity extends AppCompatActivity {
 
     private CircularImageView circularImageView;
     private MaterialEditText etfirstname, etlastname, etaddress, etphone, etemail;
-    private static final int PICK_PICTURE = 1;
-    private Bitmap bitmap, bitmapRotate;
     String imagepath = "";
-    private Uri selectedImage = null;
     private Boolean upflag = false;
     String fname;
-    String image;
+    String image="";
     Button submitbtn;
-    File file;
     String uploadedImage = "", viewUrl = "";
     private ProgressDialog pDialog;
     private static final String TAG = "ProfileActivity";
-    CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +100,10 @@ public class ProfileActivity extends AppCompatActivity {
         Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
         Constants.editor = Constants.pref.edit();
         if(GetSet.isIsLogged()){
-            String imgurl=Constants.pref.getString("userimage",null);
+            image=Constants.pref.getString("userimage",null);
             Glide
                     .with(ProfileActivity.this)
-                    .load(Constants.BaseURL + "images/users/" + imgurl)
+                    .load(Constants.BaseURL + "images/users/" + image)
                     .into(circularImageView);
             etphone.setText(GetSet.getMobileno());
             etphone.setEnabled(false);
@@ -187,97 +183,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
- /*   public class Get_Profile_Async extends AsyncTask<String, Integer, String> {
-        private Context context;
-        private String mobileno;
-        private String url = Constants.BaseURL + Constants.login;
-        ProgressDialog progress;
-        @Nullable
-        String user_id;
-
-        public Get_Profile_Async(Context ctx, String mobileno) {
-            context = ctx;
-            this.mobileno = mobileno;
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progress = new ProgressDialog(context);
-            progress.setMessage("Please wait ....");
-            progress.setTitle("Loading");
-            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progress.show();
-        }
-
-        @Nullable
-        @Override
-        protected String doInBackground(String... params) {
-            String jsonData = null;
-            Response response = null;
-            OkHttpClient client = new OkHttpClient();
-            RequestBody body = new FormBody.Builder()
-                    .add(Constants.mobileno, mobileno)
-                    .build();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-            Call call = client.newCall(request);
-
-            try {
-                response = call.execute();
-
-                if (response.isSuccessful()) {
-                    jsonData = response.body().string();
-                } else {
-                    jsonData = null;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return jsonData;
-        }
-
-        @Override
-        protected void onPostExecute(String jsonData) {
-            super.onPostExecute(jsonData);
-            progress.dismiss();
-            Log.v("result", "" + jsonData);
-            JSONObject jonj = null;
-            try {
-                jonj = new JSONObject(jsonData);
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
-                    GetSet.setIsLogged(true);
-                    GetSet.setImageUrl(jonj.getString("userimage"));
-                    GetSet.setFirstname(jonj.getString("firstname"));
-                    GetSet.setLastname(jonj.getString("lastname"));
-                    GetSet.setMobileno(jonj.getString("mobileno"));
-                    GetSet.setEmail(jonj.getString("email"));
-                    GetSet.setAddress(jonj.getString("address"));
-
-
-                    Constants.editor.putString("userimage", GetSet.getImageUrl());
-                    Constants.editor.putString("fname", GetSet.getFirstname());
-                    Constants.editor.putString("lname", GetSet.getLastname());
-                    Constants.editor.putString("mobileno", GetSet.getMobileno());
-                    Constants.editor.putString("email", GetSet.getEmail());
-                    Constants.editor.putString("address", GetSet.getAddress());
-
-                    Constants.editor.commit();
-                    //  Registernotifi();
-                    finish();
-//                        Intent i = new Intent(LoginActivity.this, FragmentMainActivity.class);
-//                        startActivity(i);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }*/
 
     private Bitmap decodeFile(String fPath) {
         BitmapFactory.Options opts = new BitmapFactory.Options();
@@ -410,13 +315,16 @@ public class ProfileActivity extends AppCompatActivity {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
+                    String data=jonj.getString("message");
+                    JSONArray array=new JSONArray(data);
+                    JSONObject object=array.getJSONObject(0);
                     GetSet.setIsLogged(true);
-                    GetSet.setImageUrl(jonj.getString("userimage"));
-                    GetSet.setFirstname(jonj.getString("firstname"));
-                    GetSet.setLastname(jonj.getString("lastname"));
-                    GetSet.setMobileno(jonj.getString("mobileno"));
-                    GetSet.setEmail(jonj.getString("email"));
-                    GetSet.setAddress(jonj.getString("address"));
+                    GetSet.setImageUrl(object.getString("userimage"));
+                    GetSet.setFirstname(object.getString("firstname"));
+                    GetSet.setLastname(object.getString("lastname"));
+                    GetSet.setMobileno(object.getString("mobileno"));
+                    GetSet.setEmail(object.getString("email"));
+                    GetSet.setAddress(object.getString("address"));
 
 
                     Constants.editor.putString("userimage", GetSet.getImageUrl());

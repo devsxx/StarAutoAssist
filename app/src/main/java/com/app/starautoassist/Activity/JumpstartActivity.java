@@ -35,6 +35,7 @@ public class JumpstartActivity extends AppCompatActivity {
     private TextView tvfare, tvcharge;
     private Button btnsend;
     GPSTracker gpsTracker;
+    String amount="";
     Double lat=0.0,lon=0.0;
     String latlon;
     @Override
@@ -50,7 +51,10 @@ public class JumpstartActivity extends AppCompatActivity {
         lat=gpsTracker.getLatitude();
         lon=gpsTracker.getLongitude();
         latlon=lat.toString().trim()+lon.toString().trim();
-        String chrg=getIntent().getStringExtra("");
+
+        if(getIntent().hasExtra("service_chrg")) {
+            amount= getIntent().getStringExtra("service_chrg");
+        }
         btnsend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +102,7 @@ public class JumpstartActivity extends AppCompatActivity {
             RequestBody body = new FormBody.Builder()
                     .add(Constants.mobileno, GetSet.getMobileno())
                     .add("servicename", "Jump Start")
+                    .add("service_amount", amount)
                     .add("client_location", lat+","+lon)
                     .build();
             Request request = new Request.Builder()

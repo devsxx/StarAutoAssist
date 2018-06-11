@@ -36,6 +36,7 @@ public class TyreActivity extends AppCompatActivity {
     private Button btnsend;
     GPSTracker gpsTracker;
     Double lat=0.0,lon=0.0;
+    String amount="";
     String latlon;
 
     @Override
@@ -52,6 +53,9 @@ public class TyreActivity extends AppCompatActivity {
         lon=gpsTracker.getLongitude();
         latlon=lat.toString().trim()+lon.toString().trim();
 
+        if(getIntent().hasExtra("service_chrg")) {
+            amount= getIntent().getStringExtra("service_chrg");
+        }  String chrg=getIntent().getStringExtra("");
         btnsend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +103,7 @@ public class TyreActivity extends AppCompatActivity {
             RequestBody body = new FormBody.Builder()
                     .add(Constants.mobileno, GetSet.getMobileno())
                     .add("servicename", "Flat Tyre")
+                    .add("service_amount", amount)
                     .add("client_location", lat+","+lon)
                     .build();
             Request request = new Request.Builder()

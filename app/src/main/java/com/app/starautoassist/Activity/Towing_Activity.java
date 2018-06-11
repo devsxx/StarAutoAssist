@@ -91,6 +91,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     AutoCompleteTextView from, to;
     GPSTracker gps;
     TextView submitbtn;
+    String amount="";
     String buttonstring="";
     RelativeLayout fromLayout, toLayout, next;
     private LatLng center;
@@ -100,6 +101,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     private List<Address> addresses;
     private CountDownTimer mDragTimer;
     private boolean mTimerIsRunning = false;
+    android.support.v7.app.AlertDialog.Builder towbuilder;
+    android.support.v7.app.AlertDialog towdialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +119,9 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         setFrom = (TextView) findViewById(R.id.fromset);
         setTo = (TextView) findViewById(R.id.toset);
 
+        if(getIntent().hasExtra("service_chrg")) {
+            amount= getIntent().getStringExtra("service_chrg");
+        }
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -160,7 +166,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         screenHeight = height * 60 / 100;
         screenWidth = weight * 80 / 100;
 
-        android.support.v7.app.AlertDialog.Builder towbuilder = new android.support.v7.app.AlertDialog.Builder(this);
+        towbuilder = new android.support.v7.app.AlertDialog.Builder(this);
         LayoutInflater towlayoutInflater = this.getLayoutInflater();
         View towview = towlayoutInflater.inflate(R.layout.tow_service_dialog, null);
 
@@ -168,7 +174,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         towbuilder.setTitle("Select type of Tow Truck :");
         towbuilder.setCancelable(false);
 
-        final android.support.v7.app.AlertDialog towdialog = towbuilder.create();
+        towdialog  = towbuilder.create();
         towdialog.show();
 
         ImageButton ivwheellift = towdialog.findViewById(R.id.tow_iv_wheellift);
@@ -386,6 +392,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     protected void onResume() {
         Starautoassist_Application.registerReceiver(this);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+
             Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
             gps = new GPSTracker(Towing_Activity.this);
             if (flat == 0 && flon == 0) {
@@ -651,6 +658,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                     .add(Constants.mobileno, GetSet.getMobileno())
                     .add("servicename", "Towing")
                     .add("towtype", towtype)
+                    .add("service_amount", amount)
                     .add("pickup_location", flat+","+flon)
                     .add("drop_location", tlat+","+tlon)
                     .build();

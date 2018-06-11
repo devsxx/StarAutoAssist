@@ -52,6 +52,7 @@ public class Fuel_Activity extends AppCompatActivity {
     List<String> perltr=new ArrayList<String>();
     String fuelprice;
     Double lat=0.0,lon=0.0;
+    String amount="";
     GPSTracker gps;
 
     @Override
@@ -65,6 +66,10 @@ public class Fuel_Activity extends AppCompatActivity {
         spinnerfuel = findViewById(R.id.spin_fuel);
         tvlitre = findViewById(R.id.fuel_tv_litre);
         btnproceed = findViewById(R.id.fuel_btn_proceed);
+
+        if(getIntent().hasExtra("service_chrg")) {
+            amount= getIntent().getStringExtra("service_chrg");
+        }
         btnproceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,6 +245,7 @@ public class Fuel_Activity extends AppCompatActivity {
             RequestBody body = new FormBody.Builder()
                     .add(Constants.mobileno, GetSet.getMobileno())
                     .add("servicename", "Out of Fuel")
+                    .add("service_amount", amount)
                     .add("fueltype", spinnerfuel.getSelectedItem().toString())
                     .add("amount", spinnerprice.getSelectedItem().toString())
                     .add("client_location", lat+","+lon)

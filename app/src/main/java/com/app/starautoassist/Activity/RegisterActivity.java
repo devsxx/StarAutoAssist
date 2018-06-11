@@ -360,7 +360,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
                     Toast.makeText(getApplicationContext(),"Registration successfully",Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(context,HomeActivity.class);
+                    Intent intent=new Intent(context,LoginActivity.class);
                     startActivity(intent);
                     finish();
 

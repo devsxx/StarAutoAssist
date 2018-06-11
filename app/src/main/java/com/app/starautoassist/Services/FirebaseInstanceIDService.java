@@ -43,7 +43,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
         // sending reg id to your server
         if(!Constants.pref.getString("regId","").equalsIgnoreCase(refreshedToken)) {
-         if(!GetSet.getMobileno().equalsIgnoreCase(""))
+         if(GetSet.getMobileno()!=null)
             sendRegistrationToServer(refreshedToken);
         }
 
