@@ -32,17 +32,16 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
     private static final String TAG = FirebaseInstanceIDService.class.getSimpleName();
     public Starautoassist_Application aController = null;
 
+
     @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
-        Constants.editor = Constants.pref.edit();
         // Saving reg id to shared preferences
         storeRegIdInPref(refreshedToken);
-
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
         // sending reg id to your server
-        if(!Constants.pref.getString("regId","").equalsIgnoreCase(refreshedToken)) {
+        if(!pref.getString("regId","").equalsIgnoreCase(refreshedToken)) {
          if(GetSet.getMobileno()!=null)
             sendRegistrationToServer(refreshedToken);
         }
@@ -65,11 +64,12 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
     }
 
     private void storeRegIdInPref(String token) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
         Log.i(TAG, "Device registered: regId = " + token);
         Constants.REGISTER_ID=token;
+        SharedPreferences pref = getApplication().getSharedPreferences(Constants.SHARED_PREF, 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("regId", token);
+        editor.apply();
         editor.commit();
     }
 
