@@ -9,11 +9,12 @@ public class Constants {
     public static SharedPreferences.Editor editor;
 
     /** FaceBook App id **/
-    public static final String App_ID = "526541597734018";
+    public static final String App_ID = "203876700441500";
 
     //Keywords
     public static String mobileno="mobileno";
     public static String password="password";
+    public static String userimg="userimg";
     public static String otp="otp";
     public static String firstname="firstname";
     public static String lastname="lastname";
@@ -34,10 +35,10 @@ public class Constants {
     public static final String CONSUMER_SECRET = "BjqT5aGwG4lvY4sOCyT8fO61kNvw0yH07HLUTVax3nVxbbT9fH";
 
     /** Push notification key **/
-    public static final String SENDER_ID = "24023470057";
+    public static final String SENDER_ID = "876306079294";
     public static String REGISTER_ID="";
     public static String ANDROID_ID="";
-    // PUSH API KEY AIzaSyCrpkOI5Trgk_GS7fqnE3o3I9ua7NXdXoU //
+    // PUSH API KEY AIzaSyBMsq7PBaRZpNP_0B27cuKtC0hfZK5kuBs //
     // global topic to receive app wide push notifications
     public static final String TOPIC_GLOBAL = "global";
     // broadcast receiver intent filters

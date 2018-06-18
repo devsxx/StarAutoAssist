@@ -101,10 +101,18 @@ public class ProfileActivity extends AppCompatActivity {
         Constants.editor = Constants.pref.edit();
         if(GetSet.isIsLogged()){
             image=Constants.pref.getString("userimage",null);
-            Glide
-                    .with(ProfileActivity.this)
-                    .load(Constants.BaseURL + "images/users/" + image)
-                    .into(circularImageView);
+            if(image.equalsIgnoreCase("")) {
+                Glide
+                        .with(ProfileActivity.this)
+                        .load(R.drawable.logo)
+                        .into(circularImageView);
+            }else{
+                Glide
+                        .with(ProfileActivity.this)
+                        .load(Constants.BaseURL + "images/users/" + image)
+                        .into(circularImageView);
+            }
+
             etphone.setText(GetSet.getMobileno());
             etphone.setEnabled(false);
             etfirstname.setText(GetSet.getFirstname());
@@ -136,7 +144,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onResume();
         if (EditProfilePhoto.editPhoto) {
             EditProfilePhoto.editPhoto = false;
-            //   new UploadImage().execute(EditProfilePhoto.imgPath);
+               new UploadImg().execute(EditProfilePhoto.imgPath);
         }
     }
 

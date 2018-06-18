@@ -2,6 +2,7 @@ package com.app.starautoassist.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,14 @@ public class SentRequestActivity extends AppCompatActivity {
         recyclerView=(RecyclerView)findViewById(R.id.req_recyclerview);
 
         new Get_Sent_Services_Async(SentRequestActivity.this).execute();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(SentRequestActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public class Get_Sent_Services_Async extends AsyncTask<String, Integer, String> {

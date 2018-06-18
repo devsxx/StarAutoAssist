@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="3dp"
+                android:textStyle="bold"
                 android:hint="Service Type"
                 android:textColor="#808080"
                 android:textSize="15sp" />
@@ -42,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="3dp"
+        android:textStyle="bold"
         android:hint="Request Time"
         android:textColor="#808080"
         android:textSize="15sp" />
@@ -60,6 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="3dp"
+        android:textStyle="bold"
         android:hint="Status"
         android:textColor="#808080"
         android:textSize="15sp" />

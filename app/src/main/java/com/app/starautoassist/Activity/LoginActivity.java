@@ -2,13 +2,14 @@ package com.app.starautoassist.Activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -19,8 +20,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,16 +38,38 @@ import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
-import com.app.starautoassist.Services.FirebaseInstanceIDService;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,21 +81,30 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.app.starautoassist.Others.Starautoassist_Application.dialog;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private EditText mobileno,mobilenoforget, etpass,new_password,confirm_password;
     private Button btnlogin, btngoogle, btnfacebook,updatepassbtn;
     private TextView tvforgot, tvcreate;
+    // for google plus //
+    private static final int RC_SIGN_IN = 9001;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mSignInClicked;
+    private ProgressDialog mConnectionProgressDialog;
     GPSTracker gps;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     android.app.AlertDialog alertDialog;
     LocationManager locationManager;
     ScrollView scrollView;
+    private AccessToken mAccessToken;
+    CallbackManager callbackManager;
     EditText etotpphone,confirmotpcode;
     String mobile_no="";
     Button btnotp,btnconfirm;
-    LinearLayout linearLayout,resetpasslayout;
+    LinearLayout linearLayout,resetpasslayout,fb,google;
     RelativeLayout relativeLayout;
     SharedPreferences pref ;
     SharedPreferences.Editor editor;
@@ -85,6 +117,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         setContentView(R.layout.activity_login);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         pref= getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
         editor= pref.edit();
         Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
@@ -116,7 +151,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
 
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.app.starautoassist",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
 
+        } catch (NoSuchAlgorithmException e) {
+
+        }
         changeStatusBarColor();
         scrollView = findViewById(R.id.loginscroll);
         linearLayout = findViewById(R.id.otplayout);
@@ -126,13 +174,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tvcreate = findViewById(R.id.log_tv_create);
         tvforgot = findViewById(R.id.log_tv_forgot);
         btnlogin = findViewById(R.id.log_btn_login);
-        btngoogle = findViewById(R.id.btn_google);
-        btnfacebook = findViewById(R.id.btn_facebook);
         mobilenoforget = findViewById(R.id.et_otp_phone);
         new_password = findViewById(R.id.newpass);
         confirm_password = findViewById(R.id.confirmpass);
         updatepassbtn = findViewById(R.id.update_password);
         btnotp = findViewById(R.id.btn_otp);
+        fb=(LinearLayout)findViewById(R.id.fbLay);
+        google=(LinearLayout)findViewById(R.id.gpLay);
+
         confirmotpcode = findViewById(R.id.confirmotp_code);
         btnconfirm = findViewById(R.id.btn_confirm);
         btnotp.setOnClickListener(this);
@@ -141,8 +190,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnlogin.setOnClickListener(this);
         tvcreate.setOnClickListener(this);
         tvforgot.setOnClickListener(this);
-        btngoogle.setOnClickListener(this);
-        btnfacebook.setOnClickListener(this);
+        fb.setOnClickListener(this);
+        google.setOnClickListener(this);
+
+        loginToFacebook();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(LoginActivity.this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .build();
+        mConnectionProgressDialog = new ProgressDialog(this);
+        mConnectionProgressDialog.setMessage("Signing in...");
+        mConnectionProgressDialog.setCanceledOnTouchOutside(false);
     }
 
     private void changeStatusBarColor() {
@@ -247,6 +308,179 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /** Funtions for login into G+ **/
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d("handleSignInResult", "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            try {
+                GoogleSignInAccount acct = result.getSignInAccount();
+
+                String personName = acct.getDisplayName();
+                String email = acct.getEmail();
+                String id = acct.getId();
+                String personPhoto = "";
+
+                if (acct.getPhotoUrl() == null){
+                    personPhoto = "";
+                } else {
+                    personPhoto = acct.getPhotoUrl().toString();
+                }
+
+                HashMap<String, String> gplusData = new HashMap<String, String>();
+
+                gplusData.put("email", email);
+                gplusData.put("firstName", personName);
+                gplusData.put("lastName", "");
+                gplusData.put("image", personPhoto);
+
+                Intent intent=new Intent(this,RegisterActivity.class);
+                intent.putExtra("data",gplusData);
+                startActivity(intent);
+                finish();
+
+                Log.v("personName", "personName" + personName);
+                Log.v("personPhoto", "personPhoto" + personPhoto);
+                Log.v("email", "email" + email);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Signed out, show unauthenticated UI.
+        }
+    }
+
+    /**
+     * Function to login into facebook
+     * */
+    @SuppressWarnings("deprecation")
+    public void loginToFacebook() {
+
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(
+                                            JSONObject profile,
+                                            GraphResponse response) {
+                                        final HashMap<String, String> fbdata = new HashMap<String, String>();
+                                        Log.v("json", "object" + profile);
+                                        // Application code
+                                        try {
+                                            if (profile.has("email")) {
+                                                // getting name of the user
+                                                final String name = profile.getString("name");
+
+                                                // getting email of the user
+                                                final String email = profile.getString("email");
+
+                                                // getting userId of the user
+                                                final String userId = profile.getString("id");
+
+                                                // getting firstName of the user
+                                                final String firstName = profile.getString("first_name");
+
+                                                // getting lastName of the user
+                                                final String lastName = profile.getString("last_name");
+
+                                                URL image_value = null;
+                                                try {
+                                                    image_value = new URL("http://graph.facebook.com/" + userId + "/picture?type=large");
+
+                                                } catch (MalformedURLException e) {
+                                                    e.printStackTrace();
+                                                }
+
+
+                                                fbdata.put("id", userId);
+                                                fbdata.put("email", email);
+                                                fbdata.put("firstName", firstName);
+                                                fbdata.put("lastName", lastName);
+                                                fbdata.put("image", "http://graph.facebook.com/" + userId + "/picture?type=large");
+                                                Log.v("fbdata", "" + fbdata);
+                                                LoginActivity.this.runOnUiThread(new Runnable() {
+
+                                                    @SuppressWarnings("unchecked")
+                                                    @Override
+                                                    public void run() {
+                                                        if (dialog != null && dialog.isShowing()) {
+                                                            dialog.dismiss();
+                                                        }
+                                                        Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
+                                                        intent.putExtra("data",fbdata);
+                                                        startActivity(intent);
+                                                        finish();
+
+                                                    }
+                                                });
+                                            }else{
+                                                Toast.makeText(LoginActivity.this, "Please check your Facebook permissions",Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,email,first_name,last_name");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Toast.makeText(LoginActivity.this, "Facebook - Cancelled", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Toast.makeText(LoginActivity.this, "Facebook - " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (error instanceof FacebookAuthorizationException) {
+                            if (com.facebook.AccessToken.getCurrentAccessToken() != null) {
+                                LoginManager.getInstance().logOut();
+                            }
+                        }
+                    }
+                });
+                    }
+
+
+
+
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        Log.v("onConnectionFailed", "onConnectionFailed");
+        if (mSignInClicked) {
+            mConnectionProgressDialog.dismiss();
+            // The user has already clicked 'sign-in' so we attempt to resolve all
+            // errors until the user is signed in, or they cancel.
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -287,44 +521,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 scrollView.setVisibility(View.GONE);
                 linearLayout.setVisibility(View.VISIBLE);
                 break;
-            case R.id.btn_google:
-
-               /* final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                LayoutInflater layoutInflater = this.getLayoutInflater();
-                View view = layoutInflater.inflate(R.layout.rating_alert_dialog, null);
-
-                builder.setView(view);
-                builder.setTitle("Rate & Review Us :");
-                builder.setCancelable(false);
-
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-
-                final MultiAutoCompleteTextView review = dialog.findViewById(R.id.review);
-                final SmileRating smileRating = dialog.findViewById(R.id.smile_rating);
-                Button btnsubmit = dialog.findViewById(R.id.btn_submit_rating);
-
-                btnsubmit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        dialog.dismiss();
-                    }
-                });
-
-                smileRating.setOnRatingSelectedListener(new SmileRating.OnRatingSelectedListener() {
-                    @Override
-                    public void onRatingSelected(int level, boolean reselected) {
-
-                        review.setText(level + "");
-                    }
-                });
-*/
-
+            case R.id.fbLay:
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
                 break;
-            case R.id.btn_facebook:
-
-
+            case R.id.gpLay:
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
                 break;
         }
 
@@ -354,6 +556,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             alertDialog.show();
         }
     }
+
+
     public class VerifyOTP extends AsyncTask<String, Integer, String> {
         private Context context;
         private String mobileno, otp;

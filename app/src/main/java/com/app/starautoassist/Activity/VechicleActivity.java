@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.app.starautoassist.Others.Constants;
@@ -33,11 +34,12 @@ import okhttp3.Response;
 
 public class VechicleActivity extends AppCompatActivity {
 
-    private SearchableSpinner spinnerbrand, spinnertype;
+    private Spinner spinnerbrand, spinnertype;
     private Button btnsubmit;
     private EditText etmodel, etplate;
     String brandname,modelname,plateno;
     Integer brandposition;
+    ArrayAdapter<String> brandadapter;
     public static SharedPreferences pref;
     public static SharedPreferences.Editor editor;
     String mobileno;
@@ -64,18 +66,18 @@ public class VechicleActivity extends AppCompatActivity {
         etmodel = findViewById(R.id.vechicle_et_carmodel);
         etplate = findViewById(R.id.vechicle_et_plateno);
         spinnerbrand = findViewById(R.id.spin_carbrand);
-        spinnerbrand.setPositiveButton("OK");
-        ArrayAdapter<String> brandadapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, brand);
+        //spinnerbrand.setPositiveButton("OK");
+        brandadapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, brand);
         brandadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerbrand.setAdapter(brandadapter);
         Boolean isCarAdded=pref.getBoolean("isCarAdded",false);
         if(isCarAdded) {
             Integer pos = pref.getInt("brandposition", 0);
-           /* String brand=pref.getString("brand", null);
-            if ( brand!= null) {
-                int spinnerPosition = brandadapter.getPosition(brand);
-                spinnerbrand.setSelection(spinnerPosition);
-            }*/
+            String compareValue=pref.getString("brand","");
+            if (compareValue != null) {
+                int spinnerPosition = brandadapter.getPosition(compareValue);
+            }
+            spinnerbrand.setSelection(pos);
             etmodel.setText(pref.getString("model", null));
             etplate.setText(pref.getString("plateno", null));
             btnsubmit.setText("Update");
@@ -182,9 +184,8 @@ public class VechicleActivity extends AppCompatActivity {
                     editor.putString("plateno",plateno);
                     editor.commit();
                     editor.apply();
-                    Intent intent=new Intent(context,HomeActivity.class);
-                    startActivity(intent);
                     finish();
+
                     Toast.makeText(getApplicationContext(),"Car details added successfully",Toast.LENGTH_SHORT).show();
 
                 }else Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();

@@ -3,6 +3,7 @@ package com.app.starautoassist.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -43,7 +45,9 @@ import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.NotificationUtilz;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
+import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,6 +95,15 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerLayout = navigationView.getHeaderView(0);
+        CircularImageView imageView=(CircularImageView)headerLayout.findViewById(R.id.nav_iv);
+        String url=Constants.BaseURL + "images/users/" + GetSet.getImageUrl();
+        Glide
+                .with(HomeActivity.this)
+                .load(url)
+                .into(imageView);
+        TextView username=(TextView)headerLayout.findViewById(R.id.nav_tv_name);
+        username.setText(GetSet.getFirstname());
         navigationView.setNavigationItemSelectedListener(this);
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -119,10 +132,11 @@ public class HomeActivity extends AppCompatActivity
         Log.e("Registered", "Firebase reg id: " + regId);
 
         if (!TextUtils.isEmpty(regId))
-            Toast.makeText(getApplicationContext(), "Push notification Reg id:  " + regId, Toast.LENGTH_LONG).show();
+            Log.d("Hoome", "displayFirebaseRegId: "+regId);
         else
             Toast.makeText(getApplicationContext(), "Firebase Reg Id is not received yet!", Toast.LENGTH_LONG).show();
     }
+
 
 
     @Override
@@ -152,7 +166,21 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+            alertDialog.setTitle("Exiting App Confirmation");
+            alertDialog.setMessage("Are you sure you want to Exit?");
+            alertDialog.setIcon(R.drawable.exit);
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(@NonNull DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            alertDialog.show();
         }
     }
 
@@ -197,20 +225,29 @@ public class HomeActivity extends AppCompatActivity
             Intent vechicleintent = new Intent(this, VechicleActivity.class);
             startActivity(vechicleintent);
 
-        } else if (id == R.id.nav_sentrequest) {
+        } else if (id == R.id.nav_acceptedrequest) {
+
+            Toast.makeText(this, "This feature will be available soon", Toast.LENGTH_SHORT).show();
+
+        }
+        else if (id == R.id.nav_sentrequest) {
 
             Intent sentrequestintent = new Intent(this, SentRequestActivity.class);
             startActivity(sentrequestintent);
 
         } else if (id == R.id.nav_servicehistory) {
 
-            Intent servicehistoryintent = new Intent(this, ServiceHistoryActivity.class);
+        /*    Intent servicehistoryintent = new Intent(this, ServiceHistoryActivity.class);
             startActivity(servicehistoryintent);
+            finish();*/
+            Toast.makeText(this, "This feature will be available soon", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_paymenthistory) {
 
-            Intent paymenthistoryintent = new Intent(this, PaymentHistoryActivity.class);
-            startActivity(paymenthistoryintent);
+//            Intent paymenthistoryintent = new Intent(this, PaymentHistoryActivity.class);
+//            startActivity(paymenthistoryintent);
+//            finish();
+            Toast.makeText(this, "This feature will be available soon", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_wallet) {
 
@@ -255,7 +292,6 @@ public class HomeActivity extends AppCompatActivity
             });
 
         } else if (id == R.id.nav_share) {
-
             Intent shareintent = new Intent(Intent.ACTION_SEND);
             shareintent.setType("text/plain");
             startActivity(Intent.createChooser(shareintent, "Share Via"));

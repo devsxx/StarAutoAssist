@@ -78,6 +78,28 @@
              Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more.
         -->
+        <activity
+            android:name="com.facebook.FacebookActivity"
+        android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        android:label="@string/app_name" />
+        <provider
+            android:authorities="com.facebook.app.FacebookContentProvider203876700441500"
+            android:name="com.facebook.FacebookContentProvider"
+        android:exported="true" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
@@ -92,41 +114,30 @@
             android:value="AIzaSyB7YEWMLPEgfONfWbsRX1R7IGgUhxXB8Bo" />
 
         <activity
-            android:name=".Activity.Towing_Activity"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:name=".Activity.Towing_Activity"/>
         <activity
             android:name=".Activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activity.ProfileActivity"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:name=".Activity.ProfileActivity" />
         <activity
-            android:name=".Activity.SentRequestActivity"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:name=".Activity.SentRequestActivity"            />
         <activity
-            android:name=".Activity.CancelRequestActivity"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:name=".Activity.CancelRequestActivity" />
         <activity
-            android:name=".Activity.ServiceHistoryActivity"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:name=".Activity.ServiceHistoryActivity"/>
         <activity
-            android:name=".Activity.PaymentHistoryActivity"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:name=".Activity.PaymentHistoryActivity" />
         <activity
-            android:name=".Activity.VechicleActivity"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:name=".Activity.VechicleActivity" />
         <activity
-            android:name=".Activity.Fuel_Activity"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:name=".Activity.Fuel_Activity"/>
         <activity
-            android:name=".Activity.JumpstartActivity"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:name=".Activity.JumpstartActivity"/>
         <activity
-            android:name=".Activity.TyreActivity"
-            android:parentActivityName=".Activity.HomeActivity" />
-        <activity android:name=".Activity.NotificationServiceActivity"
-            android:parentActivityName=".Activity.HomeActivity"/>
+            android:name=".Activity.TyreActivity" />
+        <activity android:name=".Activity.NotificationServiceActivity"/>
         <service
             android:name=".Services.Tracker_Service"
             android:enabled="true"

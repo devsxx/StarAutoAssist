@@ -164,32 +164,62 @@
                 android:id="@+id/google_facebook_layout"
                 android:layout_width="match_parent"
                 android:visibility="visible"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:layout_weight="1"
-                    android:id="@+id/btn_google"
-                    android:text="Google"
-                    android:layout_marginRight="10dp"
-                    android:textColor="#ffffff"
-                    android:textStyle="bold"
-                    android:background="@drawable/google_button"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/fbLay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fb_bg"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:id="@+id/fbBtn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:src="@drawable/fb_icon" />
 
-                <Button
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:id="@+id/btn_facebook"
-                    android:textStyle="bold"
-                    android:textColor="#ffffff"
-                    android:background="@drawable/facebook_button"
-                    android:text="Facebook"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/fbTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:paddingEnd="40dp"
+                        android:text="@string/signup_with_facebook"
+                        android:textSize="16sp"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/gpLay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/gp_bg"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/gpBtn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:src="@drawable/g_icon" />
+
+                    <TextView
+                        android:id="@+id/gpTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingEnd="40dp"
+                        android:text="@string/signup_with_google"
+                        android:textSize="16sp"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
 
             </LinearLayout>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.TyreActivity">
+    tools:context=".Activity.JumpstartActivity">
 
     <LinearLayout
         android:gravity="center"
@@ -18,7 +18,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp" />
     </LinearLayout>
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_below="@+id/image_layout"
         android:id="@+id/fare_layout"
         android:orientation="horizontal"
@@ -34,15 +34,17 @@
             android:background="@drawable/border_empty_edittext"
             android:layout_width="match_parent"
             android:layout_height="40dp" />
+
         <TextView
             android:id="@+id/tyre_tv_fare"
-            android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:textColor="@color/black"
-            android:text="250 RM"
             android:layout_weight="1"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:text="250 RM"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:visibility="visible" />
         <TextView
             android:padding="10dp"
             android:text="/ Km"
@@ -51,11 +53,10 @@
             android:layout_width="match_parent"
             android:layout_height="40dp" />
     </LinearLayout>
-
+-->
     <LinearLayout
-        android:layout_below="@+id/fare_layout"
-        android:orientation="horizontal"
-        android:weightSum="3"
+        android:layout_below="@+id/image_layout"
+        android:orientation="vertical"
         android:gravity="center"
         android:id="@+id/service_layout"
         android:layout_marginTop="25dp"
@@ -63,21 +64,32 @@
         android:layout_height="wrap_content">
         <TextView
             android:text="Service Charge"
-            android:layout_weight="2"
+            android:gravity="center"
             android:padding="10dp"
+            android:textSize="16sp"
             android:background="@drawable/border_empty_edittext"
             android:layout_width="match_parent"
             android:layout_height="40dp" />
+
         <TextView
-            android:layout_marginRight="120dp"
-            android:id="@+id/tyre_tv_charge"
-            android:textAlignment="center"
+            android:id="@+id/jumpstart_tv_charge"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:text="price"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            android:text="720 RM"
-            android:layout_weight="1"
-            android:padding="10dp" />
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/note"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="11sp"
+            android:gravity="right"
+            android:text="*extra charges may be applied"
+            android:textColor="@color/black"
+            android:visibility="visible" />
 
     </LinearLayout>
     <Button
@@ -85,7 +97,7 @@
         android:text="Send Request"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:id="@+id/tyre_btn_send"
+        android:id="@+id/jumpstart_btn_send"
         android:layout_alignParentBottom="true"
         android:background="@drawable/round_button"
         android:layout_width="match_parent"

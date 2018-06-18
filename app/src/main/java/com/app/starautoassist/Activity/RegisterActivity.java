@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import dmax.dialog.SpotsDialog;
 import okhttp3.Call;
@@ -49,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private SpotsDialog progressDialog;
     EditText etotpphone,confirmotpcode;
     Button btnotp,btnconfirm;
+    HashMap<String,String> socialMap;
     LinearLayout otpLay;
 
 
@@ -69,12 +71,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btnregister.setOnClickListener(this);
         progressDialog = new SpotsDialog(this, R.style.Custom);
 
+        Intent intent=getIntent();
+        if(intent.hasExtra("data")) {
+            socialMap = (HashMap<String, String>) getIntent().getExtras().get("gdata");
+            etfirstname.setText(socialMap.get("firstName"));
+            etlastname.setText(socialMap.get("lastName"));
+            etemail.setText(socialMap.get("email"));
+
+        }
+
         etotpphone = findViewById(R.id.et_otp_phone);
         btnotp = findViewById(R.id.btn_otp);
         confirmotpcode = findViewById(R.id.confirmotp_code);
         btnconfirm = findViewById(R.id.btn_confirm);
         btnotp.setOnClickListener(this);
         btnconfirm.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -302,7 +315,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public class Register_Asyc extends AsyncTask<String, Integer, String> {
         private Context context;
         private String url = Constants.BaseURL + Constants.registration;
-
+        String img="";
         @Nullable
         String user_id;
 
@@ -320,6 +333,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected String doInBackground(String... params) {
             String jsonData = null;
+            if(!socialMap.get("image").equalsIgnoreCase("")||socialMap.get("image")!=null)
+                img=socialMap.get("image");
             Response response = null;
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
@@ -328,6 +343,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     .add(Constants.lastname, etlastname.getText().toString().trim())
                     .add(Constants.email, etemail.getText().toString().trim())
                     .add(Constants.password, etconfirmpassword.getText().toString().trim())
+                    .add(Constants.userimg,img)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
