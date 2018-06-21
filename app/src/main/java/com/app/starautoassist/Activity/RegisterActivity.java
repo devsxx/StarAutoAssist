@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.hsalf.smilerating.SmileRating;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -44,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private MaterialEditText etemail, etfirstname, etlastname, etpassword, etconfirmpassword;
     private Button btnregister;
-    private RelativeLayout relativeLayout;
+    private RelativeLayout relativeLayout,parentlayout;
     Boolean verified=false;
     String mobile_no="";
     private SpotsDialog progressDialog;
@@ -68,16 +70,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btnregister = findViewById(R.id.reg_btn_register);
         otpLay=(LinearLayout)findViewById(R.id.otplayout);
         relativeLayout=(RelativeLayout) findViewById(R.id.relative_layout);
+        parentlayout=(RelativeLayout) findViewById(R.id.parentLay);
         btnregister.setOnClickListener(this);
         progressDialog = new SpotsDialog(this, R.style.Custom);
 
         Intent intent=getIntent();
         if(intent.hasExtra("data")) {
-            socialMap = (HashMap<String, String>) getIntent().getExtras().get("gdata");
+            socialMap = (HashMap<String, String>) getIntent().getExtras().get("data");
             etfirstname.setText(socialMap.get("firstName"));
             etlastname.setText(socialMap.get("lastName"));
             etemail.setText(socialMap.get("email"));
-
         }
 
         etotpphone = findViewById(R.id.et_otp_phone);
@@ -86,8 +88,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btnconfirm = findViewById(R.id.btn_confirm);
         btnotp.setOnClickListener(this);
         btnconfirm.setOnClickListener(this);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // For Internet checking
+        Starautoassist_Application.registerReceiver(RegisterActivity.this);
+    }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // For Internet disconnect checking
+        Starautoassist_Application.unregisterReceiver(RegisterActivity.this);
     }
 
     @Override
@@ -333,8 +346,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected String doInBackground(String... params) {
             String jsonData = null;
-            if(!socialMap.get("image").equalsIgnoreCase("")||socialMap.get("image")!=null)
-                img=socialMap.get("image");
             Response response = null;
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
@@ -343,7 +354,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     .add(Constants.lastname, etlastname.getText().toString().trim())
                     .add(Constants.email, etemail.getText().toString().trim())
                     .add(Constants.password, etconfirmpassword.getText().toString().trim())
-                    .add(Constants.userimg,img)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -375,10 +385,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
-                    Toast.makeText(getApplicationContext(),"Registration successfully",Toast.LENGTH_SHORT).show();
+                    GetSet.setIsLogged(true);
+                    Constants.editor.putBoolean("isLogged", true);
+                    Constants.editor.commit();
+                    Constants.editor.apply();
+                    Toast.makeText(getApplicationContext(),"Registered successfully",Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(context,LoginActivity.class);
                     startActivity(intent);
                     finish();
+
+
 
                 }else
                 {

@@ -31,7 +31,7 @@ public class SplashActivity extends Activity {
                 MODE_PRIVATE);
         editor = pref.edit();
         if (Starautoassist_Application.isNetworkAvailable(SplashActivity.this)) {
-        }
+
         new Handler().postDelayed(new Runnable() {
 
             @Override
@@ -45,6 +45,7 @@ public class SplashActivity extends Activity {
                         R.anim.fade_out);
             }
         }, SPLASH_TIME_OUT);
+    }
     }
 
 

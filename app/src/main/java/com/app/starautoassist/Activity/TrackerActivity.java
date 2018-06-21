@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.Services.Tracker_Service;
 
 public class TrackerActivity extends Activity {
@@ -43,6 +44,19 @@ public class TrackerActivity extends Activity {
     private void startTrackerService() {
         startService(new Intent(this, Tracker_Service.class));
         finish();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // For Internet checking
+        Starautoassist_Application.registerReceiver(TrackerActivity.this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // For Internet disconnect checking
+        Starautoassist_Application.unregisterReceiver(TrackerActivity.this);
     }
 
     @Override

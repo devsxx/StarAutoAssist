@@ -97,10 +97,7 @@ public class Fuel_Activity extends AppCompatActivity {
                 ArrayAdapter<String> adapterprice = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, avail_amount);
                 adapterprice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerprice.setAdapter(adapterprice);
-                if(position==0){
-                  fuelprice=perltr.get(0);
-                }
-                else if (fuletype.get(position).equalsIgnoreCase("petrol")){
+                if (fuletype.get(position).equalsIgnoreCase("petrol")){
                      fuelprice = perltr.get(position);
                 }else if (fuletype.get(position).equalsIgnoreCase("diesel")){
                     fuelprice = perltr.get(position);
@@ -198,8 +195,6 @@ public class Fuel_Activity extends AppCompatActivity {
                         "success")) {
                     String data=jonj.getString("data");
                     JSONArray array=new JSONArray(data);
-                    fuletype.add(0,"Select Fuel Type");
-                    perltr.add(0,"0");
                     for(int i=0;i<array.length();i++) {
                         JSONObject object = array.getJSONObject(i);
                         String type = object.getString("sub_category");
@@ -210,7 +205,6 @@ public class Fuel_Activity extends AppCompatActivity {
 
                     JSONObject obj=array.getJSONObject(1);
                     String amout=obj.getString("rate");
-                    avail_amount.add(0,"Select amount");
                     avail_amount = Arrays.asList(amout.split(","));
                     ArrayAdapter<String> adapterfuel = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,fuletype);
                     adapterfuel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -364,7 +358,19 @@ public class Fuel_Activity extends AppCompatActivity {
         }
         return true;
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // For Internet checking
+        Starautoassist_Application.registerReceiver(Fuel_Activity.this);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // For Internet disconnect checking
+        Starautoassist_Application.unregisterReceiver(Fuel_Activity.this);
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {

@@ -78,8 +78,9 @@ public class ProfileActivity extends AppCompatActivity {
     String imagepath = "";
     private Boolean upflag = false;
     String fname;
-    String image="";
+    String image = "", imageurl = "";
     Button submitbtn;
+    String mobileno = "";
     String uploadedImage = "", viewUrl = "";
     private ProgressDialog pDialog;
     private static final String TAG = "ProfileActivity";
@@ -96,33 +97,13 @@ public class ProfileActivity extends AppCompatActivity {
         etlastname = findViewById(R.id.et_profile_lastname);
         etaddress = findViewById(R.id.et_profile_address);
         etemail = findViewById(R.id.et_profile_email);
-        submitbtn=(Button) findViewById(R.id.btn_profile_save);
-        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
+        submitbtn = (Button) findViewById(R.id.btn_profile_save);
+        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist", MODE_PRIVATE);
         Constants.editor = Constants.pref.edit();
-        if(GetSet.isIsLogged()){
-            image=Constants.pref.getString("userimage",null);
-            if(image.equalsIgnoreCase("")) {
-                Glide
-                        .with(ProfileActivity.this)
-                        .load(R.drawable.logo)
-                        .into(circularImageView);
-            }else{
-                Glide
-                        .with(ProfileActivity.this)
-                        .load(Constants.BaseURL + "images/users/" + image)
-                        .into(circularImageView);
-            }
 
-            etphone.setText(GetSet.getMobileno());
-            etphone.setEnabled(false);
-            etfirstname.setText(GetSet.getFirstname());
-            etlastname.setText(GetSet.getLastname());
-            etemail.setText(GetSet.getEmail());
-            etaddress.setText(GetSet.getAddress());
-
-        }
-
-
+        mobileno = Constants.pref.getString("mobileno", "");
+        //Async for getting profile data
+        new Get_Profile_Async(ProfileActivity.this).execute();
         circularImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,20 +113,65 @@ public class ProfileActivity extends AppCompatActivity {
         submitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Edit_Profile_Async(ProfileActivity.this,GetSet.getMobileno()).execute();
+                if (!etphone.getText().toString().trim().equalsIgnoreCase(""))
+                    new Edit_Profile_Async(ProfileActivity.this, GetSet.getMobileno()).execute();
+                else
+                    Toast.makeText(ProfileActivity.this, "Please enter mobile no", Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+
+    //Setting data on fields from aysnc result
+    private void setdata() {
+        if (!Constants.pref.getString("userimageurl", "").equalsIgnoreCase("")) {
+            image = Constants.pref.getString("userimageurl", "");
+            Glide
+                    .with(ProfileActivity.this)
+                    .load(image)
+                    .into(circularImageView);
+        } else if (!Constants.pref.getString("socialimage", "").equalsIgnoreCase("")) {
+            imageurl = Constants.pref.getString("socialimage", "");
+            Glide
+                    .with(ProfileActivity.this)
+                    .load(image)
+                    .into(circularImageView);
+        } else {
+            Glide
+                    .with(ProfileActivity.this)
+                    .load(R.drawable.logo)
+                    .into(circularImageView);
+        }
+
+        if (GetSet.getMobileno() != null && !GetSet.getMobileno().equalsIgnoreCase("")) {
+            etphone.setText(GetSet.getMobileno());
+            etphone.setEnabled(false);
+        } else {
+            etphone.setEnabled(true);
+        }
+        etfirstname.setText(GetSet.getFirstname());
+        etlastname.setText(GetSet.getLastname());
+        etemail.setText(GetSet.getEmail());
+        etaddress.setText(GetSet.getAddress());
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        // For Internet checking
+        Starautoassist_Application.registerReceiver(ProfileActivity.this);
         if (EditProfilePhoto.editPhoto) {
             EditProfilePhoto.editPhoto = false;
-               new UploadImg().execute(EditProfilePhoto.imgPath);
+            new UploadImg().execute(EditProfilePhoto.imgPath);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // For Internet disconnect checking
+        Starautoassist_Application.unregisterReceiver(ProfileActivity.this);
     }
 
     /**
@@ -249,7 +275,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-
     public class Edit_Profile_Async extends AsyncTask<String, Integer, String> {
         private Context context;
         private String mobileno;
@@ -286,12 +311,13 @@ public class ProfileActivity extends AppCompatActivity {
             Response response = null;
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
-                    .add(Constants.mobileno, GetSet.getMobileno())
+                    .add(Constants.mobileno, etphone.getText().toString().trim())
                     .add("firstname", firstname)
                     .add("lastname", lastname)
                     .add("email", email)
                     .add("address", address)
                     .add("userimage", image)
+                    .add("userimageurl", imageurl)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -323,11 +349,12 @@ public class ProfileActivity extends AppCompatActivity {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
-                    String data=jonj.getString("message");
-                    JSONArray array=new JSONArray(data);
-                    JSONObject object=array.getJSONObject(0);
+                    String data = jonj.getString("message");
+                    JSONArray array = new JSONArray(data);
+                    JSONObject object = array.getJSONObject(0);
                     GetSet.setIsLogged(true);
-                    GetSet.setImageUrl(object.getString("userimage"));
+                    GetSet.setImagename(object.getString("userimage"));
+                    GetSet.setImageUrl(object.getString("userimageurl"));
                     GetSet.setFirstname(object.getString("firstname"));
                     GetSet.setLastname(object.getString("lastname"));
                     GetSet.setMobileno(object.getString("mobileno"));
@@ -335,7 +362,8 @@ public class ProfileActivity extends AppCompatActivity {
                     GetSet.setAddress(object.getString("address"));
 
 
-                    Constants.editor.putString("userimage", GetSet.getImageUrl());
+                    Constants.editor.putString("userimage", GetSet.getImagename());
+                    Constants.editor.putString("userimageurl", GetSet.getImageUrl());
                     Constants.editor.putString("fname", GetSet.getFirstname());
                     Constants.editor.putString("lname", GetSet.getLastname());
                     Constants.editor.putString("mobileno", GetSet.getMobileno());
@@ -343,9 +371,9 @@ public class ProfileActivity extends AppCompatActivity {
                     Constants.editor.putString("address", GetSet.getAddress());
                     Constants.editor.commit();
 
-                        finish();
-                        Intent i = new Intent(ProfileActivity.this, HomeActivity.class);
-                        startActivity(i);
+                    finish();
+                    Intent i = new Intent(ProfileActivity.this, HomeActivity.class);
+                    startActivity(i);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -553,7 +581,7 @@ public class ProfileActivity extends AppCompatActivity {
                 status = jsonobject.getString("status");
                 if (status.equals("success")) {
                     image = jsonobject.getString("image");
-                    viewUrl = Constants.BaseURL + "images/users/" + image;
+                    imageurl = jsonobject.getString("imageurl");
 
                 }
 
@@ -575,9 +603,118 @@ public class ProfileActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v("editprofile", "imageupload" + uploadedImage);
-            Glide.with(ProfileActivity.this).load(viewUrl).into(circularImageView);
+            Glide.with(ProfileActivity.this).load(imageurl).into(circularImageView);
             pd.dismiss();
         }
 
+    }
+
+    public class Get_Profile_Async extends AsyncTask<String, Integer, String> {
+
+        private Context context;
+        private String url = Constants.BaseURL + Constants.getprofile;
+        ProgressDialog progress;
+
+        public Get_Profile_Async(Context ctx) {
+
+            context = ctx;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progress = new ProgressDialog(ProfileActivity.this);
+            progress.setMessage("Please wait ....");
+            progress.setTitle("Loading");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, mobileno)
+                    .add(Constants.email, GetSet.getEmail())
+                    .add(Constants.type, GetSet.getUser_type())
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            progress.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    String data = jonj.getString("message");
+                    JSONArray array = new JSONArray(data);
+                    JSONObject object = array.getJSONObject(0);
+                    GetSet.setIsLogged(true);
+                    GetSet.setClientid(object.getString("client_id"));
+                    GetSet.setUser_type(object.getString("type"));
+                    GetSet.setMobileno(object.getString("mobileno"));
+                    GetSet.setBrand(object.getString("brand"));
+                    GetSet.setModel(object.getString("model"));
+                    GetSet.setPlatenot(object.getString("plateno"));
+                    GetSet.setFirstname(object.getString("firstname"));
+                    GetSet.setLastname(object.getString("lastname"));
+                    GetSet.setEmail(object.getString("email"));
+                    GetSet.setAddress(object.getString("address"));
+                    GetSet.setImagename(object.getString("userimage"));
+                    GetSet.setImageUrl(object.getString("userimageurl"));
+                    GetSet.setSocialimg(object.getString("socialimage"));
+
+
+                    Constants.editor.putString("client_id", GetSet.getClientid());
+                    Constants.editor.putString("firstname", GetSet.getFirstname());
+                    Constants.editor.putString("lastname", GetSet.getLastname());
+                    Constants.editor.putString("mobileno", GetSet.getMobileno());
+                    Constants.editor.putString("email", GetSet.getEmail());
+                    Constants.editor.putString("address", GetSet.getAddress());
+                    Constants.editor.putString("brand", GetSet.getBrand());
+                    Constants.editor.putString("type", GetSet.getUser_type());
+                    Constants.editor.putString("model", GetSet.getModel());
+                    Constants.editor.putString("plateno", GetSet.getPlatenot());
+                    Constants.editor.putString("userimage", GetSet.getImagename());
+                    Constants.editor.putString("userimageurl", GetSet.getImageUrl());
+                    Constants.editor.putString("socialimage", GetSet.getSocialimg());
+                    ;
+                    Constants.editor.commit();
+                    Constants.editor.apply();
+                    setdata();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }

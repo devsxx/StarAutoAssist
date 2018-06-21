@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +40,7 @@ import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
@@ -81,6 +83,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.app.starautoassist.Others.Constants.isLocationpermission_enabled;
 import static com.app.starautoassist.Others.Starautoassist_Application.dialog;
 
 
@@ -106,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnotp,btnconfirm;
     LinearLayout linearLayout,resetpasslayout,fb,google;
     RelativeLayout relativeLayout;
+    AccessTokenTracker accessTokenTracker;
     SharedPreferences pref ;
     SharedPreferences.Editor editor;
     @Override
@@ -117,9 +121,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         setContentView(R.layout.activity_login);
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
         pref= getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
         editor= pref.edit();
         Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
@@ -144,7 +145,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
         alertDialog.setCancelable(false);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            Log.d("Login", "GPS is Enabled ");
         }else{
             if (!alertDialog.isShowing()) {
                 alertDialog.show();
@@ -213,6 +215,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
+
     private void permissincheck() {
         List<String> permissionsNeeded = new ArrayList<String>();
         final List<String> permissionsList = new ArrayList<String>();
@@ -282,6 +285,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // Initial
                 perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.ACCESS_COARSE_LOCATION, PackageManager.PERMISSION_GRANTED);
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
                 }
@@ -296,6 +300,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(LoginActivity.this, "All Permission Granted",Toast.LENGTH_SHORT).show();
+                    isLocationpermission_enabled=true;
                 } else {
                     // Permission Denied
                     Toast.makeText(LoginActivity.this, "Some Permission is Denied",Toast.LENGTH_SHORT).show();
@@ -343,15 +348,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 HashMap<String, String> gplusData = new HashMap<String, String>();
 
+                gplusData.put("type", "google");
                 gplusData.put("email", email);
                 gplusData.put("firstName", personName);
                 gplusData.put("lastName", "");
                 gplusData.put("image", personPhoto);
 
-                Intent intent=new Intent(this,RegisterActivity.class);
-                intent.putExtra("data",gplusData);
-                startActivity(intent);
-                finish();
+                new Social_login(LoginActivity.this,gplusData).execute();
 
                 Log.v("personName", "personName" + personName);
                 Log.v("personPhoto", "personPhoto" + personPhoto);
@@ -372,7 +375,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void loginToFacebook() {
 
         callbackManager = CallbackManager.Factory.create();
-
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -414,6 +416,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                 }
 
 
+                                                fbdata.put("type", "facebook");
                                                 fbdata.put("id", userId);
                                                 fbdata.put("email", email);
                                                 fbdata.put("firstName", firstName);
@@ -425,14 +428,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                     @SuppressWarnings("unchecked")
                                                     @Override
                                                     public void run() {
-                                                        if (dialog != null && dialog.isShowing()) {
-                                                            dialog.dismiss();
+                                                        if (mConnectionProgressDialog != null && mConnectionProgressDialog.isShowing()) {
+                                                            mConnectionProgressDialog.dismiss();
                                                         }
-                                                        Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
-                                                        intent.putExtra("data",fbdata);
-                                                        startActivity(intent);
-                                                        finish();
 
+                                                        new Social_login(LoginActivity.this,fbdata).execute();
                                                     }
                                                 });
                                             }else{
@@ -522,9 +522,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 linearLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.fbLay:
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
+//                if(Constants.pref.getBoolean("isLogged",false)) {
+//                   Intent intent=new Intent(this,HomeActivity.class);
+//                   startActivity(intent);
+//                   finish();
+//                }else {
+
+                    LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+             //   }
                 break;
             case R.id.gpLay:
+                mSignInClicked = true;
+                mConnectionProgressDialog.show();
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
                 break;
@@ -696,21 +705,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     GetSet.setIsLogged(true);
                     GetSet.setClientid(jcat.getString("client_id"));
                     GetSet.setEmail(jcat.getString("email"));
+                    GetSet.setUser_type(jcat.getString("type"));
                     GetSet.setFirstname(jcat.getString("firstname"));
                     GetSet.setLastname(jcat.getString("lastname"));
                     GetSet.setAddress(jcat.getString("address"));
                     GetSet.setMobileno(jcat.getString("mobileno"));
-                    GetSet.setImageUrl(jcat.getString("userimage"));
+                    GetSet.setImagename(jcat.getString("userimage"));
+                    GetSet.setImageUrl(jcat.getString("userimageurl"));
+                    GetSet.setSocialimg(jcat.getString("socialimage"));
 
 
                     Constants.editor.putBoolean("isLogged", true);
                     Constants.editor.putString("client_id", GetSet.getClientid());
+                    Constants.editor.putString("type", GetSet.getUser_type());
                     Constants.editor.putString("firstname", GetSet.getFirstname());
                     Constants.editor.putString("lastname", GetSet.getLastname());
                     Constants.editor.putString("email", GetSet.getEmail());
                     Constants.editor.putString("mobileno", GetSet.getMobileno());
                     Constants.editor.putString("address", GetSet.getAddress());
-                    Constants.editor.putString("userimage", GetSet.getImageUrl());
+                    Constants.editor.putString("userimage", GetSet.getImagename());
+                    Constants.editor.putString("userimageurl", GetSet.getImageUrl());
+                    Constants.editor.putString("socialimage", GetSet.getSocialimg());
                     Constants.editor.commit();
                     if(!Constants.REGISTER_ID.equalsIgnoreCase(""))
                         Registernotifi();
@@ -790,6 +805,130 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // For Internet checking
+        Starautoassist_Application.registerReceiver(LoginActivity.this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // For Internet disconnect checking
+        Starautoassist_Application.unregisterReceiver(LoginActivity.this);
+    }
+
+    public class Social_login extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String url = Constants.BaseURL + Constants.socialreg;
+        String img="";
+        HashMap<String,String> smap;
+        @Nullable
+        String user_id;
+
+        public Social_login(Context ctx,HashMap<String,String> smap) {
+            context = ctx;
+            this.smap=smap;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+              mConnectionProgressDialog.show();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.type, smap.get("type"))
+                    .add(Constants.firstname, smap.get("firstName"))
+                    .add(Constants.lastname, smap.get("lastName"))
+                    .add(Constants.email, smap.get("email"))
+                    .add(Constants.userimage,smap.get("image"))
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            // progressDialog.dismiss();
+            mConnectionProgressDialog.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase("success")||jonj.getString("status").equalsIgnoreCase("already")) {
+                    GetSet.setIsLogged(true);
+                    String data=jonj.getString("message");
+                    JSONArray array=new JSONArray(data);
+                    JSONObject jcat = array.getJSONObject(0);
+                    GetSet.setIsLogged(true);
+                    GetSet.setClientid(jcat.getString("client_id"));
+                    GetSet.setEmail(jcat.getString("email"));
+                    GetSet.setUser_type(jcat.getString("type"));
+                    GetSet.setFirstname(jcat.getString("firstname"));
+                    GetSet.setLastname(jcat.getString("lastname"));
+                    GetSet.setAddress(jcat.getString("address"));
+                    GetSet.setMobileno(jcat.getString("mobileno"));
+                    GetSet.setImagename(jcat.getString("userimage"));
+                    GetSet.setImageUrl(jcat.getString("userimageurl"));
+                    GetSet.setSocialimg(jcat.getString("socialimage"));
+
+
+                    Constants.editor.putBoolean("isLogged", true);
+                    Constants.editor.putString("client_id", GetSet.getClientid());
+                    Constants.editor.putString("firstname", GetSet.getFirstname());
+                    Constants.editor.putString("lastname", GetSet.getLastname());
+                    Constants.editor.putString("email", GetSet.getEmail());
+                    Constants.editor.putString("type", GetSet.getUser_type());
+                    Constants.editor.putString("mobileno", GetSet.getMobileno());
+                    Constants.editor.putString("address", GetSet.getAddress());
+                    Constants.editor.putString("userimage", GetSet.getImagename());
+                    Constants.editor.putString("userimageurl", GetSet.getImageUrl());
+                    Constants.editor.putString("socialimage", GetSet.getSocialimg());
+                    Constants.editor.commit();
+
+                    if(!Constants.REGISTER_ID.equalsIgnoreCase(""))
+                        Registernotifi();
+                    Intent intent=new Intent(context,HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+
+
+                }else
+                {
+                    Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
     /**  For register push notification **/
     public void  Registernotifi(){

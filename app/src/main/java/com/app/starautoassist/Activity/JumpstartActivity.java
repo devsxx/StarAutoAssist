@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.app.starautoassist.Helper.GPSTracker;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 
 import org.json.JSONException;
@@ -82,6 +83,19 @@ public class JumpstartActivity extends AppCompatActivity {
         });
 
         tvcharge.setText(amount);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // For Internet checking
+        Starautoassist_Application.registerReceiver(JumpstartActivity.this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // For Internet disconnect checking
+        Starautoassist_Application.unregisterReceiver(JumpstartActivity.this);
     }
 
     private void setlocation() {

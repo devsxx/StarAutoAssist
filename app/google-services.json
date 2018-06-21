@@ -15,47 +15,16 @@
       },
       "oauth_client": [
         {
-          "client_id": "876306079294-eo528o9tlvk97mcm7pgtsbtgbtii4m7t.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "876306079294-eo528o9tlvk97mcm7pgtsbtgbtii4m7t.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB9EVYM7q1cnpzqZWGHUWy0EemS-yUST3Y"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:876306079294:android:1f347a0d7679f6c4",
-        "android_client_info": {
-          "package_name": "com.app.starautoassistservice"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "876306079294-l2vjj8rl2ulta8q5m1b539b3270ph1qm.apps.googleusercontent.com",
+          "client_id": "876306079294-9qp26emed82vk236v7i89d5ogvl95590.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.app.starautoassistservice",
+            "package_name": "com.app.starautoassist",
             "certificate_hash": "c8268aed461927fb01c850527e04a1c58079b473"
           }
+        },
+        {
+          "client_id": "876306079294-7p2vqq2uuepa18hhbecn00212pp6rv9u.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "876306079294-eo528o9tlvk97mcm7pgtsbtgbtii4m7t.apps.googleusercontent.com",
@@ -79,10 +48,49 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "876306079294-eo528o9tlvk97mcm7pgtsbtgbtii4m7t.apps.googleusercontent.com",
+              "client_id": "876306079294-7p2vqq2uuepa18hhbecn00212pp6rv9u.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876306079294:android:1f347a0d7679f6c4",
+        "android_client_info": {
+          "package_name": "com.app.starautoassistservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876306079294-7p2vqq2uuepa18hhbecn00212pp6rv9u.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "876306079294-eo528o9tlvk97mcm7pgtsbtgbtii4m7t.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "876306079294-eo528o9tlvk97mcm7pgtsbtgbtii4m7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9EVYM7q1cnpzqZWGHUWy0EemS-yUST3Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

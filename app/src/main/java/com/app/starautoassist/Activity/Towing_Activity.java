@@ -13,7 +13,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -50,7 +49,6 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,8 +69,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static com.app.starautoassist.Others.Starautoassist_Application.checkLocationPermission;
 
 public class Towing_Activity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, AdapterView.OnItemClickListener, TextWatcher {
     MapView mapView;
@@ -118,11 +114,9 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         submitbtn = (TextView) findViewById(R.id.apply);
         setFrom = (TextView) findViewById(R.id.fromset);
         setTo = (TextView) findViewById(R.id.toset);
-
         if(getIntent().hasExtra("service_chrg")) {
             amount= getIntent().getStringExtra("service_chrg");
         }
-
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 

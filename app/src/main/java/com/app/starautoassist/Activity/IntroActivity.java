@@ -109,13 +109,11 @@ public class IntroActivity extends AppCompatActivity {
         prefManager.setFirstTimeLaunch(false);
         Log.d("intro", "IsLogged: "+GetSet.isIsLogged());
         if(GetSet.isIsLogged()) {
-            Intent i = new Intent(IntroActivity.this,
-                    HomeActivity.class);
+            Intent i = new Intent(IntroActivity.this,HomeActivity.class);
             startActivity(i);
             finish();
         }else{
-            Intent i = new Intent(IntroActivity.this,
-                    LoginActivity.class);
+            Intent i = new Intent(IntroActivity.this,LoginActivity.class);
             startActivity(i);
             finish();
         }

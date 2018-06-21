@@ -81,7 +81,7 @@
     <string name="time_ago_years">%d years</string>
     <string name="track_now">Track Now</string>
     <string name="default_notification_channel_id">Services</string>
-    <string name="signup_with_google">Signup with google</string>
-    <string name="signup_with_facebook">Signup with facebook</string>
+    <string name="signup_with_google">Login with google</string>
+    <string name="signup_with_facebook">Login with facebook</string>
 
 </resources>

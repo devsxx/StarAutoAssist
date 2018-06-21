@@ -14,8 +14,9 @@ public class Constants {
     //Keywords
     public static String mobileno="mobileno";
     public static String password="password";
-    public static String userimg="userimg";
+    public static String userimage="userimage";
     public static String otp="otp";
+    public static String type="type";
     public static String firstname="firstname";
     public static String lastname="lastname";
     public static String status="status";
@@ -60,6 +61,7 @@ public class Constants {
     public static String verifyOTP="verifyotp.php?";
     public static String profile="profile.php?";
     public static String registration="registration.php?";
+    public static String socialreg="socialreg.php?";
     public static String registration_pushid="FCMRegistration.php?";
     public static String getprofile="getprofile.php?";
     public static String getservices="getservices.php?";
@@ -72,6 +74,7 @@ public class Constants {
     public static String uploadprofileimage="uploadprofileimage.php?";
     public static String changepassword="changepassword.php?";
     public static String forgotpassword="forgotpassword.php?";
+    public static Boolean isLocationpermission_enabled=false;
 
 
 

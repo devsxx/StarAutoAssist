@@ -14,15 +14,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.starautoassist.Activity.Fuel_Activity;
+import com.app.starautoassist.Activity.HomeActivity;
 import com.app.starautoassist.Activity.JumpstartActivity;
+import com.app.starautoassist.Activity.ProfileActivity;
 import com.app.starautoassist.Activity.Towing_Activity;
 import com.app.starautoassist.Activity.TyreActivity;
+import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.app.starautoassist.Others.Constants.isLocationpermission_enabled;
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHolder> {
 
@@ -55,32 +60,42 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name=itemMap.get(Constants.servicename);
-                String chrg=itemMap.get(Constants.servicecharge);
-                if(name.equalsIgnoreCase("towing")){
-                    Intent intent=new Intent(mContext, Towing_Activity.class);
-                    intent.putExtra("service_chrg",chrg);
+                String name = itemMap.get(Constants.servicename);
+                String chrg = itemMap.get(Constants.servicecharge);
+                String mobileno=GetSet.getMobileno();
+                if (mobileno==null || mobileno.equalsIgnoreCase("")) {
+                    Toast.makeText(mContext, "Please fill profile", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, ProfileActivity.class);
                     mContext.startActivity(intent);
-                    ((Activity)mContext).finish();
-                }else  if(name.equalsIgnoreCase("out of fuel")){
-                    Intent intent=new Intent(mContext, Fuel_Activity.class);
-                    intent.putExtra("service_chrg",chrg);
-                    mContext.startActivity(intent);
-                    ((Activity)mContext).finish();
-                }else  if(itemMap.get(Constants.servicename).equalsIgnoreCase("jump start")){
-                    Intent intent=new Intent(mContext, JumpstartActivity.class);
-                    intent.putExtra("service_chrg",chrg);
-                    mContext.startActivity(intent);
-                    ((Activity)mContext).finish();
-                }else  if(name.equalsIgnoreCase("flat tyre")){
-                    Intent intent=new Intent(mContext, TyreActivity.class);
-                    intent.putExtra("service_chrg",chrg);
-                    mContext.startActivity(intent);
-                    ((Activity)mContext).finish();
-                }else  Toast.makeText(mContext, "Your selection invalid" ,Toast.LENGTH_SHORT).show();
+                    ((Activity) mContext).finish();
+                } else {
+                    if (Constants.isLocationpermission_enabled) {
+                        if (name.equalsIgnoreCase("towing")) {
+                            Intent intent = new Intent(mContext, Towing_Activity.class);
+                            intent.putExtra("service_chrg", chrg);
+                            mContext.startActivity(intent);
+                        } else if (name.equalsIgnoreCase("out of fuel")) {
+                            Intent intent = new Intent(mContext, Fuel_Activity.class);
+                            intent.putExtra("service_chrg", chrg);
+                            mContext.startActivity(intent);
+                        } else if (itemMap.get(Constants.servicename).equalsIgnoreCase("jump start")) {
+                            Intent intent = new Intent(mContext, JumpstartActivity.class);
+                            intent.putExtra("service_chrg", chrg);
+                            mContext.startActivity(intent);
+                        } else if (name.equalsIgnoreCase("flat tyre")) {
+                            Intent intent = new Intent(mContext, TyreActivity.class);
+                            intent.putExtra("service_chrg", chrg);
+                            mContext.startActivity(intent);
+                        } else
+                        Toast.makeText(mContext, "Your selection invalid", Toast.LENGTH_SHORT).show();
+                    }else {  Toast.makeText(mContext, "Location not enabled", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(mContext,HomeActivity.class);
+                        mContext.startActivity(intent);
+                        ((Activity) mContext).finish();
+                    }
+                }
             }
         });
-
     }
 
     @Override

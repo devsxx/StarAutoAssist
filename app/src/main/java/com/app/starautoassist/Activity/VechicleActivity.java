@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
@@ -116,6 +117,20 @@ public class VechicleActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // For Internet checking
+        Starautoassist_Application.registerReceiver(VechicleActivity.this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // For Internet disconnect checking
+        Starautoassist_Application.unregisterReceiver(VechicleActivity.this);
     }
     public class Add_Vechicle_Async extends AsyncTask<String, Integer, String> {
         Context context;

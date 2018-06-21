@@ -1,10 +1,13 @@
 package com.app.starautoassist.Others;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -12,8 +15,11 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
+import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -28,7 +34,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.app.starautoassist.Activity.LoginActivity;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.R;
 import com.app.starautoassist.Services.FirebaseInstanceIDService;
@@ -42,7 +50,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 
@@ -58,7 +70,6 @@ public class Starautoassist_Application extends Application {
     public static IntentFilter filter;
     public static BroadcastReceiver networkStateReceiver;
     public static Dialog dialog;
-
 
     @Override
     public void onCreate() {
@@ -475,4 +486,6 @@ public class Starautoassist_Application extends Application {
             return null;
         }
     };
+
+
 }
