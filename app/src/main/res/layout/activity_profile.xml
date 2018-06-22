@@ -108,12 +108,17 @@
                         android:inputType="textEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="2">
                     <com.rengwuxian.materialedittext.MaterialEditText
                         android:layout_marginTop="15dp"
                         android:background="@drawable/border_edittext"
                         android:id="@+id/tv_profile_phone"
                         android:inputType="phone"
+                        android:layout_weight="0.5"
                         android:paddingLeft="5dp"
                         android:layout_marginBottom="5dp"
                         app:met_floatingLabel="highlight"
@@ -122,7 +127,19 @@
                         android:hint="Phone"
                         android:padding="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:layout_marginTop="15dp"
+                        android:id="@+id/verify"
+                        android:layout_weight="1.5"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:hint="Verify"
+                        android:textColorHint="@color/colorPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+</LinearLayout>
 
                     <com.rengwuxian.materialedittext.MaterialEditText
                         android:layout_marginTop="15dp"

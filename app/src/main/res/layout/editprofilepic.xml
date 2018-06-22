@@ -37,7 +37,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:padding="10dp"
             android:src="@drawable/retake"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:layout_toRightOf="@+id/flashBtn" />
 
         <ImageView
             android:id="@+id/flashBtn"
@@ -49,7 +50,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:padding="8dp"
             android:src="@drawable/flash"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:layout_alignParentLeft="true" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="45dp"
@@ -59,7 +61,9 @@
             android:layout_toStartOf="@+id/backbtn"
             android:textSize="22sp"
             android:layout_marginEnd="30dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:layout_toLeftOf="@+id/backbtn"
+            android:layout_marginRight="30dp" />
         <ImageView
             android:id="@+id/backbtn"
             android:layout_width="45dp"
@@ -71,7 +75,8 @@
             android:padding="10dp"
             android:src="@drawable/cancel"
             android:tint="@color/white"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -86,6 +91,6 @@
             android:layout_alignParentStart="true"
             android:tint="@color/colorPrimary"
             android:visibility="visible"
-            />
+            android:layout_alignParentLeft="true" />
     </RelativeLayout>
 </RelativeLayout>

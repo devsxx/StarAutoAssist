@@ -221,8 +221,7 @@ public class TyreActivity extends AppCompatActivity {
             if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                 permissionsList.add(permission);
                 // Check for Rationale Option
-                if (!shouldShowRequestPermissionRationale(permission))
-                    return false;
+                return shouldShowRequestPermissionRationale(permission);
             }
         }
         return true;

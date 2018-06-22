@@ -10,7 +10,7 @@
     tools:context=".Activity.RegisterActivity">
 
     <ScrollView
-        android:layout_marginTop="20dp"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
@@ -25,7 +25,7 @@
 
         <TextView
             android:layout_marginTop="10dp"
-            android:text="REGISTRATION"
+            android:text="@string/registration"
             android:textSize="20sp"
             android:layout_alignParentTop="true"
             android:textColor="#808080"
@@ -34,6 +34,10 @@
             android:id="@+id/tv_regiter_heading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+   <!--     <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/logo"/>-->
 
         <LinearLayout
             android:layout_marginTop="30dp"
@@ -56,7 +60,7 @@
                 app:met_floatingLabel="highlight"
                 app:met_primaryColor="?colorAccent"
                 android:layout_marginRight="10dp"
-                android:hint="First Name"
+                android:hint="@string/first_name"
                 android:paddingLeft="10dp"
                 android:inputType="textPersonName" />
 
@@ -71,7 +75,7 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Last Name"
+                android:hint="@string/last_name"
                 android:inputType="textPersonName" />
 
 
@@ -90,7 +94,7 @@
             android:layout_marginTop="15dp"
             app:met_floatingLabel="highlight"
             app:met_primaryColor="?colorAccent"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress" />
 
 
@@ -107,7 +111,7 @@
             android:layout_marginTop="15dp"
             app:met_floatingLabel="highlight"
             app:met_primaryColor="?colorAccent"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -123,13 +127,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:hint="Confirm Password"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword" />
 
         <Button
             android:layout_marginTop="25dp"
             android:id="@+id/reg_btn_register"
-            android:text="Register"
+            android:text="@string/register"
             android:paddingLeft="10dp"
             android:layout_below="@+id/reg_et_confirmpassword"
             android:background="@drawable/round_button"
@@ -160,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:ems="10"
-                android:hint="Phone"
+                android:hint="@string/phone"
                 android:paddingLeft="15dp"
                 android:background="@drawable/border_edittext"
                 android:layout_marginLeft="20dp"
@@ -174,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:ems="10"
-                android:hint="Enter OTP"
+                android:hint="@string/enter_otp"
                 android:paddingLeft="15dp"
                 android:background="@drawable/border_edittext"
                 android:layout_marginLeft="20dp"
@@ -187,7 +191,7 @@
             <Button
                 android:layout_marginTop="25dp"
                 android:id="@+id/btn_otp"
-                android:text="Get OTP"
+                android:text="@string/get_otp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="15dp"
@@ -201,7 +205,7 @@
             <Button
                 android:layout_marginTop="25dp"
                 android:id="@+id/btn_confirm"
-                android:text="Confirm"
+                android:text="@string/confirm"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="15dp"

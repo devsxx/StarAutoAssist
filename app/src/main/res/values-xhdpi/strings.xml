@@ -20,8 +20,6 @@
     <string name="err_msg_email">Enter valid Email Address</string>
     <string name="err_msg_password">Enter your Password</string>
     <string name="star_auto_assist">Star Auto Assist</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -79,4 +77,17 @@
     <string name="track_now">Track Now</string>
     <string name="signup_with_google">Login with google</string>
     <string name="signup_with_facebook">Login with facebook</string>
+    <string name="registration">REGISTRATION</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="get_otp">Get OTP</string>
+    <string name="confirm">Confirm</string>
+    <string name="forgotpassphrase">Don\'t worry... Please enter your mobile no below</string>
+    <string name="phone">Phone</string>
 </resources>

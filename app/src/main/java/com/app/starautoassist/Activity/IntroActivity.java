@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.starautoassist.Helper.GetSet;
+import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.PreferenceManager;
 import com.app.starautoassist.R;
 
@@ -108,7 +109,8 @@ public class IntroActivity extends AppCompatActivity {
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
         Log.d("intro", "IsLogged: "+GetSet.isIsLogged());
-        if(GetSet.isIsLogged()) {
+        Constants.pref=getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
+        if(Constants.pref.getBoolean("isLogged",false)) {
             Intent i = new Intent(IntroActivity.this,HomeActivity.class);
             startActivity(i);
             finish();

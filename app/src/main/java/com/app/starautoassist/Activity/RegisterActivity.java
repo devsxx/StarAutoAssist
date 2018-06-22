@@ -68,9 +68,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etpassword = findViewById(R.id.reg_et_password);
         etconfirmpassword = findViewById(R.id.reg_et_confirmpassword);
         btnregister = findViewById(R.id.reg_btn_register);
-        otpLay=(LinearLayout)findViewById(R.id.otplayout);
-        relativeLayout=(RelativeLayout) findViewById(R.id.relative_layout);
-        parentlayout=(RelativeLayout) findViewById(R.id.parentLay);
+        otpLay= findViewById(R.id.otplayout);
+        relativeLayout= findViewById(R.id.relative_layout);
+        parentlayout= findViewById(R.id.parentLay);
         btnregister.setOnClickListener(this);
         progressDialog = new SpotsDialog(this, R.style.Custom);
 

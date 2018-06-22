@@ -41,8 +41,7 @@ public class VechicleActivity extends AppCompatActivity {
     String brandname,modelname,plateno;
     Integer brandposition;
     ArrayAdapter<String> brandadapter;
-    public static SharedPreferences pref;
-    public static SharedPreferences.Editor editor;
+
     String mobileno;
     String[] brand = { "Alfa Romeo", "Aston Martin", "Audi", "Bentley", "Citroen", "Ferrari",
             "BMW", "Bufori", "Caterham", "Chana", "Chery", "Chevrolet", "Fiat" , "Ford",
@@ -59,10 +58,10 @@ public class VechicleActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("My Vechicle");
         setContentView(R.layout.activity_vechicle);
 
-        pref = getApplicationContext().getSharedPreferences("StarAutoAssist",
+        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",
                 MODE_PRIVATE);
-        editor = pref.edit();
-        mobileno=pref.getString("mobileno",null);
+        Constants.editor = Constants.pref.edit();
+        mobileno=Constants.pref.getString("mobileno",null);
         btnsubmit = findViewById(R.id.vechicle_btn_submit);
         etmodel = findViewById(R.id.vechicle_et_carmodel);
         etplate = findViewById(R.id.vechicle_et_plateno);
@@ -71,16 +70,16 @@ public class VechicleActivity extends AppCompatActivity {
         brandadapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, brand);
         brandadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerbrand.setAdapter(brandadapter);
-        Boolean isCarAdded=pref.getBoolean("isCarAdded",false);
+        Boolean isCarAdded=Constants.pref.getBoolean("isCarAdded",false);
         if(isCarAdded) {
-            Integer pos = pref.getInt("brandposition", 0);
-            String compareValue=pref.getString("brand","");
+            Integer pos = Constants.pref.getInt("brandposition", 0);
+            String compareValue=Constants.pref.getString("brand","");
             if (compareValue != null) {
                 int spinnerPosition = brandadapter.getPosition(compareValue);
             }
             spinnerbrand.setSelection(pos);
-            etmodel.setText(pref.getString("model", null));
-            etplate.setText(pref.getString("plateno", null));
+            etmodel.setText(Constants.pref.getString("model", null));
+            etplate.setText(Constants.pref.getString("plateno", null));
             btnsubmit.setText("Update");
         }
         btnsubmit.setOnClickListener(new View.OnClickListener() {
@@ -192,13 +191,13 @@ public class VechicleActivity extends AppCompatActivity {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
-                    editor.putBoolean("isCarAdded",true);
-                    editor.putString("brand",brandname);
-                    editor.putInt("brandposition",brandposition);
-                    editor.putString("model",modelname);
-                    editor.putString("plateno",plateno);
-                    editor.commit();
-                    editor.apply();
+                    Constants.editor.putBoolean("isCarAdded",true);
+                    Constants.editor.putString("brand",brandname);
+                    Constants.editor.putInt("brandposition",brandposition);
+                    Constants.editor.putString("model",modelname);
+                    Constants.editor.putString("plateno",plateno);
+                    Constants.editor.commit();
+                    Constants.editor.apply();
                     finish();
 
                     Toast.makeText(getApplicationContext(),"Car details added successfully",Toast.LENGTH_SHORT).show();

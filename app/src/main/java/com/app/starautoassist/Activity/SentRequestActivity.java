@@ -46,7 +46,7 @@ public class SentRequestActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Sent Request");
         setContentView(R.layout.activity_sent_request);
 
-        recyclerView=(RecyclerView)findViewById(R.id.req_recyclerview);
+        recyclerView= findViewById(R.id.req_recyclerview);
 
         new Get_Sent_Services_Async(SentRequestActivity.this).execute();
     }

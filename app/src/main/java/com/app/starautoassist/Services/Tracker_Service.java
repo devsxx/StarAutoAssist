@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -113,7 +114,9 @@ public class Tracker_Service extends Service {
                         lon=location.getLongitude();
                         provider=location.getProvider();
                         time=location.getTime();
-                        elapsedtime=location.getElapsedRealtimeNanos();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            elapsedtime=location.getElapsedRealtimeNanos();
+                        }
                         new Sendlocation(getApplicationContext(),altitude,accuracy,speed,lat,lon,provider,time,elapsedtime).execute();
 
                     }

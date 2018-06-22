@@ -19,6 +19,7 @@ import com.app.starautoassist.Activity.JumpstartActivity;
 import com.app.starautoassist.Activity.ProfileActivity;
 import com.app.starautoassist.Activity.Towing_Activity;
 import com.app.starautoassist.Activity.TyreActivity;
+import com.app.starautoassist.Activity.VechicleActivity;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
@@ -71,9 +72,16 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
                 } else {
                     if (Constants.isLocationpermission_enabled) {
                         if (name.equalsIgnoreCase("towing")) {
-                            Intent intent = new Intent(mContext, Towing_Activity.class);
-                            intent.putExtra("service_chrg", chrg);
-                            mContext.startActivity(intent);
+                            if(Constants.pref.getBoolean("isCarAdded",false)) {
+                                Intent intent = new Intent(mContext, Towing_Activity.class);
+                                intent.putExtra("service_chrg", chrg);
+                                mContext.startActivity(intent);
+                            }else {
+                                Toast.makeText(mContext, "Please update car details", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(mContext, VechicleActivity.class);
+                                mContext.startActivity(intent);
+                                ((Activity) mContext).finish();
+                            }
                         } else if (name.equalsIgnoreCase("out of fuel")) {
                             Intent intent = new Intent(mContext, Fuel_Activity.class);
                             intent.putExtra("service_chrg", chrg);

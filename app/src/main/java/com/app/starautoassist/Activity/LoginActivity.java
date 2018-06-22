@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor= pref.edit();
         Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
         Constants.editor = Constants.pref.edit();
-        relativeLayout=(RelativeLayout)findViewById(R.id.main);
+        relativeLayout= findViewById(R.id.main);
         Starautoassist_Application.setupUI(LoginActivity.this,relativeLayout);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         permissincheck();
@@ -181,8 +181,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         confirm_password = findViewById(R.id.confirmpass);
         updatepassbtn = findViewById(R.id.update_password);
         btnotp = findViewById(R.id.btn_otp);
-        fb=(LinearLayout)findViewById(R.id.fbLay);
-        google=(LinearLayout)findViewById(R.id.gpLay);
+        fb= findViewById(R.id.fbLay);
+        google= findViewById(R.id.gpLay);
 
         confirmotpcode = findViewById(R.id.confirmotp_code);
         btnconfirm = findViewById(R.id.btn_confirm);
@@ -269,8 +269,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                 permissionsList.add(permission);
                 // Check for Rationale Option
-                if (!shouldShowRequestPermissionRationale(permission))
-                    return false;
+                return shouldShowRequestPermissionRationale(permission);
             }
         }
         return true;
@@ -487,7 +486,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.log_btn_login:
                 String phone = mobileno.getText().toString();
                 String pass = etpass.getText().toString();
-                new Login_Async(this,phone,pass).execute();
+                if(!phone.equalsIgnoreCase("")&& !pass.equalsIgnoreCase(""))
+                    new Login_Async(this,phone,pass).execute();
+                else if(phone.equalsIgnoreCase(""))
+                    Toast.makeText(LoginActivity.this,"Enter mobile number",Toast.LENGTH_SHORT).show();
+                else Toast.makeText(LoginActivity.this,"Enter password",Toast.LENGTH_SHORT).show();
 
                 break;
             case R.id.log_tv_create:

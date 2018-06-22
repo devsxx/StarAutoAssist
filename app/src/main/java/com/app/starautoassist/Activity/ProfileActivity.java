@@ -1,9 +1,12 @@
 package com.app.starautoassist.Activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,6 +41,7 @@ import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.bumptech.glide.Glide;
 import com.facebook.CallbackManager;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -74,15 +79,18 @@ import static android.graphics.BitmapFactory.decodeFile;
 public class ProfileActivity extends AppCompatActivity {
 
     private CircularImageView circularImageView;
-    private MaterialEditText etfirstname, etlastname, etaddress, etphone, etemail;
+    private MaterialEditText etfirstname, etlastname, etaddress, etphone, etemail,otp;
     String imagepath = "";
     private Boolean upflag = false;
     String fname;
+    TextView verifytxt;
     String image = "", imageurl = "";
     Button submitbtn;
     String mobileno = "";
     String uploadedImage = "", viewUrl = "";
     private ProgressDialog pDialog;
+    SharedPreferences pref ;
+    SharedPreferences.Editor editor;
     private static final String TAG = "ProfileActivity";
 
     @Override
@@ -93,11 +101,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         circularImageView = findViewById(R.id.civ_profile);
         etphone = findViewById(R.id.tv_profile_phone);
+        pref= getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
+        editor= pref.edit();
+        verifytxt = findViewById(R.id.verify);
         etfirstname = findViewById(R.id.et_profile_firstname);
         etlastname = findViewById(R.id.et_profile_lastname);
         etaddress = findViewById(R.id.et_profile_address);
         etemail = findViewById(R.id.et_profile_email);
-        submitbtn = (Button) findViewById(R.id.btn_profile_save);
+        submitbtn = findViewById(R.id.btn_profile_save);
+
+
         Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist", MODE_PRIVATE);
         Constants.editor = Constants.pref.edit();
 
@@ -119,9 +132,215 @@ public class ProfileActivity extends AppCompatActivity {
                     Toast.makeText(ProfileActivity.this, "Please enter mobile no", Toast.LENGTH_SHORT).show();
             }
         });
+        verifytxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new GetOTP(ProfileActivity.this,etphone.getText().toString().trim()).execute();
+
+            }
+        });
 
     }
 
+    public class GetOTP extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String mobileno;
+        private String url = Constants.BaseURL + Constants.getSocialOTP;
+        ProgressDialog progress;
+        @Nullable
+        String user_id;
+
+        public GetOTP(Context ctx, String mobileno) {
+            context = ctx;
+            this.mobileno = mobileno;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = new ProgressDialog(context);
+            progress.setMessage("Please wait ....");
+            progress.setTitle("Loading");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.show();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, mobileno)
+                    .add(Constants.email, GetSet.getEmail())
+                    .add(Constants.type, GetSet.getUser_type())
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            progress.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "true")) {
+                    LayoutInflater li = LayoutInflater.from(ProfileActivity.this);
+                    View promptsView = li.inflate(R.layout.dialog_window, null);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            ProfileActivity.this);
+
+                    // set prompts.xml to alertdialog builder
+                    alertDialogBuilder.setView(promptsView);
+
+                    final EditText userInput = (EditText) promptsView
+                            .findViewById(R.id.editTextResult);
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton("Verify",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            String mobile_no=userInput.getText().toString().trim();
+                                            new VerifyOTP(ProfileActivity.this, mobile_no, "1234").execute();
+                                        }
+                                    })
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+
+                } else {
+                    Toast.makeText(ProfileActivity.this, jonj.getString("message").trim(), Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+    public class VerifyOTP extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String mobileno, otp;
+        private String url = Constants.BaseURL + Constants.verifyOTP;
+        @Nullable
+        String user_id;
+
+        public VerifyOTP(Context ctx, String mobileno, String otp) {
+            context = ctx;
+            this.mobileno = mobileno;
+            this.otp = otp;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, mobileno)
+                    .add(Constants.otp, otp)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    GetSet.setMobileno(mobileno);
+                    Constants.editor.putString("mobileno", GetSet.getMobileno());
+                    Constants.editor.commit();
+                    etphone.setEnabled(false);
+                    verifytxt.setEnabled(false);
+                    verifytxt.setText("Verified");
+                    verifytxt.setTextColor(getResources().getColor(R.color.green));
+                    if(!Constants.REGISTER_ID.equalsIgnoreCase(""))
+                        Registernotifi();
+                }else Toast.makeText(getApplicationContext(),"Otp not verified",Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    /**  For register push notification **/
+    public void  Registernotifi(){
+        Starautoassist_Application aController = null;
+        Constants.REGISTER_ID= FirebaseInstanceId.getInstance().getToken();
+        Log.v("enetered push","registerid="+Constants.REGISTER_ID);
+        editor.putString("regId", Constants.REGISTER_ID);
+        editor.commit();
+
+        if(Constants.REGISTER_ID!="" || !Constants.REGISTER_ID.equals("")){
+            if(!pref.getString("regId","").equalsIgnoreCase("")) {
+                aController = (Starautoassist_Application) getApplicationContext();
+                Log.i("Login", "Device registered: regId = " + Constants.REGISTER_ID);
+                aController.register(getApplicationContext());
+                Log.e("Login", "sendRegistrationToServer: " + Constants.REGISTER_ID);
+            }else Log.d("Login", "Push id already registered");
+        }
+    }
     //Setting data on fields from aysnc result
     private void setdata() {
         if (!Constants.pref.getString("userimageurl", "").equalsIgnoreCase("")) {
@@ -146,7 +365,11 @@ public class ProfileActivity extends AppCompatActivity {
         if (GetSet.getMobileno() != null && !GetSet.getMobileno().equalsIgnoreCase("")) {
             etphone.setText(GetSet.getMobileno());
             etphone.setEnabled(false);
+            verifytxt.setEnabled(false);
+            verifytxt.setText("Verified");
+            verifytxt.setTextColor(getResources().getColor(R.color.green));
         } else {
+            verifytxt.setEnabled(true);
             etphone.setEnabled(true);
         }
         etfirstname.setText(GetSet.getFirstname());
@@ -190,8 +413,8 @@ public class ProfileActivity extends AppCompatActivity {
         window.setAttributes(wlp);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(false);
-        ImageView gal = (ImageView) dialog.findViewById(R.id.galery);
-        ImageView cam = (ImageView) dialog.findViewById(R.id.camra);
+        ImageView gal = dialog.findViewById(R.id.galery);
+        ImageView cam = dialog.findViewById(R.id.camra);
 
         cam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -706,7 +929,6 @@ public class ProfileActivity extends AppCompatActivity {
                     Constants.editor.putString("userimage", GetSet.getImagename());
                     Constants.editor.putString("userimageurl", GetSet.getImageUrl());
                     Constants.editor.putString("socialimage", GetSet.getSocialimg());
-                    ;
                     Constants.editor.commit();
                     Constants.editor.apply();
                     setdata();

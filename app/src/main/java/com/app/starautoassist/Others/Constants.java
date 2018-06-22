@@ -58,6 +58,7 @@ public class Constants {
     public static String login="login.php?";
     public static String cancel_req="cancel_request.php?";
     public static String getOTP="getotp.php?";
+    public static String getSocialOTP="socialotp.php?";
     public static String verifyOTP="verifyotp.php?";
     public static String profile="profile.php?";
     public static String registration="registration.php?";

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
@@ -7,7 +8,6 @@
     android:padding="15dp">
     <ScrollView
         android:id="@+id/loginscroll"
-        android:layout_marginTop="10dp"
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -32,7 +32,7 @@
         android:orientation="vertical"
         android:layout_below="@+id/logoimage"
         android:id="@+id/loginfieldlayout"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -44,10 +44,9 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_marginTop="8dp"
                 android:src="@drawable/ic_phone_android_orange_700_36dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:background="@drawable/border_edittext"
@@ -59,22 +58,22 @@
                 app:met_floatingLabel="highlight"
                 app:met_primaryColor="?colorAccent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp" />
         </LinearLayout>
 
 
         <LinearLayout
             android:orientation="horizontal"
             android:id="@+id/pass_layout"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_marginTop="8dp"
                 android:src="@drawable/ic_vpn_key_orange_a700_36dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 app:met_floatingLabel="highlight"
@@ -86,7 +85,9 @@
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:paddingStart="10dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -113,7 +114,7 @@
                 android:layout_below="@+id/loginbtn_lay"
                 android:layout_marginTop="10dp"
                 android:weightSum="2"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -133,6 +134,7 @@
                     android:id="@+id/log_tv_create"
                     android:textSize="15sp"
                     android:gravity="right"
+                    android:paddingRight="5dp"
                     android:textColor="#808080"
                     android:text="Create Account"
                     android:layout_width="match_parent"
@@ -158,7 +160,7 @@
 
             <LinearLayout
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:weightSum="2"
                 android:layout_below="@+id/or_layout"
                 android:id="@+id/google_facebook_layout"
@@ -171,6 +173,7 @@
                     android:id="@+id/fbLay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:background="@drawable/fb_bg"
                     android:orientation="horizontal">
 
@@ -190,7 +193,9 @@
                         android:paddingEnd="40dp"
                         android:text="@string/signup_with_facebook"
                         android:textSize="16sp"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:paddingRight="40dp"
+                        tools:ignore="RtlSymmetry" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -217,7 +222,9 @@
                         android:paddingEnd="40dp"
                         android:text="@string/signup_with_google"
                         android:textSize="16sp"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:paddingRight="40dp"
+                        tools:ignore="RtlSymmetry" />
                 </LinearLayout>
 
 
@@ -232,23 +239,43 @@
         android:id="@+id/otplayout"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/border_dialog"
-        android:gravity="center"
         android:visibility="gone"
         android:layout_height="match_parent">
 
+
+        <ImageView
+            android:id="@+id/forgotimg"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/forget" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="22sp"
+            android:text="@string/forgot_your_password"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:textSize="13sp"
+            android:text="@string/forgotpassphrase"/>
         <EditText
             android:id="@+id/et_otp_phone"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:ems="10"
-            android:hint="Phone"
+            android:hint="@string/mobile_number"
             android:paddingLeft="15dp"
             android:background="@drawable/border_edittext"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             android:visibility="visible"
             android:layout_gravity="center"
             android:inputType="phone" />
@@ -301,12 +328,17 @@
         android:id="@+id/resetpasswordlayout"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/border_dialog"
-        android:gravity="center"
         android:visibility="gone"
         android:layout_height="match_parent">
-
+        <ImageView
+            android:id="@+id/forgetimg"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/pass" />
         <EditText
             android:id="@+id/newpass"
             android:layout_width="match_parent"

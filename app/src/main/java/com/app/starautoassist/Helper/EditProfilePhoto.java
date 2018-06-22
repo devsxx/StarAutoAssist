@@ -55,16 +55,16 @@ public class EditProfilePhoto extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editprofilepic);
-        surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
+        surfaceView = findViewById(R.id.surfaceView);
 
         preview = new Preview(this, surfaceView);
         preview.setKeepScreenOn(true);
-        take = (ImageView) findViewById(R.id.take);
-        usephoto = (TextView) findViewById(R.id.usephoto);
-        cancelbtn = (ImageView) findViewById(R.id.backbtn);
-        imageView = (ImageView) findViewById(R.id.imageView);
-        flashBtn = (ImageView) findViewById(R.id.flashBtn);
-        retake = (ImageView) findViewById(R.id.retakeBtn);
+        take = findViewById(R.id.take);
+        usephoto = findViewById(R.id.usephoto);
+        cancelbtn = findViewById(R.id.backbtn);
+        imageView = findViewById(R.id.imageView);
+        flashBtn = findViewById(R.id.flashBtn);
+        retake = findViewById(R.id.retakeBtn);
 
         take.setOnClickListener(this);
         usephoto.setOnClickListener(this);

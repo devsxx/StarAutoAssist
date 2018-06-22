@@ -66,7 +66,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -80,9 +79,10 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
+        Constants.editor = Constants.pref.edit();
         getSupportActionBar().setTitle("Star Auto Assist");
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content_frame, new HomeFragment());
@@ -90,15 +90,15 @@ public class HomeActivity extends AppCompatActivity
         chkper=checkLocationPermission();
         if(chkper)
             Constants.isLocationpermission_enabled=true;
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
-        CircularImageView imageView=(CircularImageView)headerLayout.findViewById(R.id.nav_iv);
+        CircularImageView imageView= headerLayout.findViewById(R.id.nav_iv);
         if(!Constants.pref.getString("userimage","").equalsIgnoreCase("")){
             url = Constants.BaseURL + "images/users/" + Constants.pref.getString("userimage","");
             Glide
@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity
         }
 
 
-        TextView username=(TextView)headerLayout.findViewById(R.id.nav_tv_name);
+        TextView username= headerLayout.findViewById(R.id.nav_tv_name);
         username.setText(GetSet.getFirstname());
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -183,7 +183,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -327,7 +327,7 @@ public class HomeActivity extends AppCompatActivity
             transaction.replace(R.id.content_frame, fragment);
             transaction.commit();
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -343,11 +343,11 @@ public class HomeActivity extends AppCompatActivity
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(false);
 
-        TextView alertTitle = (TextView) dialog.findViewById(R.id.alert_title);
-        TextView alertMsg = (TextView) dialog.findViewById(R.id.alert_msg);
-        ImageView alertIcon = (ImageView) dialog.findViewById(R.id.alert_icon);
-        TextView alertOk = (TextView) dialog.findViewById(R.id.alert_button);
-        TextView alertCancel = (TextView) dialog.findViewById(R.id.cancel_button);
+        TextView alertTitle = dialog.findViewById(R.id.alert_title);
+        TextView alertMsg = dialog.findViewById(R.id.alert_msg);
+        ImageView alertIcon = dialog.findViewById(R.id.alert_icon);
+        TextView alertOk = dialog.findViewById(R.id.alert_button);
+        TextView alertCancel = dialog.findViewById(R.id.cancel_button);
 
         alertMsg.setText(getString(R.string.reallySignOut));
         alertOk.setText(getString(R.string.yes));

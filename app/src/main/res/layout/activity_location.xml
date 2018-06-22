@@ -54,7 +54,9 @@
             android:maxLines="1"
             android:dropDownWidth="match_parent"
             android:dropDownAnchor="@+id/view1"
-            android:popupBackground="@drawable/white_roundcorner"/>
+            android:popupBackground="@drawable/white_roundcorner"
+            android:layout_toRightOf="@+id/fromtextview"
+            android:layout_toLeftOf="@+id/fromset" />
 
         <TextView
             android:id="@+id/fromset"
@@ -66,7 +68,8 @@
             android:gravity="center"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
     <View

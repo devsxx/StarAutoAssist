@@ -105,15 +105,15 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Towing Service");
         setContentView(R.layout.activity_location);
-        fromLayout = (RelativeLayout) findViewById(R.id.fromlay);
-        toLayout = (RelativeLayout) findViewById(R.id.droplay);
-        next = (RelativeLayout) findViewById(R.id.bottomLay);
-        myLocation = (ImageView) findViewById(R.id.my_location);
-        from = (AutoCompleteTextView) findViewById(R.id.fromaddress);
-        to = (AutoCompleteTextView) findViewById(R.id.toaddress);
-        submitbtn = (TextView) findViewById(R.id.apply);
-        setFrom = (TextView) findViewById(R.id.fromset);
-        setTo = (TextView) findViewById(R.id.toset);
+        fromLayout = findViewById(R.id.fromlay);
+        toLayout = findViewById(R.id.droplay);
+        next = findViewById(R.id.bottomLay);
+        myLocation = findViewById(R.id.my_location);
+        from = findViewById(R.id.fromaddress);
+        to = findViewById(R.id.toaddress);
+        submitbtn = findViewById(R.id.apply);
+        setFrom = findViewById(R.id.fromset);
+        setTo = findViewById(R.id.toset);
         if(getIntent().hasExtra("service_chrg")) {
             amount= getIntent().getStringExtra("service_chrg");
         }
@@ -516,7 +516,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                 geocoder = new Geocoder(Towing_Activity.this, getResources().getConfiguration().locale);
                 addresses = geocoder.getFromLocation(x, y, 1);
                 str = new StringBuilder();
-                if (geocoder.isPresent() && addresses.size() > 0) {
+                if (Geocoder.isPresent() && addresses.size() > 0) {
 
                     Address returnAddress = addresses.get(0);
 
