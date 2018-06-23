@@ -371,6 +371,11 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
             case R.id.bottomLay:
                     if(from.getText().toString().trim().equals("")||to.getText().toString().equals("")){
                         Toast.makeText(this, "Please set locations on corresponding fields", Toast.LENGTH_SHORT).show();
+                    }else if(flat==0.0 || flon==0.0 ){
+                        Toast.makeText(Towing_Activity.this, "Pickup location not set properly", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(tlat==0.0 || tlon==0.0 ){
+                        Toast.makeText(Towing_Activity.this, "Pickup location not set properly", Toast.LENGTH_SHORT).show();
                     }else {
                         Log.d(TAG, "F.Lat&Lon: "+flat+" "+flon);
                         Log.d(TAG, "T.Lat&Lon: "+tlat+" "+tlon);
@@ -469,7 +474,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         googleMap.setTrafficEnabled(true);
         googleMap.setIndoorEnabled(true);
         googleMap.setBuildingsEnabled(true);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setCompassEnabled(false);
         Log.d(TAG, "onMapReady: "+flat+ "  " +flon);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(flat,flon),11));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(flat, flon), 15));

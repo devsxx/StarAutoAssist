@@ -71,7 +71,12 @@ public class TyreActivity extends AppCompatActivity {
                     Toast.makeText(TyreActivity.this, "Please gives us persmission to find location", Toast.LENGTH_SHORT).show();
                     permissincheck();
                     setlocation();
-                }else  new Flattyre_Request_Async(TyreActivity.this).execute();
+                }else if(lat==0.0 || lon==0.0){
+                    Toast.makeText(TyreActivity.this, "Location not available please try again", Toast.LENGTH_SHORT).show();
+                    setlocation();
+                }
+                else
+                    new Flattyre_Request_Async(TyreActivity.this).execute();
 
             }
         });
@@ -116,6 +121,7 @@ public class TyreActivity extends AppCompatActivity {
             String jsonData = null;
             Response response = null;
             OkHttpClient client = new OkHttpClient();
+            GetSet.setMobileno(Constants.pref.getString("mobileno",""));
             RequestBody body = new FormBody.Builder()
                     .add(Constants.mobileno, GetSet.getMobileno())
                     .add("servicename", "Flat Tyre")

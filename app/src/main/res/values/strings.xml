@@ -95,5 +95,6 @@
     <string name="forgotpassphrase">Don\'t worry... Please enter your mobile no below</string>
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="phone">Phone</string>
+    <string name="pin">Pin</string>
 
 </resources>

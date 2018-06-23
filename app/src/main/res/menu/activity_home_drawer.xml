@@ -32,10 +32,6 @@
             android:id="@+id/nav_paymenthistory"
             android:icon="@drawable/ic_payment_orange_700_18dp"
             android:title="Payment History" />
-        <item
-            android:id="@+id/nav_wallet"
-            android:icon="@drawable/ic_account_balance_wallet_orange_700_18dp"
-            android:title="Wallet" />
     </group>
 
     <item android:title="Setting">

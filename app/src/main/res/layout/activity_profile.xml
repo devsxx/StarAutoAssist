@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 >
     <ScrollView
@@ -13,7 +14,6 @@
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:background="#FFFFFF"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_width="match_parent"
@@ -43,7 +43,6 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:background="#FFFFFF"
                     android:id="@+id/email_layout"
                     android:layout_marginTop="15dp"
                     android:layout_weight="2"
@@ -62,11 +61,13 @@
                         android:layout_marginBottom="5dp"
                         android:hint="First Name"
                         app:met_floatingLabel="highlight"
-                        app:met_primaryColor="?colorAccent"
+                        app:met_primaryColor="@color/white"
+                        app:met_textColorHint="@color/white"
                         android:id="@+id/et_profile_firstname"
                         android:inputType="text"
                         android:layout_width="130dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp" />
 
                     <com.rengwuxian.materialedittext.MaterialEditText
                         android:background="@drawable/border_edittext"
@@ -74,7 +75,8 @@
                         android:layout_weight="1"
                         android:hint="Last Name"
                         app:met_floatingLabel="highlight"
-                        app:met_primaryColor="?colorAccent"
+                        app:met_primaryColor="@color/white"
+                        app:met_textColorHint="@color/white"
                         android:layout_marginLeft="10dp"
                         android:paddingLeft="5dp"
                         android:id="@+id/et_profile_lastname"
@@ -86,7 +88,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:background="#FFFFFF"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:orientation="vertical"
@@ -101,7 +102,8 @@
                         android:paddingLeft="5dp"
                         android:hint="Email"
                         app:met_floatingLabel="highlight"
-                        app:met_primaryColor="?colorAccent"
+                        app:met_primaryColor="@color/white"
+                        app:met_textColorHint="@color/white"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
@@ -110,7 +112,7 @@
                         android:layout_height="wrap_content" />
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     android:weightSum="2">
                     <com.rengwuxian.materialedittext.MaterialEditText
@@ -123,7 +125,8 @@
                         android:layout_marginBottom="5dp"
                         app:met_floatingLabel="highlight"
                         android:layout_marginLeft="10dp"
-                        app:met_primaryColor="?colorAccent"
+                        app:met_primaryColor="@color/white"
+                        app:met_textColorHint="@color/white"
                         android:hint="Phone"
                         android:padding="5dp"
                         android:layout_width="match_parent"
@@ -135,8 +138,9 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="10dp"
                         android:gravity="center"
+                        android:textStyle="bold"
                         android:hint="Verify"
-                        android:textColorHint="@color/colorPrimary"
+                        android:textColorHint="@color/white"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 </LinearLayout>
@@ -150,7 +154,8 @@
                         android:layout_marginLeft="10dp"
                         android:hint="Address"
                         app:met_floatingLabel="highlight"
-                        app:met_primaryColor="?colorAccent"
+                        app:met_primaryColor="@color/white"
+                        app:met_textColorHint="@color/white"
                         android:paddingBottom="40dp"
                         android:maxLines="3"
                         android:layout_width="match_parent"
@@ -165,13 +170,13 @@
                 android:id="@+id/loginbtn_lay"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="10dp"
                 android:layout_below="@+id/loginfieldlayout">
                 <Button
                     android:id="@+id/btn_profile_save"
                     android:textSize="16sp"
                     android:text="SAVE"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:background="@drawable/round_button"
                     android:layout_width="match_parent"

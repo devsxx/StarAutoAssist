@@ -74,7 +74,6 @@ public class Fuel_Activity extends AppCompatActivity {
         /*mapView = findViewById(R.id.mapView);*/
         spinnerprice = findViewById(R.id.spin_price);
         spinnerfuel = findViewById(R.id.spin_fuel);
-        tvlitre = findViewById(R.id.fuel_tv_litre);
         btnproceed = findViewById(R.id.fuel_btn_proceed);
 
         if(getIntent().hasExtra("service_chrg")) {
@@ -87,6 +86,9 @@ public class Fuel_Activity extends AppCompatActivity {
                     Toast.makeText(Fuel_Activity.this, "Please gives us persmission to find location", Toast.LENGTH_SHORT).show();
                     permissincheck();
                     setlocation();
+                }else if(lat==0.0 || lon==0.0){
+                    Toast.makeText(Fuel_Activity.this, "Location not available please try again", Toast.LENGTH_SHORT).show();
+                    setlocation();
                 }else  new Fuel_Request_Async(Fuel_Activity.this).execute();
             }
         });
@@ -97,13 +99,13 @@ public class Fuel_Activity extends AppCompatActivity {
                 ArrayAdapter<String> adapterprice = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, avail_amount);
                 adapterprice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerprice.setAdapter(adapterprice);
-                if (fuletype.get(position).equalsIgnoreCase("petrol")){
+             /*   if (fuletype.get(position).equalsIgnoreCase("RON95")){
                      fuelprice = perltr.get(position);
-                }else if (fuletype.get(position).equalsIgnoreCase("diesel")){
+                }else if (fuletype.get(position).equalsIgnoreCase("RON9")){
                     fuelprice = perltr.get(position);
-                }else if (fuletype.get(position).equalsIgnoreCase("gas")){
+                }else if (fuletype.get(position).equalsIgnoreCase("Diesel")){
                     fuelprice = perltr.get(position);
-                }
+                }*/
                 Toast.makeText(getApplicationContext(), spinnerfuel.getSelectedItem().toString() + "\tis Selected", Toast.LENGTH_SHORT).show();
             }
 
@@ -113,7 +115,7 @@ public class Fuel_Activity extends AppCompatActivity {
             }
         });
 
-        spinnerprice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*spinnerprice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                Float ltr= Float.valueOf(avail_amount.get(position))/Float.valueOf(fuelprice);
@@ -124,7 +126,7 @@ public class Fuel_Activity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
     }
 
     private void setlocation() {
@@ -243,6 +245,7 @@ public class Fuel_Activity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String jsonData = null;
             Response response = null;
+            GetSet.setMobileno(Constants.pref.getString("mobileno",""));
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
                     .add(Constants.mobileno, GetSet.getMobileno())

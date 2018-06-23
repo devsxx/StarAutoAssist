@@ -63,7 +63,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@color/white"
-            android:text="@string/set"
+            android:text="@string/pin"
             android:textColor="@color/green"
             android:gravity="center"
             android:layout_alignParentEnd="true"
@@ -121,7 +121,9 @@
             android:maxLines="1"
             android:dropDownWidth="match_parent"
             android:dropDownAnchor="@+id/view2"
-            android:popupBackground="@drawable/white_roundcorner"/>
+            android:popupBackground="@drawable/white_roundcorner"
+            android:layout_toLeftOf="@+id/toset"
+            android:layout_toRightOf="@+id/to" />
 
         <TextView
             android:id="@+id/toset"
@@ -133,7 +135,8 @@
             android:gravity="center"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
     <View
@@ -149,16 +152,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:translationZ="4dp"
+        android:orientation="vertical"
+        tools:targetApi="lollipop">
 
         <ImageView
             android:id="@+id/marker"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="22dp"
+            android:layout_gravity="center"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginBottom="35dp"
             android:background="@null"
-            android:tint="@color/colorPrimary"
-            android:src="@drawable/marker" />
+            android:src="@drawable/pin" />
 
     </LinearLayout>
 
@@ -169,13 +175,13 @@
         android:src="@drawable/currentlocatin"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/bottomLay"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:layout_alignParentLeft="true" />
     <RelativeLayout
         android:id="@+id/bottomLay"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/round_button"
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 

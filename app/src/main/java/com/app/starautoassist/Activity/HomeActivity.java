@@ -118,8 +118,12 @@ public class HomeActivity extends AppCompatActivity
                     .load(R.drawable.logo)
                     .into(imageView);
         }
-
-
+        if(Constants.pref!=null) {
+            GetSet.setMobileno(Constants.pref.getString("mobileno", ""));
+            GetSet.setEmail(Constants.pref.getString("email", ""));
+            GetSet.setUser_type(Constants.pref.getString("type", ""));
+            GetSet.setFirstname(Constants.pref.getString("firstname",""));
+        }
         TextView username= headerLayout.findViewById(R.id.nav_tv_name);
         username.setText(GetSet.getFirstname());
         navigationView.setNavigationItemSelectedListener(this);
@@ -217,9 +221,9 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+ /*       if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -268,10 +272,6 @@ public class HomeActivity extends AppCompatActivity
 //            Intent paymenthistoryintent = new Intent(this, PaymentHistoryActivity.class);
 //            startActivity(paymenthistoryintent);
 //            finish();
-            Toast.makeText(this, "This feature will be available soon", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.nav_wallet) {
-
             Toast.makeText(this, "This feature will be available soon", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_changepasssword) {
@@ -366,6 +366,7 @@ public class HomeActivity extends AppCompatActivity
                 /*if (AccessToken.getCurrentAccessToken() != null)
                 LoginManager.getInstance().logOut();*/
                 GetSet.reset();
+                dialog.dismiss();
                 finish();
                 Intent p = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(p);

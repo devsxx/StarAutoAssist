@@ -74,7 +74,7 @@ public class Starautoassist_Application extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ACRA.init(this);
+        ACRA.init(Starautoassist_Application.this);
         filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         // init facebook //
         FacebookSdk.sdkInitialize(this.getApplicationContext());
@@ -86,8 +86,8 @@ public class Starautoassist_Application extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        ACRA.init(this);
-        MultiDex.install(this);
+        ACRA.init(Starautoassist_Application.this);
+        MultiDex.install(Starautoassist_Application.this);
     }
 
     /** function for check the network **/
@@ -181,11 +181,6 @@ public class Starautoassist_Application extends Application {
     }
     /** To register the device for push notification **/
     public void  register(Context context) {
-
-
-        // Once GCM returns a registration id, we need to register on our server
-        // As the server might be down, we will retry it a couple
-        // times.
         for (int i = 1; i <=  5 ; i++) {
 
             Log.v("Push-Notification", "Attempt #" + i + " to register");
@@ -255,29 +250,10 @@ public class Starautoassist_Application extends Application {
 
         Thread th = new Thread(new Runnable() {
             public void run() {
-                /*String SOAP_ACTION = Constants.NAMESPACE + Constants.API_PUSH_UNREGISTER;
-
-                SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_PUSH_UNREGISTER);
-                req.addProperty(Constants.SOAP_USERNAME, Constants.SOAP_USERNAME_VALUE);
-                req.addProperty(Constants.SOAP_PASSWORD, Constants.SOAP_PASSWORD_VALUE);
-                req.addProperty("deviceId", Constants.ANDROID_ID);
-
-                SOAPParsing soap = new SOAPParsing();
-                String json = soap.getJSONFromUrl(SOAP_ACTION, req);*/
-
-              //  Log.v("json", "json" + json);
                 Constants.REGISTER_ID = "";
             }
         });
         th.start();
-
-        //GCMRegistrar.unregister(context);
-    //    GCMRegistrar.setRegisteredOnServer(context, false);
-        // At this point the device is unregistered from GCM, but still
-        // registered in the our server.
-        // We could try to unregister again, but it is not necessary:
-        // if the server tries to send a message to the device, it will get
-        // a "NotRegistered" error message and should unregister the device.
 
     }
 
@@ -379,20 +355,8 @@ public class Starautoassist_Application extends Application {
         TextView alertMsg = dialog.findViewById(R.id.alert_msg);
         ImageView alertIcon = dialog.findViewById(R.id.alert_icon);
         TextView alertOk = dialog.findViewById(R.id.alert_button);
-
         alertTitle.setText(title);
         alertMsg.setText(content);
-		/*if(title.equals(ctx.getResources().getString(R.string.alert)) || title.equals(ctx.getResources().getString(R.string.error))){
-			alertIcon.setImageResource(R.drawable.alert_icon);
-		}else if(title.equals(ctx.getResources().getString(R.string.success))){
-			alertIcon.setImageResource(R.drawable.success_icon);
-		}else if(title.equals(ctx.getResources().getString(R.string.network_error))){
-			alertIcon.setImageResource(R.drawable.network_icon);
-		}else{
-			alertIcon.setVisibility(View.GONE);
-		}*/
-
-
         alertOk.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -411,65 +375,6 @@ public class Starautoassist_Application extends Application {
     public static boolean isRTL(Context context){
         return context.getResources().getConfiguration().locale.toString().equals("ar");
     }
-  /*  public static void disabledialog(final Context ctx, final String content){
-        ((Activity) ctx).runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                final Dialog dialog = new Dialog(ctx ,R.style.AlertDialog);
-                Display display = ((Activity) ctx).getWindowManager().getDefaultDisplay();
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.default_dialog);
-                dialog.getWindow().setLayout(display.getWidth()*90/100, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.setCancelable(false);
-
-                TextView alertTitle = (TextView) dialog.findViewById(R.id.alert_title);
-                TextView alertMsg = (TextView) dialog.findViewById(R.id.alert_msg);
-                ImageView alertIcon = (ImageView) dialog.findViewById(R.id.alert_icon);
-                TextView alertOk = (TextView) dialog.findViewById(R.id.alert_button);
-
-                //alertTitle.setText(ctx.getResources().getString(R.string.alert));
-                alertMsg.setText(content);
-                //alertIcon.setImageResource(R.drawable.alert_icon);
-
-                alertOk.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        try{
-                            Constants.editor.clear();
-                            Constants.editor.commit();
-                            GetSet.reset();
-                            FragmentMainActivity.HomeItems.clear();
-                            if (FragmentMainActivity.homeAdapter != null){
-                                FragmentMainActivity.homeAdapter.notifyDataSetChanged();
-                            }
-                            FragmentMainActivity.filterAry.clear();
-                            FragmentMainActivity.currentPage = 0;
-                            WelcomeActivity.fromSignout = true;
-
-                        } catch(NullPointerException e){
-                            e.printStackTrace();
-                        } catch(Exception e){
-                            e.printStackTrace();
-                        }
-                        dialog.dismiss();
-                        ((Activity) ctx).finish();
-                        Intent intent = new Intent (ctx, WelcomeActivity.class);
-                        ((Activity) ctx).startActivity(intent);
-                    }
-                });
-
-                if(!dialog.isShowing()){
-                    dialog.show();
-                }
-
-            }
-        });
-
-    }*/
     /** function for avoiding emoji typing in keyboard **/
     public static InputFilter EMOJI_FILTER = new InputFilter() {
 

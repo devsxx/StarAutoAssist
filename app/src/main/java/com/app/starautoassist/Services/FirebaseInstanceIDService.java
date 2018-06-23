@@ -40,9 +40,10 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
         // Saving reg id to shared preferences
         storeRegIdInPref(refreshedToken);
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
+        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
         // sending reg id to your server
         if(!pref.getString("regId","").equalsIgnoreCase(refreshedToken)) {
-         if(GetSet.getMobileno()!=null)
+         if(!Constants.pref.getString("mobileno","").equalsIgnoreCase(""))
             sendRegistrationToServer(refreshedToken);
         }
 

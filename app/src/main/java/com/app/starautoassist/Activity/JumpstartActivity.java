@@ -74,6 +74,9 @@ public class JumpstartActivity extends AppCompatActivity {
                     Toast.makeText(JumpstartActivity.this, "Please gives us persmission to find location", Toast.LENGTH_SHORT).show();
                     permissincheck();
                     setlocation();
+                }else if(lat==0.0 || lon==0.0){
+                    Toast.makeText(JumpstartActivity.this, "Location not available please try again", Toast.LENGTH_SHORT).show();
+                    setlocation();
                 }else {
 
                     new Jumpstart_Request_Async(JumpstartActivity.this).execute();

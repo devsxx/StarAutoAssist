@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash"
     android:orientation="vertical"
     tools:context=".Activity.Fuel_Activity">
 
@@ -22,6 +23,7 @@
                     android:text="Fuel Type"
                     android:padding="15dp"
                     android:id="@+id/texttype"
+                    android:textStyle="bold"
                     android:textSize="15sp"
                     android:layout_weight="0.8"
                     android:layout_width="match_parent"
@@ -51,6 +53,7 @@
             android:text="Amount"
             android:padding="15dp"
             android:id="@+id/textprice"
+            android:textStyle="bold"
             android:textSize="15sp"
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -74,7 +77,7 @@
             android:layout_height="match_parent">
         </Spinner>
     </LinearLayout>
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_marginTop="15dp"
         android:layout_below="@+id/spin_layout"
         android:id="@+id/litre_layout"
@@ -102,7 +105,7 @@
            android:id="@+id/fuel_tv_litre"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
+    </LinearLayout>-->
 
     <Button
         android:layout_marginTop="30dp"

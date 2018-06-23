@@ -2,40 +2,32 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="180dp"
     android:id="@+id/lv_service"
-    android:padding="5dp"
+    android:padding="2dp"
     android:orientation="vertical"
     android:weightSum="10"
     android:layout_height="180dp">
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.5"
-        android:elevation="4dp"
-        android:translationZ="2dp">
-             <ImageView
+                 <ImageView
                 android:id="@+id/serviceimage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY" />
-    </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="8.5"
-        android:elevation="4dp"
-        android:translationZ="2dp">
+                     android:layout_weight="1.5"
+                android:scaleType="fitCenter" />
+
             <TextView
                 android:id="@+id/servicetitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:elevation="2dp"
+                android:padding="2dp"
+                android:textStyle="bold"
+                android:layout_weight="8.5"
                 android:translationZ="2dp"
                 android:layout_below="@id/serviceimage"
                 android:hint="@string/title"
-                android:textColor="#808080"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
-    </android.support.v7.widget.CardView>
 
 </LinearLayout>

@@ -63,7 +63,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
             public void onClick(View v) {
                 String name = itemMap.get(Constants.servicename);
                 String chrg = itemMap.get(Constants.servicecharge);
-                String mobileno=GetSet.getMobileno();
+                String mobileno=Constants.pref.getString("mobileno","");
                 if (mobileno==null || mobileno.equalsIgnoreCase("")) {
                     Toast.makeText(mContext, "Please fill profile", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(mContext, ProfileActivity.class);
@@ -80,7 +80,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
                                 Toast.makeText(mContext, "Please update car details", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(mContext, VechicleActivity.class);
                                 mContext.startActivity(intent);
-                                ((Activity) mContext).finish();
                             }
                         } else if (name.equalsIgnoreCase("out of fuel")) {
                             Intent intent = new Intent(mContext, Fuel_Activity.class);
