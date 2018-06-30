@@ -53,7 +53,7 @@ public class VechicleActivity extends AppCompatActivity {
     RecyclerView mycarListview;
     LinearLayoutManager layoutManager;
     ArrayList<HashMap<String, String>> carlist = new ArrayList<HashMap<String, String>>();
-   public static ArrayList<HashMap<String, String>> mycars = new ArrayList<HashMap<String, String>>();
+    public static ArrayList<HashMap<String, String>> mycars = new ArrayList<HashMap<String, String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,11 +184,6 @@ public class VechicleActivity extends AppCompatActivity {
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
                     Constants.editor.putBoolean("isCarAdded", true);
-                    /*Constants.editor.putString("brand", brandname);
-                    Constants.editor.putString("model", modelname);
-                    Constants.editor.putString("plateno", plateno);
-                    Constants.editor.putString("logo", brandlogo);
-                    Constants.editor.commit();*/
                     Constants.editor.apply();
                     finish();
                     Intent i = new Intent(VechicleActivity.this, HomeActivity.class);

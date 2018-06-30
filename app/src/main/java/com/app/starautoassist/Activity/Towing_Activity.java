@@ -98,7 +98,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     AutoCompleteTextView from, to;
     GPSTracker gps;
     TextView submitbtn;
-    String amount="";
+    String amount="",brand="",model="";
     String buttonstring="";
     RelativeLayout fromLayout, toLayout, next;
     private LatLng center;
@@ -127,6 +127,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         setTo = findViewById(R.id.toset);
         if(getIntent().hasExtra("service_chrg")) {
             amount= getIntent().getStringExtra("service_chrg");
+            brand= getIntent().getStringExtra("brand");
+            model= getIntent().getStringExtra("model");
         }
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -411,9 +413,13 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         dialog.setContentView(R.layout.bill_page_dialog);
+                        TextView brandname = (TextView) dialog.findViewById(R.id.brandval);
+                        TextView modelname = (TextView) dialog.findViewById(R.id.modelval);
                         TextView sname = (TextView) dialog.findViewById(R.id.servicename);
                         TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
                         TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                        brandname.setText(brand);
+                        modelname.setText(model);
                         sname.setText(R.string.towing);
                         samount.setText(new StringBuilder().append("RM").append(" ").append(amount).toString());
                         total.setText(new StringBuilder().append("RM").append(" ").append(amount).append("  *").toString());
@@ -760,6 +766,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                     .add("servicename", "Towing")
                     .add("towtype", towtype)
                     .add("service_amount", amount)
+                    .add("brand", brand)
+                    .add("model", model)
                     .add("pickup_location", flat+","+flon)
                     .add("drop_location", tlat+","+tlon)
                     .build();

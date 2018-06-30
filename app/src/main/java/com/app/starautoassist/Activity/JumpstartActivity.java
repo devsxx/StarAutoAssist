@@ -56,7 +56,7 @@ public class JumpstartActivity extends AppCompatActivity {
     private TextView tvfare, tvcharge;
     private Button btnsend;
     GPSTracker gpsTracker;
-    String amount="";
+    String amount="",model="",brand="";
     Double lat=0.0,lon=0.0;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     String latlon;
@@ -72,6 +72,8 @@ public class JumpstartActivity extends AppCompatActivity {
         setlocation();
         if(getIntent().hasExtra("service_chrg")) {
             amount= getIntent().getStringExtra("service_chrg");
+            brand= getIntent().getStringExtra("brand");
+            model= getIntent().getStringExtra("model");
         }
         btnsend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,9 +90,13 @@ public class JumpstartActivity extends AppCompatActivity {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.setContentView(R.layout.bill_page_dialog);
+                    TextView brandname = (TextView) dialog.findViewById(R.id.brandval);
+                    TextView modelname = (TextView) dialog.findViewById(R.id.modelval);
                     TextView sname = (TextView) dialog.findViewById(R.id.servicename);
                     TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
                     TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                    brandname.setText(brand);
+                    modelname.setText(model);
                     sname.setText(R.string.jump_start);
                     samount.setText(new StringBuilder().append("RM").append(" ").append(amount).toString());
                     total.setText(new StringBuilder().append("RM").append(" ").append(amount).append("  *").toString());
@@ -185,6 +191,8 @@ public class JumpstartActivity extends AppCompatActivity {
                     .add(Constants.mobileno, GetSet.getMobileno())
                     .add("servicename", "Jump Start")
                     .add("service_amount", amount)
+                    .add("brand", brand)
+                    .add("model", model)
                     .add("client_location", lat+","+lon)
                     .build();
             Request request = new Request.Builder()

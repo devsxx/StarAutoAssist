@@ -29,6 +29,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -49,6 +50,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.app.starautoassist.Adapter.MyCars_Adapter;
 import com.app.starautoassist.Fragment.HomeFragment;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
@@ -61,10 +64,13 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import okhttp3.Call;
@@ -82,6 +88,7 @@ public class HomeActivity extends AppCompatActivity
     private NotificationUtilz notificationUtils;
     Boolean chkper;
     AlertDialog dialog;
+
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +111,7 @@ public class HomeActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
@@ -536,4 +544,5 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-}
+    }
+

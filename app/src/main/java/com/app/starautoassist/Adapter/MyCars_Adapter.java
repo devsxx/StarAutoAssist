@@ -73,7 +73,9 @@ public class MyCars_Adapter extends RecyclerView.Adapter<MyCars_Adapter.MyViewHo
              @Override
              public void onClick(View view) {
                  pos=position;
-            new Delete_Mycar(mContext,itemMap.get(Constants.cno)).execute();
+                 if(mycars.size()>1) {
+                     new Delete_Mycar(mContext, itemMap.get(Constants.cno)).execute();
+                 }else Toast.makeText(mContext,"Cannot delete all cars",Toast.LENGTH_SHORT).show();
              }
          });
 

@@ -34,7 +34,72 @@
                 android:text="Service bill statement"
                 android:textAppearance="@android:style/TextAppearance.Large"
                 android:textColor="@color/primaryText"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/brandlayout"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:orientation="horizontal"
+                android:layout_below="@+id/contactName"
+                android:weightSum="2"
+                >
+                <TextView
+                    android:id="@+id/brandtxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:layout_marginTop="10dp"
+                    android:text="Brand"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/primaryText" />
 
+                <TextView
+                    android:id="@+id/brandval"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:layout_marginTop="10dp"
+                    android:text="Brand"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/primaryText" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/modellayout"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:orientation="horizontal"
+                android:layout_below="@+id/brandlayout"
+                android:weightSum="2"
+                >
+                <TextView
+                    android:id="@+id/modeltxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:layout_marginTop="10dp"
+                    android:text="Model"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/primaryText" />
+
+                <TextView
+                    android:id="@+id/modelval"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:layout_marginTop="10dp"
+                    android:text="Model"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/primaryText" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +107,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:orientation="horizontal"
-                android:layout_below="@+id/contactName"
+                android:layout_below="@+id/modellayout"
                 android:weightSum="2"
                 >
             <TextView

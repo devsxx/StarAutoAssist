@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/customdialog"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:padding="10dp"
+        android:text="Select the car"/>
+    <ListView
+        android:id="@+id/dialoglist"
+        android:layout_width="match_parent"
+        android:layout_height="320dp" />
+
+</LinearLayout>

@@ -54,7 +54,7 @@ public class TyreActivity extends AppCompatActivity {
     private Button btnsend;
     GPSTracker gpsTracker;
     Double lat=0.0,lon=0.0;
-    String amount="";
+    String amount="",model="",brand="";
     String latlon;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
@@ -70,7 +70,9 @@ public class TyreActivity extends AppCompatActivity {
 
         if(getIntent().hasExtra("service_chrg")) {
             amount= getIntent().getStringExtra("service_chrg");
-        }  String chrg=getIntent().getStringExtra("");
+            brand= getIntent().getStringExtra("brand");
+            model= getIntent().getStringExtra("model");
+        }
         btnsend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,9 +89,13 @@ public class TyreActivity extends AppCompatActivity {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.setContentView(R.layout.bill_page_dialog);
+                    TextView brandname = (TextView) dialog.findViewById(R.id.brandval);
+                    TextView modelname = (TextView) dialog.findViewById(R.id.modelval);
                     TextView sname = (TextView) dialog.findViewById(R.id.servicename);
                     TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
                     TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                    brandname.setText(brand);
+                    modelname.setText(model);
                     sname.setText(R.string.flat_tyre);
                     samount.setText(new StringBuilder().append("RM").append(" ").append(amount).toString());
                     total.setText(new StringBuilder().append("RM").append(" ").append(amount).append("  *").toString());
@@ -172,6 +178,8 @@ public class TyreActivity extends AppCompatActivity {
                     .add(Constants.mobileno, GetSet.getMobileno())
                     .add("servicename", "Flat Tyre")
                     .add("service_amount", amount)
+                    .add("brand", brand)
+                    .add("model", model)
                     .add("client_location", lat+","+lon)
                     .build();
             Request request = new Request.Builder()

@@ -69,7 +69,7 @@ public class Fuel_Activity extends AppCompatActivity {
     String fuelprice;
     Double lat=0.0,lon=0.0;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
-    String amount="";
+    String amount="",brand="",model="";
     GPSTracker gps;
 
     @Override
@@ -85,6 +85,8 @@ public class Fuel_Activity extends AppCompatActivity {
 
         if(getIntent().hasExtra("service_chrg")) {
             amount= getIntent().getStringExtra("service_chrg");
+            brand= getIntent().getStringExtra("brand");
+            model= getIntent().getStringExtra("model");
         }
         btnproceed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,12 +103,16 @@ public class Fuel_Activity extends AppCompatActivity {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.setContentView(R.layout.bill_page_dialog);
+                    TextView brandname = (TextView) dialog.findViewById(R.id.brandval);
+                    TextView modelname = (TextView) dialog.findViewById(R.id.modelval);
                     TextView sname = (TextView) dialog.findViewById(R.id.servicename);
                     TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
                     LinearLayout fuellay = (LinearLayout) dialog.findViewById(R.id.fuellay);
                     fuellay.setVisibility(View.VISIBLE);
                     TextView fuelamount = (TextView) dialog.findViewById(R.id.fuelval);
                     TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                    brandname.setText(brand);
+                    modelname.setText(model);
                     sname.setText(R.string.out_of_fuel);
                     samount.setText(new StringBuilder().append("RM").append(" ").append(amount).toString());
                     fuelamount.setText(new StringBuilder().append("RM").append(" ").append(spinnerprice.getSelectedItem().toString()).toString());
@@ -294,6 +300,8 @@ public class Fuel_Activity extends AppCompatActivity {
                     .add(Constants.mobileno, GetSet.getMobileno())
                     .add("servicename", "Out of Fuel")
                     .add("service_amount", amount)
+                    .add("brand", brand)
+                    .add("model", model)
                     .add("fueltype", spinnerfuel.getSelectedItem().toString())
                     .add("amount", spinnerprice.getSelectedItem().toString())
                     .add("client_location", lat+","+lon)
