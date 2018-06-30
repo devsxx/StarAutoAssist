@@ -2,6 +2,9 @@ package com.app.starautoassist.Activity;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +12,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -20,6 +25,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -59,6 +65,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -72,7 +79,9 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     String url="";
+    private NotificationUtilz notificationUtils;
     Boolean chkper;
+    AlertDialog dialog;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,20 +108,20 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
         CircularImageView imageView= headerLayout.findViewById(R.id.nav_iv);
-        if(!Constants.pref.getString("userimage","").equalsIgnoreCase("")){
-            url = Constants.BaseURL + "images/users/" + Constants.pref.getString("userimage","");
-            Glide
-                    .with(HomeActivity.this)
-                    .load(url)
-                    .into(imageView);
-        }
-        else if(!Constants.pref.getString("socialimage","").equalsIgnoreCase("")){
+        if(!Constants.pref.getString("socialimage","").equalsIgnoreCase("")){
             url= Constants.pref.getString("socialimage","");
             Glide
                     .with(HomeActivity.this)
                     .load(url)
                     .into(imageView);
-        } else{
+        }
+        else if(!Constants.pref.getString("userimage","").equalsIgnoreCase("")){
+            url = Constants.BaseURL + "images/users/" + Constants.pref.getString("userimage","");
+            Glide
+                    .with(HomeActivity.this)
+                    .load(url)
+                    .into(imageView);
+        }  else{
             Glide
                     .with(HomeActivity.this)
                     .load(R.drawable.logo)
@@ -141,6 +150,10 @@ public class HomeActivity extends AppCompatActivity
                     // new push notification is received
                     String message = intent.getStringExtra("message");
                     Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+                    notificationUtils = new NotificationUtilz(context);
+                    long timeStamp = System.currentTimeMillis();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    notificationUtils.showNotificationMessage(getString(R.string.app_name), message, String.valueOf(timeStamp), intent);
                 }
             }
         };
@@ -167,11 +180,11 @@ public class HomeActivity extends AppCompatActivity
         // For Internet checking
         Starautoassist_Application.registerReceiver(HomeActivity.this);
         // register GCM registration complete receiver
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+        LocalBroadcastManager.getInstance(HomeActivity.this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(Constants.REGISTRATION_COMPLETE));
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+        LocalBroadcastManager.getInstance(HomeActivity.this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
         // clear the notification area when the app is opened
         NotificationUtilz.clearNotifications(getApplicationContext());
@@ -191,21 +204,23 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
-            alertDialog.setTitle("Exiting App Confirmation");
-            alertDialog.setMessage("Are you sure you want to Exit?");
-            alertDialog.setIcon(R.drawable.exit);
-            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
-            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                public void onClick(@NonNull DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            alertDialog.show();
+            if (getFragmentManager().getBackStackEntryCount() == 0) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+                alertDialog.setTitle("Exiting App Confirmation");
+                alertDialog.setMessage("Are you sure you want to Exit?");
+                alertDialog.setIcon(R.drawable.exit);
+                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alertDialog.show();
+            }else super.onBackPressed();
         }
     }
 
@@ -252,8 +267,8 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_acceptedrequest) {
 
-            Toast.makeText(this, "This feature will be available soon", Toast.LENGTH_SHORT).show();
-
+            Intent vechicleintent = new Intent(this, AcceptedRequestActivity.class);
+            startActivity(vechicleintent);
         }
         else if (id == R.id.nav_sentrequest) {
 
@@ -284,7 +299,7 @@ public class HomeActivity extends AppCompatActivity
             builder.setTitle("Reset Your Password :");
             builder.setCancelable(true);
 
-            final AlertDialog dialog = builder.create();
+            dialog = builder.create();
             dialog.show();
 
             final EditText etoldpass = dialog.findViewById(R.id.et_change_oldpass);
@@ -302,7 +317,7 @@ public class HomeActivity extends AppCompatActivity
                     if (newpass.equals(confirmpass)){
                         //proceed to further code
                         new Change_Password(HomeActivity.this,GetSet.getMobileno(),oldpass,newpass).execute();
-                        dialog.dismiss();
+
 
                     }else {
 
@@ -443,7 +458,7 @@ public class HomeActivity extends AppCompatActivity
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
                     Toast.makeText(getApplicationContext(),"Password changed successfully",Toast.LENGTH_SHORT).show();
-
+                    dialog.dismiss();
                 }else Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -29,6 +30,7 @@ public class TrackerActivity extends Activity {
         }
 
         // Check location permission is granted - if it is, start
+
         // the service, otherwise request the permission
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
@@ -42,8 +44,14 @@ public class TrackerActivity extends Activity {
     }
 
     private void startTrackerService() {
-        startService(new Intent(this, Tracker_Service.class));
-        finish();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this, Tracker_Service.class));
+
+        } else {
+            startService(new Intent(this, Tracker_Service.class));
+        }
+
+
     }
     @Override
     protected void onResume() {

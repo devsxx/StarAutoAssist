@@ -96,5 +96,11 @@
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="phone">Phone</string>
     <string name="pin">Pin</string>
+    <string name="towing">Towing</string>
+    <string name="flat_tyre">Flat Tyre</string>
+    <string name="jump_start">Jump Start</string>
+    <string name="out_of_fuel">Out of Fuel</string>
+    <string name="brand">Brand</string>
+    <string name="select_model">Select Model</string>
 
 </resources>

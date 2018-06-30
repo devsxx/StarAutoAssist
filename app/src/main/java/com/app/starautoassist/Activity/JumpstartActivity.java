@@ -2,11 +2,14 @@ package com.app.starautoassist.Activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,8 +18,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +76,6 @@ public class JumpstartActivity extends AppCompatActivity {
         btnsend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(JumpstartActivity.this, "LatLon"+latlon, Toast.LENGTH_SHORT).show();
                 if(lat==0.0 && lon==0.0) {
                     Toast.makeText(JumpstartActivity.this, "Please gives us persmission to find location", Toast.LENGTH_SHORT).show();
                     permissincheck();
@@ -77,11 +83,43 @@ public class JumpstartActivity extends AppCompatActivity {
                 }else if(lat==0.0 || lon==0.0){
                     Toast.makeText(JumpstartActivity.this, "Location not available please try again", Toast.LENGTH_SHORT).show();
                     setlocation();
-                }else {
-
-                    new Jumpstart_Request_Async(JumpstartActivity.this).execute();
+                }else{
+                    final Dialog dialog = new Dialog(JumpstartActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.setContentView(R.layout.bill_page_dialog);
+                    TextView sname = (TextView) dialog.findViewById(R.id.servicename);
+                    TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
+                    TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                    sname.setText(R.string.jump_start);
+                    samount.setText(new StringBuilder().append("RM").append(" ").append(amount).toString());
+                    total.setText(new StringBuilder().append("RM").append(" ").append(amount).append("  *").toString());
+                    Button confirmbtn = (Button) dialog.findViewById(R.id.confirmbtn);
+                    Button cancel = (Button) dialog.findViewById(R.id.cancelbtn);
+                    confirmbtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new Jumpstart_Request_Async(JumpstartActivity.this).execute();
+                        }
+                    });
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    Window window = dialog.getWindow();
+                    WindowManager.LayoutParams wlp = window.getAttributes();
+                    wlp.gravity = Gravity.CENTER;
+                    wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                    window.setAttributes(wlp);
+                    dialog.setCancelable(true);
+                    dialog.setCanceledOnTouchOutside(false);
+                    if (!dialog.isShowing()) {
+                        dialog.show();
+                    }
                 }
-
             }
         });
 
@@ -111,6 +149,9 @@ public class JumpstartActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent=new Intent(JumpstartActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public class Jumpstart_Request_Async extends AsyncTask<String, Integer, String> {
@@ -179,6 +220,7 @@ public class JumpstartActivity extends AppCompatActivity {
                     Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
                     finish();
                     Intent i = new Intent(JumpstartActivity.this, SentRequestActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }else {
                     Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();

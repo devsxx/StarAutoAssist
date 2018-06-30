@@ -22,10 +22,25 @@ public class Constants {
     public static String status="status";
     public static String timestamp="timestamp";
     public static String email="email";
+    public static String id="id";
+    public static String cno="cno";
+    public static String model="model";
+    public static String brand="brand";
+    public static String plateno="plateno";
+    public static String logo="logo";
 
     public static String serviceid="serviceid";
     public static String servicename="servicename";
     public static String service_name="service_name";
+    public static String serviceprovider_id="serviceprovider_id";
+    public static String companyname="companyname";
+    public static String address="address";
+    public static String providerimage="providerimage";
+    public static String service_description="service_description";
+    public static String overall_rating="overall_rating";
+    public static String client_id="client_id";
+    public static String rating="rating";
+    public static String review="review";
     public static String serviceimg="serviceimgurl";
     public static String servicecharge="serviceamount";
     public static String priceperkm="priceperkm";
@@ -55,8 +70,12 @@ public class Constants {
     public static String BaseURL="http://towbago.shadowws.in/jsons/";
     public static String uploadimage="uploadprofileimage.php?";
     public static String addcar="addcar.php?";
+    public static String delcar="delcar.php?";
+    public static String getcars="get_car_list.php?";
+    public static String getmycars="getmycars_list.php?";
     public static String login="login.php?";
-    public static String cancel_req="cancel_request.php?";
+    public static String send_response_to_sp ="send_response_to_sp.php?";
+    public static String cancel_req ="cancel_req.php?";
     public static String getOTP="getotp.php?";
     public static String getSocialOTP="socialotp.php?";
     public static String verifyOTP="verifyotp.php?";
@@ -67,6 +86,7 @@ public class Constants {
     public static String getprofile="getprofile.php?";
     public static String getservices="getservices.php?";
     public static String get_req_status="get_req_status.php?";
+    public static String get_accepted_list="get_accepted_request.php?";
     public static String get_fuel_request="getfueldetails.php?";
     public static String send_req_towing="send_request_towing.php?";
     public static String send_req_flattyre="send_request_tyre.php?";

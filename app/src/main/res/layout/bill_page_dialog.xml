@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88000000"
+    android:layoutDirection="inherit">
+
+    <RelativeLayout
+        android:id="@+id/sharelay"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp">
+
+        <RelativeLayout
+            android:id="@+id/rlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/invite_dialog_bg"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/contactName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="35dp"
+                android:paddingBottom="5dp"
+                android:text="Service bill statement"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@color/primaryText"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/servicelayout"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:orientation="horizontal"
+                android:layout_below="@+id/contactName"
+                android:weightSum="2"
+                >
+            <TextView
+                android:id="@+id/servicenametxt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:layout_marginTop="10dp"
+                android:text="Service Name"
+                android:textSize="12sp"
+                android:lineSpacingExtra="3dp"
+                android:textColor="@color/primaryText" />
+
+            <TextView
+                android:id="@+id/servicename"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:layout_marginTop="10dp"
+                android:text="Service Name"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:lineSpacingExtra="3dp"
+                android:textColor="@color/primaryText" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:id="@+id/amountlayout"
+                android:layout_below="@+id/servicelayout"
+                android:weightSum="2">
+            <TextView
+                android:id="@+id/serviceamttxt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:text="Service Amount"
+                android:textSize="12sp"
+                android:layout_weight="1.2"
+                android:lineSpacingExtra="3dp"
+                android:textColor="@color/primaryText" />
+
+            <TextView
+                android:id="@+id/serviceamt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.8"
+                android:text="RM200"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:lineSpacingExtra="3dp"
+                android:textColor="@color/primaryText"
+                />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:id="@+id/fuellay"
+                android:visibility="gone"
+                android:layout_below="@+id/amountlayout"
+                android:weightSum="2">
+                <TextView
+                    android:id="@+id/fueltext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Fuel amount"
+                    android:textSize="12sp"
+                    android:layout_weight="1.2"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/primaryText" />
+
+                <TextView
+                    android:id="@+id/fuelval"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="0.8"
+                    android:text="RM20"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/primaryText"
+                    />
+            </LinearLayout>
+            <ImageView  android:layout_width="match_parent"
+                android:layout_height="2dip"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_above="@+id/totallay"
+                android:background="@color/gray"
+                android:padding="5dip"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/totallay"
+                android:layout_below="@+id/fuellay"
+                android:weightSum="2">
+            <TextView
+                android:id="@+id/totaltext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1.2"
+                android:text="Total amount"
+                android:textSize="12sp"
+                android:lineSpacingExtra="3dp"
+                android:textColor="@color/primaryText" />
+
+            <TextView
+                android:id="@+id/totalvalue"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:text="RM200  *"
+                android:layout_weight="0.8"
+                android:textSize="12sp"
+                android:lineSpacingExtra="3dp"
+                android:textColor="@color/primaryText"
+                />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btns"
+                android:textSize="9sp"
+                android:gravity="center"
+                android:text="* If any extra charges comes will need to pay at the end of service done. Like toll,spares and etc"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:translationZ="2dp"
+                android:elevation="4dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/btns"
+                android:layout_below="@+id/totallay"
+                android:weightSum="2"
+                tools:targetApi="lollipop">
+                <Button
+                    android:id="@+id/cancelbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:background="@color/gray"
+                    android:layout_weight="1"
+                    android:text="@string/cancel"/>
+
+                <Button
+                    android:id="@+id/confirmbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:background="@color/colorPrimary"
+                    android:layout_weight="1"
+                    android:text="Pay"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/contactImg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignBaseline="@+id/llay"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/logo"
+            app:border_color="@color/white"
+            app:border_width="5dp"
+            app:corner_radius="100dip"
+            app:round_background="true" />
+
+        <LinearLayout
+            android:id="@+id/llay"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_above="@+id/rlay"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

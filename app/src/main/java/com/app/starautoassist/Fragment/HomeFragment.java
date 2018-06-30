@@ -71,7 +71,6 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         new Get_Services_Async(getActivity()).execute();
         recyclerView = view.findViewById(R.id.rv_home);
-
         return view;
     }
 

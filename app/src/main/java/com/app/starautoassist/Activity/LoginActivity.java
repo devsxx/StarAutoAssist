@@ -730,7 +730,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Constants.editor.putString("userimageurl", GetSet.getImageUrl());
                     Constants.editor.putString("socialimage", GetSet.getSocialimg());
                     Constants.editor.commit();
-                    if(!Constants.REGISTER_ID.equalsIgnoreCase(""))
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
+                    Boolean isPushed=pref.getBoolean("isPushregisters",false);
+                    if(!isPushed)
                         Registernotifi();
                     Intent intent=new Intent(context,HomeActivity.class);
                     startActivity(intent);
@@ -915,9 +917,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Constants.editor.putString("userimageurl", GetSet.getImageUrl());
                     Constants.editor.putString("socialimage", GetSet.getSocialimg());
                     Constants.editor.commit();
-
-                    if(!Constants.REGISTER_ID.equalsIgnoreCase(""))
-                        Registernotifi();
                     Intent intent=new Intent(context,HomeActivity.class);
                     startActivity(intent);
                     finish();

@@ -2,12 +2,15 @@ package com.app.starautoassist.Activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -16,10 +19,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,7 +96,48 @@ public class Fuel_Activity extends AppCompatActivity {
                 }else if(lat==0.0 || lon==0.0){
                     Toast.makeText(Fuel_Activity.this, "Location not available please try again", Toast.LENGTH_SHORT).show();
                     setlocation();
-                }else  new Fuel_Request_Async(Fuel_Activity.this).execute();
+                }else{
+                    final Dialog dialog = new Dialog(Fuel_Activity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.setContentView(R.layout.bill_page_dialog);
+                    TextView sname = (TextView) dialog.findViewById(R.id.servicename);
+                    TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
+                    LinearLayout fuellay = (LinearLayout) dialog.findViewById(R.id.fuellay);
+                    fuellay.setVisibility(View.VISIBLE);
+                    TextView fuelamount = (TextView) dialog.findViewById(R.id.fuelval);
+                    TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                    sname.setText(R.string.out_of_fuel);
+                    samount.setText(new StringBuilder().append("RM").append(" ").append(amount).toString());
+                    fuelamount.setText(new StringBuilder().append("RM").append(" ").append(spinnerprice.getSelectedItem().toString()).toString());
+                    int totalvalue= Integer.valueOf(amount)+Integer.valueOf(spinnerprice.getSelectedItem().toString());
+                    total.setText(new StringBuilder().append("RM").append(" ").append(totalvalue).append("  *").toString());
+                    Button confirmbtn = (Button) dialog.findViewById(R.id.confirmbtn);
+                    Button cancel = (Button) dialog.findViewById(R.id.cancelbtn);
+                    confirmbtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new Fuel_Request_Async(Fuel_Activity.this).execute();
+                        }
+                    });
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    Window window = dialog.getWindow();
+                    WindowManager.LayoutParams wlp = window.getAttributes();
+                    wlp.gravity = Gravity.CENTER;
+                    wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                    window.setAttributes(wlp);
+                    dialog.setCancelable(true);
+                    dialog.setCanceledOnTouchOutside(false);
+                    if (!dialog.isShowing()) {
+                        dialog.show();
+                    }
+                }
             }
         });
         setlocation();
@@ -99,14 +147,6 @@ public class Fuel_Activity extends AppCompatActivity {
                 ArrayAdapter<String> adapterprice = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, avail_amount);
                 adapterprice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerprice.setAdapter(adapterprice);
-             /*   if (fuletype.get(position).equalsIgnoreCase("RON95")){
-                     fuelprice = perltr.get(position);
-                }else if (fuletype.get(position).equalsIgnoreCase("RON9")){
-                    fuelprice = perltr.get(position);
-                }else if (fuletype.get(position).equalsIgnoreCase("Diesel")){
-                    fuelprice = perltr.get(position);
-                }*/
-                Toast.makeText(getApplicationContext(), spinnerfuel.getSelectedItem().toString() + "\tis Selected", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -137,6 +177,9 @@ public class Fuel_Activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent=new Intent(Fuel_Activity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
     public class Get_Fuel_Service extends AsyncTask<String, Integer, String> {
         private Context context;
@@ -289,6 +332,7 @@ public class Fuel_Activity extends AppCompatActivity {
                     Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
                     finish();
                     Intent i = new Intent(Fuel_Activity.this, SentRequestActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }else {
                     Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();

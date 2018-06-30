@@ -225,8 +225,8 @@ public class ProfileActivity extends AppCompatActivity {
                             .setPositiveButton("Verify",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,int id) {
-                                            String mobile_no=userInput.getText().toString().trim();
-                                            new VerifyOTP(ProfileActivity.this, mobile_no, "1234").execute();
+                                            String otp=userInput.getText().toString().trim();
+                                            new VerifyOTP(ProfileActivity.this, mobileno, otp).execute();
                                         }
                                     })
                             .setNegativeButton("Cancel",
@@ -316,7 +316,9 @@ public class ProfileActivity extends AppCompatActivity {
                     verifytxt.setEnabled(false);
                     verifytxt.setText("Verified");
                     verifytxt.setTextColor(getResources().getColor(R.color.green));
-                    if(!Constants.REGISTER_ID.equalsIgnoreCase(""))
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
+                    Boolean isPushed=pref.getBoolean("isPushregisters",false);
+                    if(!isPushed)
                         Registernotifi();
                 }else Toast.makeText(getApplicationContext(),"Otp not verified",Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
@@ -350,7 +352,7 @@ public class ProfileActivity extends AppCompatActivity {
                     .load(image)
                     .into(circularImageView);
         } else if (!Constants.pref.getString("socialimage", "").equalsIgnoreCase("")) {
-            imageurl = Constants.pref.getString("socialimage", "");
+            image = Constants.pref.getString("socialimage", "");
             Glide
                     .with(ProfileActivity.this)
                     .load(image)

@@ -82,6 +82,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements
 		try {
 			StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
 			sb.append("?input=" + URLEncoder.encode(input, "utf8"));
+
 			sb.append("&sensor=true&key=" + API_KEY);
 			sb.append("&language="+ context.getResources().getConfiguration().locale.getLanguage());
 			URL url = new URL(sb.toString());

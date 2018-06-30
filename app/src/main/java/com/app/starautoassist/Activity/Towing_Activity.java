@@ -2,11 +2,14 @@ package com.app.starautoassist.Activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
@@ -19,19 +22,25 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +69,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -70,7 +81,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Towing_Activity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, AdapterView.OnItemClickListener, TextWatcher {
+public class Towing_Activity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, TextWatcher {
     MapView mapView;
     private GoogleMap map;
     String TAG="Towing_Activity";
@@ -126,8 +137,40 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         setTo.setOnClickListener(this);
         myLocation.setOnClickListener(this);
         next.setOnClickListener(this);
-        from.setOnItemClickListener(this);
-        to.setOnItemClickListener(this);
+        from.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String str = (String) adapterView.getItemAtPosition(position);
+                if (str.trim().length() != 0) {
+                    try {
+                        new getLocationFromString("from").execute(str).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        });
+        to.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String str = (String) adapterView.getItemAtPosition(position);
+                if (str.trim().length() != 0) {
+                    try {
+                      new getLocationFromString("to").execute(str).get();
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
         from.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -177,14 +220,14 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         ivwheellift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tow_type="wheel_lift";
+                tow_type="Wheel Lift";
                 towdialog.dismiss();
             }
         });
         ivflatbed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tow_type="flatbed";
+                tow_type="Flat Bed";
                 towdialog.dismiss();
             }
         });
@@ -216,20 +259,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         if (imm != null) {
                             imm.hideSoftInputFromWindow(from.getWindowToken(), 0);
                         }
-                        Double latn[] = new Double[2];
                         if (from.getText().toString().trim().length() != 0) {
-                            latn = new getLocationFromString().execute(from.getText().toString().trim()).get();
-                            final double lat = latn[0];
-                            final double lon = latn[1];
-                            flat=lat;
-                            flon=lon;
-                            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                                @Override
-                                public void onMapReady(GoogleMap googleMap) {
-                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),11));
-                                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 15));
-                                }
-                            });
+                            new getLocationFromString("from").execute(from.getText().toString().trim()).get();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -265,20 +296,10 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         if (imm != null) {
                             imm.hideSoftInputFromWindow(to.getWindowToken(), 0);
                         }
-                        Double latn[] = new Double[2];
+
                         if (to.getText().toString().trim().length() != 0) {
-                            latn = new getLocationFromString().execute(to.getText().toString().trim()).get();
-                            final double lat = latn[0];
-                            final double lon = latn[1];
-                            tlat=lat;
-                            tlon=lon;
-                            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                                @Override
-                                public void onMapReady(GoogleMap googleMap) {
-                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),11));
-                                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 15));
-                                }
-                            });
+                            new getLocationFromString("to").execute(to.getText().toString().trim()).get();
+
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -351,6 +372,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                 tlon=center.longitude;
                 new GetLocationAsync(center.latitude, center.longitude,"to").execute();
                 break;
+
             case R.id.my_location:
                 if (gps.canGetLocation()) {
                     mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -376,12 +398,54 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                     }
                     else if(tlat==0.0 || tlon==0.0 ){
                         Toast.makeText(Towing_Activity.this, "Pickup location not set properly", Toast.LENGTH_SHORT).show();
-                    }else {
+                    }/*else {
+
                         Log.d(TAG, "F.Lat&Lon: "+flat+" "+flon);
                         Log.d(TAG, "T.Lat&Lon: "+tlat+" "+tlon);
                         Log.d(TAG, "From Towing_Activity: "+from.getText().toString().trim());
                         Log.d(TAG, "To Towing_Activity: "+to.getText().toString().trim());
                         new Towing_Request_Async(Towing_Activity.this,tow_type).execute();
+                    }*/
+                else{
+                        final Dialog dialog = new Dialog(Towing_Activity.this);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.bill_page_dialog);
+                        TextView sname = (TextView) dialog.findViewById(R.id.servicename);
+                        TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
+                        TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                        sname.setText(R.string.towing);
+                        samount.setText(new StringBuilder().append("RM").append(" ").append(amount).toString());
+                        total.setText(new StringBuilder().append("RM").append(" ").append(amount).append("  *").toString());
+                        Button confirmbtn = (Button) dialog.findViewById(R.id.confirmbtn);
+                        Button cancel = (Button) dialog.findViewById(R.id.cancelbtn);
+                        confirmbtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d(TAG, "F.Lat&Lon: "+flat+" "+flon);
+                                Log.d(TAG, "T.Lat&Lon: "+tlat+" "+tlon);
+                                Log.d(TAG, "From Towing_Activity: "+from.getText().toString().trim());
+                                Log.d(TAG, "To Towing_Activity: "+to.getText().toString().trim());
+                                new Towing_Request_Async(Towing_Activity.this,tow_type).execute();
+                            }
+                        });
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                        Window window = dialog.getWindow();
+                        WindowManager.LayoutParams wlp = window.getAttributes();
+                        wlp.gravity = Gravity.CENTER;
+                        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                        window.setAttributes(wlp);
+                        dialog.setCancelable(true);
+                        dialog.setCanceledOnTouchOutside(false);
+                        if (!dialog.isShowing()) {
+                            dialog.show();
+                        }
                     }
                 break;
         }
@@ -419,6 +483,9 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent=new Intent(Towing_Activity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -438,10 +505,6 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         Starautoassist_Application.unregisterReceiver(this);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-    }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -568,8 +631,11 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     }
     /** for get the lat, lon from address **/
     class getLocationFromString extends AsyncTask<String, Void, Double[]> {
-
-        @Override
+       String where;
+        public getLocationFromString(String where) {
+            this.where=where;
+        }
+                    @Override
         protected Double[] doInBackground(String... params) {
             final Double latn[] = new Double[2];
             HttpURLConnection conn = null;
@@ -614,6 +680,31 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         .getJSONObject("geometry").getJSONObject("location")
                         .getDouble("lat");
                 Log.v("lat & lon", " lat = " + latn[0] + " &lon = " + latn[1]);
+                if(where.equalsIgnoreCase("from"))
+                {
+                    flat=latn[0];
+                    flon=latn[1];
+                    Towing_Activity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mapsync(flat, flon);
+                        }
+                    });
+
+
+                }
+                if(where.equalsIgnoreCase("to")){
+                    tlat=latn[0];
+                    tlon=latn[1];
+                    Towing_Activity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mapsync(tlat, tlon);
+                        }
+                    });
+
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (NullPointerException e){
@@ -624,6 +715,17 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
             return latn;
         }
     }
+
+    public void mapsync(final double lat, final double lon) {
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 11));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 15));
+            }
+        });
+    }
+
     public class Towing_Request_Async extends AsyncTask<String, Integer, String> {
         private Context context;
         private String towtype;
@@ -695,6 +797,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
                     finish();
                     Intent i = new Intent(Towing_Activity.this, SentRequestActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }else {
                     Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
