@@ -9,10 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +29,6 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.app.starautoassist.Fragment.HomeFragment.mycarslist;
 import static com.app.starautoassist.Others.Constants.isLocationpermission_enabled;
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHolder> {
@@ -64,8 +61,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String name = itemMap.get(Constants.servicename);
-                final String chrg = itemMap.get(Constants.servicecharge);
+                String name = itemMap.get(Constants.servicename);
+                String chrg = itemMap.get(Constants.servicecharge);
                 String mobileno=Constants.pref.getString("mobileno","");
                 if (mobileno==null || mobileno.equalsIgnoreCase("")) {
                     Toast.makeText(mContext, "Please fill profile", Toast.LENGTH_SHORT).show();
@@ -74,68 +71,36 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
                     ((Activity) mContext).finish();
                 } else {
                     if (Constants.isLocationpermission_enabled) {
-                        if (Constants.pref.getBoolean("isCarAdded", false)) {
-                            final Dialog dialog = new Dialog(mContext);
-                            LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                            View view = null;
-                            if (li != null) {
-                                view = li.inflate(R.layout.car_choice_list, null);
+                        if (name.equalsIgnoreCase("towing")) {
+                            if(Constants.pref.getBoolean("isCarAdded",false)) {
+                                Intent intent = new Intent(mContext, Towing_Activity.class);
+                                intent.putExtra("service_chrg", chrg);
+                                mContext.startActivity(intent);
+                                ((Activity)mContext).finish();
+                            }else {
+                                Toast.makeText(mContext, "Please update car details", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(mContext, VechicleActivity.class);
+                                mContext.startActivity(intent);
+                                ((Activity)mContext).finish();
                             }
-                            ListView lv = (ListView) view.findViewById(R.id.dialoglist);
-
-                            // Change MyActivity.this and myListOfItems to your own values
-                            Car_choice_adapter clad = new Car_choice_adapter(mContext, mycarslist);
-                            lv.setAdapter(clad);
-                            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    Toast.makeText(mContext, mycarslist.get(i).get("brand"), Toast.LENGTH_SHORT).show();
-                                    String car_brand=mycarslist.get(i).get("brand");
-                                    String car_model=mycarslist.get(i).get("model");
-                                    if (name.equalsIgnoreCase("towing")) {
-                                        Intent intent = new Intent(mContext, Towing_Activity.class);
-                                        intent.putExtra("service_chrg", chrg);
-                                        intent.putExtra("brand", car_brand);
-                                        intent.putExtra("model", car_model);
-                                        mContext.startActivity(intent);
-                                        ((Activity) mContext).finish();
-                                    } else if (name.equalsIgnoreCase("out of fuel")) {
-                                        Intent intent = new Intent(mContext, Fuel_Activity.class);
-                                        intent.putExtra("service_chrg", chrg);
-                                        intent.putExtra("brand", car_brand);
-                                        intent.putExtra("model", car_model);
-                                        mContext.startActivity(intent);
-                                        ((Activity) mContext).finish();
-                                    } else if (itemMap.get(Constants.servicename).equalsIgnoreCase("jump start")) {
-                                        Intent intent = new Intent(mContext, JumpstartActivity.class);
-                                        intent.putExtra("service_chrg", chrg);
-                                        intent.putExtra("brand", car_brand);
-                                        intent.putExtra("model", car_model);
-                                        mContext.startActivity(intent);
-                                        ((Activity) mContext).finish();
-                                    } else if (name.equalsIgnoreCase("flat tyre")) {
-                                        Intent intent = new Intent(mContext, TyreActivity.class);
-                                        intent.putExtra("service_chrg", chrg);
-                                        intent.putExtra("brand", car_brand);
-                                        intent.putExtra("model", car_model);
-                                        mContext.startActivity(intent);
-                                        ((Activity) mContext).finish();
-                                    } else
-                                        Toast.makeText(mContext, "Your selection invalid", Toast.LENGTH_SHORT).show();
-                                }
-
-                            });
-                            dialog.setContentView(view);
-                            dialog.show();
-
-                        } else {
-                            Toast.makeText(mContext, "Please update car details", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(mContext, VechicleActivity.class);
+                        } else if (name.equalsIgnoreCase("out of fuel")) {
+                            Intent intent = new Intent(mContext, Fuel_Activity.class);
+                            intent.putExtra("service_chrg", chrg);
                             mContext.startActivity(intent);
-                            ((Activity) mContext).finish();
-                        }
-                    }
-                       else {  Toast.makeText(mContext, "Location not enabled", Toast.LENGTH_SHORT).show();
+                            ((Activity)mContext).finish();
+                        } else if (itemMap.get(Constants.servicename).equalsIgnoreCase("jump start")) {
+                            Intent intent = new Intent(mContext, JumpstartActivity.class);
+                            intent.putExtra("service_chrg", chrg);
+                            mContext.startActivity(intent);
+                            ((Activity)mContext).finish();
+                        } else if (name.equalsIgnoreCase("flat tyre")) {
+                            Intent intent = new Intent(mContext, TyreActivity.class);
+                            intent.putExtra("service_chrg", chrg);
+                            mContext.startActivity(intent);
+                            ((Activity)mContext).finish();
+                        } else
+                        Toast.makeText(mContext, "Your selection invalid", Toast.LENGTH_SHORT).show();
+                    }else {  Toast.makeText(mContext, "Location not enabled", Toast.LENGTH_SHORT).show();
                         Intent intent=new Intent(mContext,HomeActivity.class);
                         mContext.startActivity(intent);
                         ((Activity) mContext).finish();

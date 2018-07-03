@@ -72,8 +72,8 @@ public class JumpstartActivity extends AppCompatActivity {
         setlocation();
         if(getIntent().hasExtra("service_chrg")) {
             amount= getIntent().getStringExtra("service_chrg");
-            brand= getIntent().getStringExtra("brand");
-            model= getIntent().getStringExtra("model");
+            brand= Constants.pref.getString("brand","");
+            model= Constants.pref.getString("model","");
         }
         btnsend.setOnClickListener(new View.OnClickListener() {
             @Override
