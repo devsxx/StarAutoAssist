@@ -357,6 +357,12 @@ public class ProfileActivity extends AppCompatActivity {
                     .with(ProfileActivity.this)
                     .load(image)
                     .into(circularImageView);
+        }else if (!Constants.pref.getString("carlogo", "").equalsIgnoreCase("")) {
+            image = Constants.pref.getString("carlogo", "");
+            Glide
+                    .with(ProfileActivity.this)
+                    .load(image)
+                    .into(circularImageView);
         } else {
             Glide
                     .with(ProfileActivity.this)

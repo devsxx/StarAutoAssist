@@ -18,6 +18,8 @@ public class Constants {
     public static String otp="otp";
     public static String type="type";
     public static String firstname="firstname";
+    public static String socialimage="socialimage";
+    public static String userimageurl="userimageurl";
     public static String lastname="lastname";
     public static String status="status";
     public static String timestamp="timestamp";
@@ -68,6 +70,7 @@ public class Constants {
     //Requests
     //public static String BaseURL="http://starautoassist.com/services/";
     public static String BaseURL="http://towbago.shadowws.in/jsons/";
+    public static String SPIMGURL="http://towbago.shadowws.in/jsons/images/providers/";
     public static String uploadimage="uploadprofileimage.php?";
     public static String addcar="addcar.php?";
     public static String delcar="delcar.php?";
@@ -76,6 +79,7 @@ public class Constants {
     public static String login="login.php?";
     public static String send_response_to_sp ="send_response_to_sp.php?";
     public static String cancel_req ="cancel_req.php?";
+    public static String get_review_list ="get_review_list.php?";
     public static String getOTP="getotp.php?";
     public static String getSocialOTP="socialotp.php?";
     public static String verifyOTP="verifyotp.php?";

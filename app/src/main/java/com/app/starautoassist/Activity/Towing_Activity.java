@@ -127,8 +127,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         setTo = findViewById(R.id.toset);
         if(getIntent().hasExtra("service_chrg")) {
             amount= getIntent().getStringExtra("service_chrg");
-            brand= Constants.pref.getString("brand","");
-            model= Constants.pref.getString("model","");
+            brand= getIntent().getStringExtra("brand");
+            model= getIntent().getStringExtra("model");
         }
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

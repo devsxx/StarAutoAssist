@@ -39,6 +39,7 @@ public class AcceptedRequestActivity extends AppCompatActivity {
     RelativeLayout relativeLayout;
     private Accepted_Request_Adapter acceptedAdapter;
     public static ArrayList<HashMap<String, String>> accepted_list = new ArrayList<HashMap<String, String>>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +103,7 @@ public class AcceptedRequestActivity extends AppCompatActivity {
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
             progress.dismiss();
-            String spname,companyname,sname,sid,rating,reviews,overall_rating,clientid,spcontact,address,service_description,providerimage;
+            String spname,companyname,sname,sid,status,reviews,overall_rating,clientid,spcontact,address,service_description,providerimage;
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
@@ -125,7 +126,7 @@ public class AcceptedRequestActivity extends AppCompatActivity {
                         address=object.getString(Constants.address);
                         providerimage=object.getString(Constants.providerimage);
                         service_description=object.getString(Constants.service_description);
-                       // overall_rating=object.getString(Constants.overall_rating);
+                        status=object.getString(Constants.status);
                         clientid=object.getString(Constants.client_id);
                        // rating=object.getString(Constants.rating);
                        // reviews=object.getString(Constants.review);
@@ -140,6 +141,7 @@ public class AcceptedRequestActivity extends AppCompatActivity {
                         map.put(Constants.providerimage,providerimage);
                         map.put(Constants.service_description,service_description);
                         map.put(Constants.client_id,clientid);
+                        map.put(Constants.status,status);
                         accepted_list.add(map);
                     }
                     acceptedAdapter = new Accepted_Request_Adapter(AcceptedRequestActivity.this, accepted_list);
@@ -157,4 +159,6 @@ public class AcceptedRequestActivity extends AppCompatActivity {
 
         }
     }
+
+
 }

@@ -113,7 +113,14 @@ public class HomeActivity extends AppCompatActivity
                     .with(HomeActivity.this)
                     .load(url)
                     .into(imageView);
-        }  else{
+        }else if(!Constants.pref.getString("carlogo","").equalsIgnoreCase("")){
+            url = Constants.pref.getString("carlogo","");
+            Glide
+                    .with(HomeActivity.this)
+                    .load(url)
+                    .into(imageView);
+        }
+        else{
             Glide
                     .with(HomeActivity.this)
                     .load(R.drawable.logo)

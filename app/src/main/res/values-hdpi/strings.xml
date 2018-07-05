@@ -96,4 +96,5 @@
     <string name="out_of_fuel">Out of Fuel</string>
     <string name="brand">Brand</string>
     <string name="select_model">Select Model</string>
+    <string name="send_response">Send Response</string>
 </resources>

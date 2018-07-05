@@ -85,8 +85,8 @@ public class Fuel_Activity extends AppCompatActivity {
 
         if(getIntent().hasExtra("service_chrg")) {
             amount= getIntent().getStringExtra("service_chrg");
-            brand= Constants.pref.getString("brand","");
-            model= Constants.pref.getString("model","");
+            brand= getIntent().getStringExtra("brand");
+            model= getIntent().getStringExtra("model");
         }
         btnproceed.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -76,7 +76,10 @@ public class Sent_Request_Adapter extends RecyclerView.Adapter<Sent_Request_Adap
             holder.cancelbtn.setTextColor(Color.parseColor("#ffffff"));
             holder.cancelbtn.setBackgroundColor(Color.parseColor("#f97900"));
         }else if(itemMap.get("status").equalsIgnoreCase("1")){
-            holder.cancelbtn.setVisibility(View.GONE);
+            holder.cancelbtn.setVisibility(View.VISIBLE);
+            holder.cancelbtn.setText(R.string.send_response);
+            holder.cancelbtn.setTextColor(Color.parseColor("#ffffff"));
+            holder.cancelbtn.setBackgroundColor(Color.parseColor("#FFFF4F3B"));
         }else
             holder.cancelbtn.setVisibility(View.VISIBLE);
             if(itemMap.get(Constants.status).equalsIgnoreCase("0")) {
@@ -97,8 +100,10 @@ public class Sent_Request_Adapter extends RecyclerView.Adapter<Sent_Request_Adap
         holder.cancelbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(itemMap.get(Constants.status).equalsIgnoreCase("3")) {
-
+                if(itemMap.get(Constants.status).equalsIgnoreCase("3")||itemMap.get(Constants.status).equalsIgnoreCase("1")) {
+                Intent intent=new Intent(mContext,AcceptedRequestActivity.class);
+                mContext.startActivity(intent);
+                ((Activity)mContext).finish();
                 }else{
                     new Cancel_req(mContext, itemMap.get(Constants.serviceid)).execute();
                 }

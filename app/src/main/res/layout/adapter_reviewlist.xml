@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lv_service"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    android:background="@color/semitrans"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="5dp"
+    android:padding="5dp"
+    android:translationZ="2dp">
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/clientimage"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/clientimage"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/clientname"
+            android:padding="10dp"
+            android:text="Name"/>
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:rating="3.5"
+            android:layout_marginTop="2dp"
+            android:theme="@style/RatingBar"
+            android:numStars="5"
+            android:id="@+id/rating"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:id="@+id/reviewvalues"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

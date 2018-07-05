@@ -25,6 +25,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import com.app.starautoassist.Activity.HomeActivity;
 import com.app.starautoassist.Adapter.ServiceAdapter;
 import com.app.starautoassist.Data.Service;
 import com.app.starautoassist.Helper.GetSet;
@@ -33,6 +35,7 @@ import com.app.starautoassist.R;
 
 
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,8 +61,9 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ServiceAdapter serviceAdapter;
     public static ArrayList<HashMap<String, String>> Services_list = new ArrayList<HashMap<String, String>>();
-
+    public static ArrayList<HashMap<String, String>> mycarslist = new ArrayList<HashMap<String, String>>();
     LocationManager locationManager;
+
     public HomeFragment() {
 
     }
@@ -70,6 +74,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         new Get_Services_Async(getActivity()).execute();
+        new MyCarList(getActivity()).execute();
         recyclerView = view.findViewById(R.id.rv_home);
         return view;
     }
@@ -114,9 +119,8 @@ public class HomeFragment extends Fragment {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
-    @SuppressLint("StaticFieldLeak")
 
-    
+    @SuppressLint("StaticFieldLeak")
     public class Get_Services_Async extends AsyncTask<String, Integer, String> {
         private Context context;
         private String url = Constants.BaseURL + Constants.getservices;
@@ -124,6 +128,7 @@ public class HomeFragment extends Fragment {
         @Nullable
         String user_id;
         HashMap<String, String> map;
+
         public Get_Services_Async(Context ctx) {
             context = ctx;
         }
@@ -167,29 +172,29 @@ public class HomeFragment extends Fragment {
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
             progress.dismiss();
-            String sname,simg,sid,scharge,sprice;
+            String sname, simg, sid, scharge, sprice;
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
-                    String data=jonj.getString("data");
-                    JSONArray array=new JSONArray(data);
+                    String data = jonj.getString("data");
+                    JSONArray array = new JSONArray(data);
                     Services_list.clear();
-                    for(int i=0;i<array.length();i++){
+                    for (int i = 0; i < array.length(); i++) {
                         map = new HashMap<String, String>();
-                        JSONObject object=array.getJSONObject(i);
-                        sid=object.getString(Constants.serviceid);
-                        sname=object.getString(Constants.servicename);
-                        simg=object.getString(Constants.serviceimg);
-                        scharge=object.getString(Constants.servicecharge);
+                        JSONObject object = array.getJSONObject(i);
+                        sid = object.getString(Constants.serviceid);
+                        sname = object.getString(Constants.servicename);
+                        simg = object.getString(Constants.serviceimg);
+                        scharge = object.getString(Constants.servicecharge);
 
 
-                        map.put(Constants.serviceid,sid);
-                        map.put(Constants.servicename,sname);
-                        map.put(Constants.serviceimg,simg);
-                        map.put(Constants.servicecharge,scharge);
+                        map.put(Constants.serviceid, sid);
+                        map.put(Constants.servicename, sname);
+                        map.put(Constants.serviceimg, simg);
+                        map.put(Constants.servicecharge, scharge);
                         Services_list.add(map);
                     }
                     serviceAdapter = new ServiceAdapter(getActivity(), Services_list);
@@ -198,11 +203,93 @@ public class HomeFragment extends Fragment {
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(serviceAdapter);
                 }
-            }catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
     }
 
+    public class MyCarList extends AsyncTask<String, Integer, String> {
+        Context context;
+        private String url = Constants.BaseURL + Constants.getmycars;
+        HashMap<String, String> map;
+        String id, carbrand, carmodel, logo, plateno;
+
+        private MyCarList(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, GetSet.getMobileno())
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            HashMap<String, String> hashMap;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    String data = jonj.getString("message");
+                    JSONArray array = new JSONArray(data);
+                    mycarslist.clear();
+                    for (int i = 0; i < array.length(); i++) {
+                        map = new HashMap<String, String>();
+                        JSONObject object = array.getJSONObject(i);
+                        id = object.getString(Constants.cno);
+                        carmodel = object.getString(Constants.model);
+                        carbrand = object.getString(Constants.brand);
+                        plateno = object.getString(Constants.plateno);
+                        logo = object.getString(Constants.logo);
+
+                        map.put(Constants.cno, id);
+                        map.put(Constants.model, carmodel);
+                        map.put(Constants.brand, carbrand);
+                        map.put(Constants.plateno, plateno);
+                        map.put(Constants.logo, logo);
+                        mycarslist.add(map);
+                    }
+                } else
+                    Toast.makeText(getContext(), jonj.getString("message"), Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

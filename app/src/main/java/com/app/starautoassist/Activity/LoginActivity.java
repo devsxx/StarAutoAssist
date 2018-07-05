@@ -221,6 +221,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final List<String> permissionsList = new ArrayList<String>();
         if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION))
             permissionsNeeded.add("Fine Location");
+        if (!addPermission(permissionsList, Manifest.permission.CALL_PHONE))
+            permissionsNeeded.add("Phone call");
         if (!addPermission(permissionsList, Manifest.permission.ACCESS_COARSE_LOCATION))
             permissionsNeeded.add("Coarse Location");
         if (!addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE))
@@ -284,6 +286,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // Initial
                 perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.ACCESS_COARSE_LOCATION, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.CALL_PHONE, PackageManager.PERMISSION_GRANTED);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
@@ -296,6 +299,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // Check for ACCESS_FINE_LOCATION
                 if (perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(LoginActivity.this, "All Permission Granted",Toast.LENGTH_SHORT).show();

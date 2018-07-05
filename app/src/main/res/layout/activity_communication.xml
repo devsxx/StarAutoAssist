@@ -5,15 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.Communication">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/personallay"
     android:weightSum="2"
     android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.3">
     <com.mikhaellopez.circularimageview.CircularImageView
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_weight="1.3"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/spimage"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,18 +33,177 @@
         android:orientation="vertical">
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_weight="1"
-            android:id="@+id/reg_et_firstname"
+            android:id="@+id/fname"
             android:layout_width="match_parent"
-            android:background="@drawable/border_edittext"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             app:met_floatingLabel="highlight"
+            android:enabled="false"
             app:met_primaryColor="@color/black"
             app:met_textColorHint="@color/black"
             android:hint="@string/first_name"
             android:paddingLeft="10dp"
             android:inputType="textPersonName" />
-
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_weight="1"
+            android:id="@+id/companyname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@color/black"
+            app:met_textColorHint="@color/black"
+            android:hint="Company Name"
+            android:paddingLeft="10dp"
+            android:inputType="textPersonName" />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_weight="1"
+            android:id="@+id/mobileno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@color/black"
+            app:met_textColorHint="@color/black"
+            android:hint="Mobile Number"
+            android:paddingLeft="10dp"
+            android:inputType="textPersonName" />
     </LinearLayout>
 </LinearLayout>
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/address"
+        android:layout_below="@+id/personallay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:met_floatingLabel="highlight"
+        android:enabled="false"
+        app:met_primaryColor="@color/black"
+        app:met_textColorHint="@color/black"
+        android:hint="Provider's Address"
+        android:paddingLeft="10dp"
+        android:inputType="textPersonName" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingLayout"
+        android:layout_below="@+id/address"
+        android:weightSum="2">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:layout_weight="1.8"
+        android:id="@+id/rating"
+        android:text="Rating"/>
+    <RatingBar
+        android:rating="3.5"
+        android:stepSize="0.5"
+        android:numStars="5"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:id="@+id/ratingbar"
+        android:theme="@style/RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:visibility="visible"
+        android:id="@+id/tributton"
+        android:layout_below="@+id/ratingLayout"
+        android:weightSum="3">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/callbutton"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Call"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/chatbutton"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:text="Chat"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"
+            android:id="@+id/mapbutton"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="View Map"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3.5"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:id="@+id/acceptdeclinelay"
+            android:layout_below="@id/ratingLayout"
+            android:layout_above="@+id/reviewlist"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/accept_req_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#3eb444"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:hint="Accept"
+                android:padding="7dp"
+                android:textColorHint="#ffffff"
+                android:textSize="14sp"
+                android:translationZ="2dp" />
+
+            <TextView
+                android:id="@+id/decline_req_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#e63a3a"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:hint="Decline"
+                android:padding="7dp"
+                android:textColorHint="#ffffff"
+                android:textSize="14sp"
+                android:translationZ="2dp" />
+        </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/reviewlist"
+        android:layout_below="@+id/tributton"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:id="@+id/closeservice"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:text="Close Service"/>
+    </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
