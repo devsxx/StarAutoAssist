@@ -701,50 +701,52 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             progress.dismiss();
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
-            try {
-                jonj = new JSONObject(jsonData);
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "success")) {
+                         try {
+                    jonj = new JSONObject(jsonData);
+                    if (jonj.getString("status").equalsIgnoreCase(
+                            "success")) {
 
-                    String data=jonj.getString("message");
-                    JSONArray array=new JSONArray(data);
-                    JSONObject jcat = array.getJSONObject(0);
-                    GetSet.setIsLogged(true);
-                    GetSet.setClientid(jcat.getString("client_id"));
-                    GetSet.setEmail(jcat.getString("email"));
-                    GetSet.setUser_type(jcat.getString("type"));
-                    GetSet.setFirstname(jcat.getString("firstname"));
-                    GetSet.setLastname(jcat.getString("lastname"));
-                    GetSet.setAddress(jcat.getString("address"));
-                    GetSet.setMobileno(jcat.getString("mobileno"));
-                    GetSet.setImagename(jcat.getString("userimage"));
-                    GetSet.setImageUrl(jcat.getString("userimageurl"));
-                    GetSet.setSocialimg(jcat.getString("socialimage"));
+                        String data = jonj.getString("message");
+                        JSONArray array = new JSONArray(data);
+                        JSONObject jcat = array.getJSONObject(0);
+                        GetSet.setIsLogged(true);
+                        GetSet.setClientid(jcat.getString("client_id"));
+                        GetSet.setEmail(jcat.getString("email"));
+                        GetSet.setUser_type(jcat.getString("type"));
+                        GetSet.setFirstname(jcat.getString("firstname"));
+                        GetSet.setLastname(jcat.getString("lastname"));
+                        GetSet.setAddress(jcat.getString("address"));
+                        GetSet.setMobileno(jcat.getString("mobileno"));
+                        GetSet.setImagename(jcat.getString("userimage"));
+                        GetSet.setImageUrl(jcat.getString("userimageurl"));
+                        GetSet.setSocialimg(jcat.getString("socialimage"));
 
 
-                    Constants.editor.putBoolean("isLogged", true);
-                    Constants.editor.putString("client_id", GetSet.getClientid());
-                    Constants.editor.putString("type", GetSet.getUser_type());
-                    Constants.editor.putString("firstname", GetSet.getFirstname());
-                    Constants.editor.putString("lastname", GetSet.getLastname());
-                    Constants.editor.putString("email", GetSet.getEmail());
-                    Constants.editor.putString("mobileno", GetSet.getMobileno());
-                    Constants.editor.putString("address", GetSet.getAddress());
-                    Constants.editor.putString("userimage", GetSet.getImagename());
-                    Constants.editor.putString("userimageurl", GetSet.getImageUrl());
-                    Constants.editor.putString("socialimage", GetSet.getSocialimg());
-                    Constants.editor.commit();
-                    SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
-                    Boolean isPushed=pref.getBoolean("isPushregisters",false);
-                    if(!isPushed)
-                        Registernotifi();
-                    Intent intent=new Intent(context,HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else  Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
-            }catch (JSONException e) {
-                e.printStackTrace();
-            }
+                        Constants.editor.putBoolean("isLogged", true);
+                        Constants.editor.putString("client_id", GetSet.getClientid());
+                        Constants.editor.putString("type", GetSet.getUser_type());
+                        Constants.editor.putString("firstname", GetSet.getFirstname());
+                        Constants.editor.putString("lastname", GetSet.getLastname());
+                        Constants.editor.putString("email", GetSet.getEmail());
+                        Constants.editor.putString("mobileno", GetSet.getMobileno());
+                        Constants.editor.putString("address", GetSet.getAddress());
+                        Constants.editor.putString("userimage", GetSet.getImagename());
+                        Constants.editor.putString("userimageurl", GetSet.getImageUrl());
+                        Constants.editor.putString("socialimage", GetSet.getSocialimg());
+                        Constants.editor.commit();
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
+                        Boolean isPushed = pref.getBoolean("isPushregisters", false);
+                        if (!isPushed)
+                            Registernotifi();
+                        Intent intent = new Intent(context, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else
+                        Toast.makeText(context, jonj.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
         }
         }

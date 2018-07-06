@@ -247,8 +247,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btns"
                 android:textSize="9sp"
+                android:id="@+id/des"
                 android:gravity="center"
-                android:text="* If any extra charges comes will need to pay at the end of service done. Like toll,spares and etc"/>
+                android:text="@string/description"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/des"
+                android:textSize="9sp"
+                android:visibility="gone"
+                android:id="@+id/towdes"
+                android:gravity="center"
+                android:text="* For towing first 5km you will be charged 50RM basic fare after 5kms each km will be charge 3RM."/>
 
             <LinearLayout
                 android:layout_width="match_parent"

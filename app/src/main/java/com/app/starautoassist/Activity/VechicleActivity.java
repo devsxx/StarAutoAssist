@@ -44,7 +44,7 @@ public class VechicleActivity extends AppCompatActivity {
     private SearchableSpinner spinnerbrand, spinnertype;
     private Button btnsubmit;
     private EditText etmodel, etplate;
-    String brandname, modelname, plateno,brandlogo;
+    String brandname, modelname, plateno,brandlogo,flatbedvalue;
     ArrayAdapter<String> brandadapter,modeladapter;
     MyCars_Adapter myCars_adapter;
     ArrayList<String> brands=new ArrayList<String>();
@@ -89,7 +89,7 @@ public class VechicleActivity extends AppCompatActivity {
                 } else {
                     modelname = spinnertype.getSelectedItem().toString();
                     plateno = etplate.getText().toString().trim();
-                    new Add_Vechicle_Async(VechicleActivity.this, mobileno, brandname, modelname, plateno,brandlogo).execute();
+                    new Add_Vechicle_Async(VechicleActivity.this, mobileno, brandname, modelname, plateno,brandlogo,flatbedvalue).execute();
                 }
             }
         });
@@ -123,16 +123,17 @@ public class VechicleActivity extends AppCompatActivity {
 
     public class Add_Vechicle_Async extends AsyncTask<String, Integer, String> {
         Context context;
-        private String mobileno, brand, model, plateno,brandlogo;
+        private String mobileno, brand, model, plateno,flatbedvalue,brandlogo;
         private String url = Constants.BaseURL + Constants.addcar;
 
-        private Add_Vechicle_Async(Context ctx, String mobileno, String brand, String model, String plateno,String brandlogo) {
+        private Add_Vechicle_Async(Context ctx, String mobileno, String brand, String model, String plateno,String brandlogo,String flatbedvalue) {
             context = ctx;
             this.mobileno = mobileno;
             this.brand = brand;
             this.model = model;
             this.plateno = plateno;
             this.brandlogo=brandlogo;
+            this.flatbedvalue=flatbedvalue;
         }
 
         @Override
@@ -152,6 +153,7 @@ public class VechicleActivity extends AppCompatActivity {
                     .add("brand", brand)
                     .add("model", model)
                     .add("plateno", plateno)
+                    .add("flatbed", flatbedvalue)
                     .add("logo", brandlogo)
                     .build();
             Request request = new Request.Builder()
@@ -203,7 +205,7 @@ public class VechicleActivity extends AppCompatActivity {
         Context context;
         private String url = Constants.BaseURL + Constants.getcars;
         HashMap<String, String> map,map2;
-        String id,carbrand,carmodel,carbrand2,logo;
+        String id,carbrand,carmodel,carbrand2,flatbed,logo;
         private Get_Cars(Context ctx) {
             context = ctx;
         }
@@ -262,11 +264,13 @@ public class VechicleActivity extends AppCompatActivity {
                         id = object.getString(Constants.id);
                         carmodel = object.getString(Constants.model);
                         carbrand = object.getString(Constants.brand);
+                        flatbed = object.getString(Constants.flatbed);
                         logo = object.getString(Constants.logo);
 
                         map.put(Constants.id, id);
                         map.put(Constants.model, carmodel);
                         map.put(Constants.brand, carbrand);
+                        map.put(Constants.flatbed, flatbed);
                         map.put(Constants.logo, logo);
 
                         carlist.add(map);
@@ -285,11 +289,13 @@ public class VechicleActivity extends AppCompatActivity {
                         public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                             model.clear();
                             brandname=brands.get(pos);
+
                             for(int i=0;i<carlist.size();i++){
                                 String choosedbrand=carlist.get(i).get("brand");
                                 if(brandname.equalsIgnoreCase(choosedbrand)){
                                     model.add(carlist.get(i).get("model"));
                                     brandlogo=carlist.get(i).get("logo");
+                                    flatbedvalue=carlist.get(i).get("flatbed");
                                 }
                             }
 

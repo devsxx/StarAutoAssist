@@ -230,7 +230,7 @@ public class Communication extends AppCompatActivity implements View.OnClickList
                         map.put(Constants.review,reviews);
                         reviewlist.add(map);
                     }
-                    int count=array.length()+1;
+                    int count=array.length();
                     overallrating=ratingtotal/count;
                     ratingBar.setNumStars(5);
                     ratingBar.setRating(overallrating);

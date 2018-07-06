@@ -41,7 +41,6 @@
             app:met_primaryColor="@color/black"
             app:met_textColorHint="@color/black"
             android:hint="@string/first_name"
-            android:paddingLeft="10dp"
             android:inputType="textPersonName" />
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_weight="1"
@@ -53,7 +52,6 @@
             app:met_primaryColor="@color/black"
             app:met_textColorHint="@color/black"
             android:hint="Company Name"
-            android:paddingLeft="10dp"
             android:inputType="textPersonName" />
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_weight="1"
@@ -65,7 +63,6 @@
             app:met_primaryColor="@color/black"
             app:met_textColorHint="@color/black"
             android:hint="Mobile Number"
-            android:paddingLeft="10dp"
             android:inputType="textPersonName" />
     </LinearLayout>
 </LinearLayout>
@@ -91,7 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:padding="10dp"
-        android:textSize="18sp"
+        android:textSize="13sp"
         android:layout_weight="1.8"
         android:id="@+id/rating"
         android:text="Rating"/>

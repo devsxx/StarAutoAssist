@@ -427,6 +427,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         TextView sname = (TextView) dialog.findViewById(R.id.servicename);
                         TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
                         TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                        TextView des = (TextView) dialog.findViewById(R.id.towdes);
+                        des.setVisibility(View.VISIBLE);
                         brandname.setText(brand);
                         modelname.setText(model);
                         sname.setText(R.string.towing);

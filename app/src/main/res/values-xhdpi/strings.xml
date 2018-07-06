@@ -97,4 +97,5 @@
     <string name="brand">Brand</string>
     <string name="select_model">Select Model</string>
     <string name="send_response">Send Response</string>
+    <string name="description">* If any extra charges comes will need to pay at the end of service done. Like toll,spares and etc</string>
 </resources>
