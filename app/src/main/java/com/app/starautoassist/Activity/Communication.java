@@ -59,7 +59,6 @@ public class Communication extends AppCompatActivity implements View.OnClickList
     HashMap<String, String> hashMap;
     private static final int REQUEST_PHONE_CALL = 1;
     float overallrating = 0;
-    public static ArrayList<HashMap<String, String>> accepted_list = new ArrayList<HashMap<String, String>>();
     public static ArrayList<HashMap<String, String>> reviewlist = new ArrayList<HashMap<String, String>>();
 
     @Override

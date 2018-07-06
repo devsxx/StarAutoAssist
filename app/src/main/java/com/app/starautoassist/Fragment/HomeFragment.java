@@ -214,7 +214,7 @@ public class HomeFragment extends Fragment {
         Context context;
         private String url = Constants.BaseURL + Constants.getmycars;
         HashMap<String, String> map;
-        String id, carbrand, carmodel, logo, plateno;
+        String id, carbrand, carmodel, logo, plateno,flatbed;
 
         private MyCarList(Context ctx) {
             context = ctx;
@@ -275,12 +275,14 @@ public class HomeFragment extends Fragment {
                         carmodel = object.getString(Constants.model);
                         carbrand = object.getString(Constants.brand);
                         plateno = object.getString(Constants.plateno);
+                        flatbed = object.getString(Constants.flatbed);
                         logo = object.getString(Constants.logo);
 
                         map.put(Constants.cno, id);
                         map.put(Constants.model, carmodel);
                         map.put(Constants.brand, carbrand);
                         map.put(Constants.plateno, plateno);
+                        map.put(Constants.flatbed, flatbed);
                         map.put(Constants.logo, logo);
                         mycarslist.add(map);
                     }

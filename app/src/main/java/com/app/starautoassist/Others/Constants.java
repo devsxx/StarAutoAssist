@@ -29,6 +29,7 @@ public class Constants {
     public static String model="model";
     public static String brand="brand";
     public static String plateno="plateno";
+    public static String flatbed="flatbed";
     public static String logo="logo";
 
     public static String serviceid="serviceid";

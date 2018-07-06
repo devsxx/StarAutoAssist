@@ -98,7 +98,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     AutoCompleteTextView from, to;
     GPSTracker gps;
     TextView submitbtn;
-    String amount="",brand="",model="";
+    String amount="",brand="",model="",flatbed="";
     String buttonstring="";
     RelativeLayout fromLayout, toLayout, next;
     private LatLng center;
@@ -129,6 +129,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
             amount= getIntent().getStringExtra("service_chrg");
             brand= getIntent().getStringExtra("brand");
             model= getIntent().getStringExtra("model");
+            flatbed= getIntent().getStringExtra("flatbed");
         }
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -205,20 +206,19 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         screenHeight = height * 60 / 100;
         screenWidth = weight * 80 / 100;
 
-        towbuilder = new android.support.v7.app.AlertDialog.Builder(this);
-        LayoutInflater towlayoutInflater = this.getLayoutInflater();
+        towbuilder = new android.support.v7.app.AlertDialog.Builder(Towing_Activity.this);
+        LayoutInflater towlayoutInflater = Towing_Activity.this.getLayoutInflater();
         View towview = towlayoutInflater.inflate(R.layout.tow_service_dialog, null);
+        ImageButton ivwheellift = towview.findViewById(R.id.tow_iv_wheellift);
+        ImageButton ivflatbed = towview.findViewById(R.id.tow_iv_flatbed);
+
 
         towbuilder.setView(towview);
         towbuilder.setTitle("Select type of Tow Truck :");
         towbuilder.setCancelable(false);
 
+
         towdialog  = towbuilder.create();
-        towdialog.show();
-
-        ImageButton ivwheellift = towdialog.findViewById(R.id.tow_iv_wheellift);
-        ImageButton ivflatbed = towdialog.findViewById(R.id.tow_iv_flatbed);
-
         ivwheellift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,6 +226,8 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                 towdialog.dismiss();
             }
         });
+
+
         ivflatbed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,6 +235,13 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                 towdialog.dismiss();
             }
         });
+        if(flatbed.equalsIgnoreCase("0")) {
+            towdialog.show();
+        }
+        else
+            tow_type="Flat Bed";
+
+
        // imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         alertDialog = new AlertDialog.Builder(Towing_Activity.this).create();
         alertDialog.setTitle(getString(R.string.gps_settings));

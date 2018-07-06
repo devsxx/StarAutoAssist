@@ -92,11 +92,13 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
                                     Toast.makeText(mContext, mycarslist.get(i).get("brand"), Toast.LENGTH_SHORT).show();
                                     String car_brand=mycarslist.get(i).get("brand");
                                     String car_model=mycarslist.get(i).get("model");
+                                    String flatbed=mycarslist.get(i).get("flatbed");
                                     if (name.equalsIgnoreCase("towing")) {
                                         Intent intent = new Intent(mContext, Towing_Activity.class);
                                         intent.putExtra("service_chrg", chrg);
                                         intent.putExtra("brand", car_brand);
                                         intent.putExtra("model", car_model);
+                                        intent.putExtra("flatbed", flatbed);
                                         mContext.startActivity(intent);
                                         ((Activity) mContext).finish();
                                     } else if (name.equalsIgnoreCase("out of fuel")) {

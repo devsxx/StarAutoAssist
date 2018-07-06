@@ -549,6 +549,7 @@ public class ProfileActivity extends AppCompatActivity {
                     .add("address", address)
                     .add("userimage", image)
                     .add("userimageurl", imageurl)
+                    .add("usertype", GetSet.getUser_type())
                     .build();
             Request request = new Request.Builder()
                     .url(url)
