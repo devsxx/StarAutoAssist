@@ -106,8 +106,8 @@ public class Communication extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.callbutton:
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse(hashMap.get(Constants.serviceprovider_id)));
+                String mobileno=hashMap.get(Constants.serviceprovider_id);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",mobileno , null));
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(Communication.this, new String[]{Manifest.permission.CALL_PHONE},REQUEST_PHONE_CALL);
                     return;
