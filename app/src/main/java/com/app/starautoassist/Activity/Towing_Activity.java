@@ -99,7 +99,6 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     GPSTracker gps;
     TextView submitbtn;
     String amount="",brand="",model="",flatbed="";
-    String buttonstring="";
     RelativeLayout fromLayout, toLayout, next;
     private LatLng center;
     SupportMapFragment mapFragment;
