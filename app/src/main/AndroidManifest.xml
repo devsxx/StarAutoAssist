@@ -137,16 +137,18 @@
         <activity android:name=".Activity.PaymentHistoryActivity" />
         <activity android:name=".Activity.VechicleActivity" />
         <activity android:name=".Activity.Fuel_Activity" />
+        <activity android:name=".Activity.TrackerActivity" />
         <activity android:name=".Activity.JumpstartActivity" />
+        <activity android:name=".Activity.Communication" />
         <activity android:name=".Activity.TyreActivity" />
         <activity android:name=".Activity.NotificationServiceActivity" />
 
         <service
             android:name=".Services.Tracker_Service"
+            android:process=":hascode_process"
             android:enabled="true"
             android:exported="true"></service>
 
-        <activity android:name=".Activity.Communication"></activity>
     </application>
 
 </manifest>

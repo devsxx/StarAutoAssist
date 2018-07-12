@@ -74,7 +74,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
                     ((Activity) mContext).finish();
                 } else {
                     if (Constants.isLocationpermission_enabled) {
-                        if (Constants.pref.getBoolean("isCarAdded", false)) {
+                        if (Constants.pref.getBoolean("isCarAdded", false)||mycarslist.size()>0) {
                             final Dialog dialog = new Dialog(mContext);
                             LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                             View view = null;

@@ -42,6 +42,10 @@ public class Constants {
     public static String service_description="service_description";
     public static String overall_rating="overall_rating";
     public static String client_id="client_id";
+    public static String pickup_location="pickup_location";
+    public static String drop_location="drop_location";
+    public static String lat="lat";
+    public static String lon="lon";
     public static String rating="rating";
     public static String review="review";
     public static String serviceimg="serviceimgurl";
@@ -72,6 +76,7 @@ public class Constants {
     //public static String BaseURL="http://starautoassist.com/services/";
     public static String BaseURL="http://towbago.shadowws.in/jsons/";
     public static String SPIMGURL="http://towbago.shadowws.in/jsons/images/providers/";
+    public static String registration="registration.php?";
     public static String uploadimage="uploadprofileimage.php?";
     public static String addcar="addcar.php?";
     public static String delcar="delcar.php?";
@@ -85,7 +90,7 @@ public class Constants {
     public static String getSocialOTP="socialotp.php?";
     public static String verifyOTP="verifyotp.php?";
     public static String profile="profile.php?";
-    public static String registration="registration.php?";
+
     public static String socialreg="socialreg.php?";
     public static String registration_pushid="FCMRegistration.php?";
     public static String getprofile="getprofile.php?";
@@ -93,6 +98,7 @@ public class Constants {
     public static String get_req_status="get_req_status.php?";
     public static String get_accepted_list="get_accepted_request.php?";
     public static String get_fuel_request="getfueldetails.php?";
+    public static String get_location="get_location.php?";
     public static String send_req_towing="send_request_towing.php?";
     public static String send_req_flattyre="send_request_tyre.php?";
     public static String send_req_jumpstart="send_request_jumpstart.php?";

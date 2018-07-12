@@ -82,11 +82,11 @@ public class Communication extends AppCompatActivity implements View.OnClickList
         acceptbtn = (TextView) findViewById(R.id.accept_req_btn);
         declinebtn = (TextView) findViewById(R.id.decline_req_btn);
         if (hashMap.get(Constants.status).equalsIgnoreCase("3")) {
-            threebuttonlayout.setVisibility(View.GONE);
-            acceptdeclinelayout.setVisibility(View.VISIBLE);
-        } else {
             threebuttonlayout.setVisibility(View.VISIBLE);
             acceptdeclinelayout.setVisibility(View.GONE);
+        } else {
+            threebuttonlayout.setVisibility(View.GONE);
+            acceptdeclinelayout.setVisibility(View.VISIBLE);
         }
         name.setText(hashMap.get(Constants.firstname));
         companyname.setText(hashMap.get(Constants.companyname));
@@ -118,7 +118,9 @@ public class Communication extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.mapbutton:
-
+                Intent intent=new Intent(Communication.this,TrackerActivity.class);
+                intent.putExtra("map",hashMap);
+                startActivity(intent);
                 break;
             case R.id.accept_req_btn:
               String  type = "0";

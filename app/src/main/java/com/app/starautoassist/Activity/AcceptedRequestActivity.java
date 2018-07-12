@@ -103,7 +103,7 @@ public class AcceptedRequestActivity extends AppCompatActivity {
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
             progress.dismiss();
-            String spname,companyname,sname,sid,status,reviews,overall_rating,clientid,spcontact,address,service_description,providerimage;
+            String spname,companyname,sname,sid,status,pickuplocation,droplocation,clientid,spcontact,address,service_description,providerimage;
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
@@ -128,6 +128,8 @@ public class AcceptedRequestActivity extends AppCompatActivity {
                         service_description=object.getString(Constants.service_description);
                         status=object.getString(Constants.status);
                         clientid=object.getString(Constants.client_id);
+                        pickuplocation=object.getString(Constants.pickup_location);
+                        droplocation=object.getString(Constants.drop_location);
                        // rating=object.getString(Constants.rating);
                        // reviews=object.getString(Constants.review);
 
@@ -141,6 +143,8 @@ public class AcceptedRequestActivity extends AppCompatActivity {
                         map.put(Constants.providerimage,providerimage);
                         map.put(Constants.service_description,service_description);
                         map.put(Constants.client_id,clientid);
+                        map.put(Constants.pickup_location,pickuplocation);
+                        map.put(Constants.drop_location,droplocation);
                         map.put(Constants.status,status);
                         accepted_list.add(map);
                     }

@@ -16,6 +16,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.app.starautoassist.Helper.GetSet;
@@ -27,10 +28,14 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -42,122 +47,42 @@ import okhttp3.Response;
 public class Tracker_Service extends Service {
 
     private static final String TAG = Tracker_Service.class.getSimpleName();
-    Double lat;
-    Double lon;
-    long elapsedtime,time;
-    Double altitude;
-    Boolean complete,frommock;
-    String provider="";
-    Float accuracy,bearing,speed;
-    @Override
-    public IBinder onBind(Intent intent) {return null;}
-
+    private static final long INTERVAL = 1000 * 60 * 1; //1 minute
+    private static final long FASTEST_INTERVAL = 1000 * 60 * 1; // 1 minute
+    public static final String ACTION = "com.app.starautoassistservice.Services.Tracker_Service";
     @Override
     public void onCreate() {
         super.onCreate();
-        buildNotification();
-        loginToFirebase();
+        new Get_location(this).execute();
     }
 
-    private void buildNotification() {
-        String stop = "stop";
-        registerReceiver(stopReceiver, new IntentFilter(stop));
-        PendingIntent broadcastIntent = PendingIntent.getBroadcast(
-                this, 0, new Intent(stop), PendingIntent.FLAG_UPDATE_CURRENT);
-        // Create the persistent notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.notification_text))
-                .setOngoing(true)
-                .setContentIntent(broadcastIntent)
-                .setSmallIcon(R.drawable.logo);
-        startForeground(1, builder.build());
+
+    @Override
+    public IBinder onBind(final Intent intent) {
+        return null;
     }
 
-    protected BroadcastReceiver stopReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "received stop broadcast");
-            // Stop the service when the notification is tapped
-            unregisterReceiver(stopReceiver);
-            stopSelf();
-        }
-    };
+    @Override
+    public int onStartCommand(final Intent intent, final int flags,
+                              final int startId) {
 
-    private void loginToFirebase() {
-        // Functionality coming next step
+        return Service.START_NOT_STICKY;
     }
 
-    private void requestLocationUpdates() {
-        LocationRequest request = new LocationRequest();
-        request.setInterval(10000);
-        request.setFastestInterval(5000);
-        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
-      //  final String path = getString(R.string.firebase_path) + "/" + getString(R.string.transport_id);
-        int permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permission == PackageManager.PERMISSION_GRANTED) {
-            // Request location updates and when an update is
-            // received, store the location in Firebase
-            client.requestLocationUpdates(request, new LocationCallback() {
-                @Override
-                public void onLocationResult(LocationResult locationResult) {
-//                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path);
-                    Location location = locationResult.getLastLocation();
-                    if (location != null) {
-                        Log.d(TAG, "location update " + location);
-                        accuracy=location.getAccuracy();
-                        speed=location.getSpeed();
-                        altitude=location.getAltitude();
-                        lat=location.getLatitude();
-                        lon=location.getLongitude();
-                        provider=location.getProvider();
-                        time=location.getTime();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            elapsedtime=location.getElapsedRealtimeNanos();
-                        }
-                        new Sendlocation(getApplicationContext(),altitude,accuracy,speed,lat,lon,provider,time,elapsedtime).execute();
-
-                    }
-                }
-            }, null);
-        }
-    }
-    public class Sendlocation extends AsyncTask<String, Integer, String> {
+    public static class Get_location extends AsyncTask<String, Integer, String> {
         private Context context;
-        private String username, password;
-        private String url = Constants.BaseURL + Constants.login;
-        Double altitude,lat,lon;
-        Float accuracy,speed;
-        String  provider;
-        long time,elapsedtime;
-        ProgressDialog progress;
-        @Nullable
-        String user_id;
+        private String url = Constants.BaseURL + Constants.get_location;
+        String lat,lon;
+        HashMap<String, String> map;
 
 
-        public Sendlocation(Context applicationContext, Double altitude, Float accuracy,
-                            Float speed, Double lat, Double lon, String provider, long time, long elapsedtime) {
+        public Get_location(Context applicationContext) {
             this.context=applicationContext;
-            this.altitude=altitude;
-            this.accuracy=accuracy;
-            this.speed=speed;
-            this.lat=lat;
-            this.lon=lon;
-            this.provider=provider;
-            this.time=time;
-            this.elapsedtime=elapsedtime;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progress = new ProgressDialog(context);
-            progress.setMessage("Please wait ....");
-            progress.setTitle("Loading");
-            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progress.show();
         }
 
         @Nullable
@@ -167,15 +92,7 @@ public class Tracker_Service extends Service {
             Response response = null;
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
-                    .add(Constants.mobileno, username)
-                    .add("altitude", altitude.toString())
-                    .add("accuracy", accuracy.toString())
-                    .add("speed", speed.toString())
-                    .add("lat", lat.toString())
-                    .add("lon", lon.toString())
-                    .add("provider", provider.toString())
-                    .add("time", String.valueOf(time))
-                    .add("elapsedtime", String.valueOf(elapsedtime))
+                    .add(Constants.mobileno, Constants.pref.getString("mobileno",""))
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -200,14 +117,26 @@ public class Tracker_Service extends Service {
         @Override
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
-            progress.dismiss();
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
-                    Log.d(TAG, "Location updated to server");
+                        "success")) {
+                    String data = jonj.getString("message");
+                    JSONArray array = new JSONArray(data);
+                    for (int i = 0; i < array.length(); i++) {
+                        map = new HashMap<String, String>();
+                        JSONObject object = array.getJSONObject(i);
+                        lat = object.getString(Constants.lat);
+                        lon = object.getString(Constants.lon);
+                        map.put(Constants.lat, lat);
+                        map.put(Constants.lon, lon);
+                    }
+                    Intent localBroadcastIntent = new Intent(ACTION);
+                    localBroadcastIntent.putExtra("Location_Status", "Received");
+                    localBroadcastIntent.putExtra("data", map);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(localBroadcastIntent);
                 }
             }catch (JSONException e) {
                 e.printStackTrace();
@@ -215,5 +144,8 @@ public class Tracker_Service extends Service {
 
         }
     }
+
+
+
 
 }
