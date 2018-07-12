@@ -53,6 +53,7 @@ public class Tracker_Service extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist", MODE_PRIVATE);
         new Get_location(this).execute();
     }
 

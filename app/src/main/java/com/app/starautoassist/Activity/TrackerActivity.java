@@ -1,6 +1,7 @@
 package com.app.starautoassist.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -15,6 +16,9 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -22,6 +26,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +51,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -60,21 +67,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class TrackerActivity extends AppCompatActivity implements LocationListener, GoogleMap.OnMapClickListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
+
+    private static final String LOCATION_UPDATE =
+            "com.app.starautoassist.Services.Tracker_Service";
     SupportMapFragment mapFragment;
-    String TAG="TrackerActivity";
+    String TAG = "TrackerActivity";
     private LocationManager locationManager;
-    HashMap<String, String> hashMap;
-    TextView durationtxt,distancetxt;
+    public static HashMap<String, String> hashMap;
+    TextView durationtxt, distancetxt;
     ArrayList<LatLng> MarkerPoints;
     private static final long INTERVAL = 1000 * 60 * 1; //1 minute
-    GoogleMap gMap;
+    static GoogleMap gMap;
+    Boolean status = false;
+    int count;
     LatLng mylocation;
     LocationRequest mLocationRequest;
     public static String dist, duration;
-    Marker mCurrLocationMarker;
+    static Marker mCurrLocationMarker;
     Location location;
+    public static Handler handler;
+    public static Thread thread1;
     private RouteBroadCastReceiver routeReceiver;
     GoogleApiClient mGoogleApiClient;
     private static final int PERMISSIONS_REQUEST = 1;
@@ -83,6 +104,7 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking);
+        Constants.pref = this.getSharedPreferences("StarAutoAssist", MODE_PRIVATE);
         durationtxt = (TextView) findViewById(R.id.durationval);
         distancetxt = (TextView) findViewById(R.id.distanceval);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -92,13 +114,21 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
         }
         hashMap = (HashMap<String, String>) getIntent().getExtras().get("map");
         String[] pickuplocation = hashMap.get(Constants.pickup_location).split(",");
-        mylocation = new LatLng(Double.parseDouble(pickuplocation[0]),Double.parseDouble(pickuplocation[1]));
+        mylocation = new LatLng(Double.parseDouble(pickuplocation[0]), Double.parseDouble(pickuplocation[1]));
         // Check GPS is enabled
         LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Toast.makeText(this, "Please enable location services", Toast.LENGTH_SHORT).show();
             finish();
         }
+        final Handler handler =new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                handler.postDelayed(this, INTERVAL);
+                new Get_location(TrackerActivity.this).execute();
+            }
+        };
+        handler.postDelayed(r, 0000);
 
         // Check location permission is granted - if it is, start
 
@@ -106,14 +136,20 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         if (permission == PackageManager.PERMISSION_GRANTED) {
-           // startTrackerService();
-            setRecurringAlarm(this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(new Intent(this, Tracker_Service.class));
+
+            } else {
+                startService(new Intent(this, Tracker_Service.class));
+            }
+            //setRecurringAlarm(this);
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST);
         }
     }
+
 
     private void startTrackerService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -133,6 +169,7 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
         if (routeReceiver == null) {
             routeReceiver = new RouteBroadCastReceiver();
         }
+        status = true;
         IntentFilter filter = new IntentFilter(Tracker_Service.ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(routeReceiver, filter);
     }
@@ -140,6 +177,7 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
     @Override
     protected void onPause() {
         super.onPause();
+        status = false;
         // For Internet disconnect checking
         Starautoassist_Application.unregisterReceiver(TrackerActivity.this);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(routeReceiver);
@@ -182,8 +220,7 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
                 gMap.setBuildingsEnabled(true);
                 gMap.getUiSettings().setCompassEnabled(false);
             }
-        }
-        else {
+        } else {
             buildGoogleApiClient();
             gMap.setMyLocationEnabled(true);
             gMap.setTrafficEnabled(true);
@@ -203,7 +240,23 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
         gMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
     }
+
     private void setRecurringAlarm(Context context) {
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        long triggerTime = SystemClock.elapsedRealtime()
+                + INTERVAL;
+        Intent downloader = new Intent(context, Tracker_Service.class);
+        downloader.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, downloader, PendingIntent.FLAG_CANCEL_CURRENT);
+        //If the Toggle is turned on, set the repeating alarm with a 15 minute interval
+        if (alarmManager != null) {
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    triggerTime, INTERVAL, pendingIntent);
+        }
+
+    }
+   /* private void setRecurringAlarm(Context context) {
 
         Calendar updateTime = Calendar.getInstance();
         updateTime.setTimeZone(TimeZone.getDefault());
@@ -211,16 +264,16 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
         updateTime.set(Calendar.MINUTE, 1);
         Intent downloader = new Intent(context, Tracker_Service.class);
         downloader.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, downloader,     PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, downloader, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, updateTime.getTimeInMillis(),INTERVAL, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, updateTime.getTimeInMillis(), INTERVAL, pendingIntent);
         }
 
         Log.d("MyActivity", "Set alarmManager.setRepeating to: " + updateTime.getTime().toLocaleString());
 
-    }
+    }*/
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -289,13 +342,13 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-                HashMap<String,String> map=new HashMap<>();
-                map=(HashMap<String, String>) getIntent().getExtras().get("data");
+                HashMap<String, String> map = new HashMap<>();
+                map = (HashMap<String, String>) getIntent().getExtras().get("data");
                 buildGoogleApiClient();
                 location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                 LatLng latLng = null;
                 if (map != null) {
-                    latLng = new LatLng(Double.parseDouble(map.get(Constants.lat)),Double.parseDouble(map.get(Constants.lon)));
+                    latLng = new LatLng(Double.parseDouble(map.get(Constants.lat)), Double.parseDouble(map.get(Constants.lon)));
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latLng);
                     markerOptions.title("Current Position");
@@ -304,7 +357,7 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
                     gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     gMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
-                    String url = getUrl(mylocation,latLng);
+                    String url = getUrl(mylocation, latLng);
                     Log.d("Onlocationchanged", url);
                     FetchUrl FetchUrl = new FetchUrl();
 
@@ -318,6 +371,7 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
             }
         }
     }
+
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -326,7 +380,8 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
                 .build();
         mGoogleApiClient.connect();
     }
-    private String getUrl(LatLng origin, LatLng dest) {
+
+    public String getUrl(LatLng origin, LatLng dest) {
 
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
@@ -337,7 +392,7 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
         // API Key
         String API_KEY = "key=AIzaSyB9EVYM7q1cnpzqZWGHUWy0EemS-yUST3Y";
         // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&"+API_KEY;
+        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + API_KEY;
         // Output format
         String output = "json";
         // Building the url to the web service
@@ -434,19 +489,18 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                Log.d("ParserTask",jsonData[0].toString());
+                Log.d("ParserTask", jsonData[0].toString());
                 DataParser parser = new DataParser();
                 Log.d("ParserTask", parser.toString());
 
                 // Starts parsing data
                 routes = parser.parse(jObject);
-                Log.d("ParserTask","Executing routes");
-                Log.d("ParserTask",routes.toString());
-
+                Log.d("ParserTask", "Executing routes");
+                Log.d("ParserTask", routes.toString());
 
 
             } catch (Exception e) {
-                Log.d("ParserTask",e.toString());
+                Log.d("ParserTask", e.toString());
                 e.printStackTrace();
             }
             return routes;
@@ -485,17 +539,106 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
                 lineOptions.width(10);
                 lineOptions.color(Color.RED);
 
-                Log.d("onPostExecute","onPostExecute lineoptions decoded");
+                Log.d("onPostExecute", "onPostExecute lineoptions decoded");
 
             }
 
             // Drawing polyline in the Google Map for the i-th route
-            if(lineOptions != null) {
+            if (lineOptions != null) {
                 gMap.addPolyline(lineOptions);
+            } else {
+                Log.d("onPostExecute", "without Polylines drawn");
             }
-            else {
-                Log.d("onPostExecute","without Polylines drawn");
+        }
+    }
+    public class Get_location extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String url = Constants.BaseURL + Constants.get_location;
+        String lat,lon;
+        HashMap<String, String> map;
+
+
+        public Get_location(Context applicationContext) {
+            this.context=applicationContext;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            String mob=hashMap.get(Constants.serviceprovider_id);
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add("sp_id",mob )
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    String data = jonj.getString("data");
+                    JSONArray array = new JSONArray(data);
+                    for (int i = 0; i < array.length(); i++) {
+                        map = new HashMap<String, String>();
+                        JSONObject object = array.getJSONObject(i);
+                        lat = object.getString(Constants.lat);
+                        lon = object.getString(Constants.lon);
+                        map.put(Constants.lat, lat);
+                        map.put(Constants.lon, lon);
+                    }
+                    LatLng latLng = null;
+                    if (map != null) {
+                        latLng = new LatLng(Double.parseDouble(map.get(Constants.lat)), Double.parseDouble(map.get(Constants.lon)));
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.position(latLng);
+                        markerOptions.title(hashMap.get(Constants.companyname));
+                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                        mCurrLocationMarker = gMap.addMarker(markerOptions);
+                        gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        gMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+                        String url = getUrl(mylocation, latLng);
+                        Log.d("Onlocationchanged", url);
+                        FetchUrl FetchUrl = new FetchUrl();
+
+                        // Start downloading json data from Google Directions API
+                        FetchUrl.execute(url);
+                    }
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

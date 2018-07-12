@@ -145,7 +145,6 @@
 
         <service
             android:name=".Services.Tracker_Service"
-            android:process=":hascode_process"
             android:enabled="true"
             android:exported="true"></service>
 
