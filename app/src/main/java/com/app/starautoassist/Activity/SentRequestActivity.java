@@ -18,6 +18,7 @@ import com.app.starautoassist.Adapter.ServiceAdapter;
 import com.app.starautoassist.Fragment.HomeFragment;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 
 import org.json.JSONArray;
@@ -148,5 +149,10 @@ public class SentRequestActivity extends AppCompatActivity {
             }
 
         }
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
     }
 }

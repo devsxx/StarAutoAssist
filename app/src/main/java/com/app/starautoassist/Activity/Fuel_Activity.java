@@ -71,7 +71,11 @@ public class Fuel_Activity extends AppCompatActivity {
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     String amount="",brand="",model="";
     GPSTracker gps;
-
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

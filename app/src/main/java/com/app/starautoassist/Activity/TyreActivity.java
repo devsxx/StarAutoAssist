@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.app.starautoassist.Helper.GPSTracker;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 
 import org.json.JSONException;
@@ -57,7 +58,11 @@ public class TyreActivity extends AppCompatActivity {
     String amount="",model="",brand="";
     String latlon;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
-
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

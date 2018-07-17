@@ -92,7 +92,7 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
     LatLng mylocation;
     LocationRequest mLocationRequest;
     public static String dist, duration;
-    static Marker mCurrLocationMarker;
+    static Marker mCurrLocationMarker,myMarker;
     Location location;
     public static Handler handler;
     public static Thread thread1;
@@ -137,10 +137,10 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
                 Manifest.permission.ACCESS_FINE_LOCATION);
         if (permission == PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(new Intent(this, Tracker_Service.class));
+              //  startForegroundService(new Intent(this, Tracker_Service.class));
 
             } else {
-                startService(new Intent(this, Tracker_Service.class));
+              //  startService(new Intent(this, Tracker_Service.class));
             }
             //setRecurringAlarm(this);
         } else {
@@ -149,7 +149,11 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
                     PERMISSIONS_REQUEST);
         }
     }
-
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
+    }
 
     private void startTrackerService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -618,12 +622,14 @@ public class TrackerActivity extends AppCompatActivity implements LocationListen
                     }
                     LatLng latLng = null;
                     if (map != null) {
+                        if(myMarker!=null)
+                            myMarker.remove();
                         latLng = new LatLng(Double.parseDouble(map.get(Constants.lat)), Double.parseDouble(map.get(Constants.lon)));
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
                         markerOptions.title(hashMap.get(Constants.companyname));
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                        mCurrLocationMarker = gMap.addMarker(markerOptions);
+                        myMarker = gMap.addMarker(markerOptions);
                         gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         gMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 

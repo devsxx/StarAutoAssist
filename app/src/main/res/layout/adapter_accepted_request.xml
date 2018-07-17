@@ -54,7 +54,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/companynametxt"
+                    android:id="@+id/servicetxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Service Type"
@@ -64,11 +64,11 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/companynameval"
+                    android:id="@+id/servicetypeval"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:hint="Company Name"
+                    android:hint="Service Type"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 

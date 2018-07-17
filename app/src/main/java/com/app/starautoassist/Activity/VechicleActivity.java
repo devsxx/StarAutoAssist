@@ -54,7 +54,11 @@ public class VechicleActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
     ArrayList<HashMap<String, String>> carlist = new ArrayList<HashMap<String, String>>();
     public static ArrayList<HashMap<String, String>> mycars = new ArrayList<HashMap<String, String>>();
-
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

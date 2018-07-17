@@ -47,14 +47,12 @@
         <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".Activity.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -139,7 +137,8 @@
         <activity android:name=".Activity.Fuel_Activity" />
         <activity android:name=".Activity.TrackerActivity" />
         <activity android:name=".Activity.JumpstartActivity" />
-        <activity android:name=".Activity.Communication" />
+        <activity android:name=".Activity.Communication"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Activity.TyreActivity" />
         <activity android:name=".Activity.NotificationServiceActivity" />
 

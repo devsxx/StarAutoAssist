@@ -55,7 +55,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     HashMap<String,String> socialMap;
     LinearLayout otpLay;
 
-
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

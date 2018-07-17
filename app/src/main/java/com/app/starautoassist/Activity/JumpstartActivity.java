@@ -137,6 +137,11 @@ public class JumpstartActivity extends AppCompatActivity {
         // For Internet checking
         Starautoassist_Application.registerReceiver(JumpstartActivity.this);
     }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
+    }
 
     @Override
     protected void onPause() {

@@ -22,7 +22,7 @@
     android:gravity="center"
     android:id="@+id/logoimage">
         <ImageView
-            android:src="@drawable/logo"
+            android:src="@drawable/logo_png"
             android:layout_gravity="center"
             android:layout_width="@dimen/imgmar"
             android:layout_height="@dimen/imgmar"

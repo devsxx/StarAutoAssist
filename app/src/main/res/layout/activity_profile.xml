@@ -26,11 +26,12 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/logo"
-                    app:civ_border_color="@color/colorPrimaryDark"
+                    android:src="@drawable/roundlogo512"
+                    android:scaleType="centerCrop"
+                    app:civ_border_color="@color/white"
                     app:civ_border_width="2dp"
                     app:civ_shadow="true"
-                    app:civ_shadow_color="@color/colorAccent"
+                    app:civ_shadow_color="@color/white"
                     app:civ_shadow_radius="10" />
 
             </LinearLayout>

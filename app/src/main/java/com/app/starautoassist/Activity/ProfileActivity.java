@@ -350,23 +350,27 @@ public class ProfileActivity extends AppCompatActivity {
             Glide
                     .with(ProfileActivity.this)
                     .load(image)
+                    .thumbnail(0.1f)
                     .into(circularImageView);
         } else if (!Constants.pref.getString("socialimage", "").equalsIgnoreCase("")) {
             image = Constants.pref.getString("socialimage", "");
             Glide
                     .with(ProfileActivity.this)
                     .load(image)
+                    .thumbnail(0.1f)
                     .into(circularImageView);
         }else if (!Constants.pref.getString("carlogo", "").equalsIgnoreCase("")) {
             image = Constants.pref.getString("carlogo", "");
             Glide
                     .with(ProfileActivity.this)
                     .load(image)
+                    .thumbnail(0.1f)
                     .into(circularImageView);
         } else {
             Glide
                     .with(ProfileActivity.this)
                     .load(R.drawable.logo)
+                    .thumbnail(0.1f)
                     .into(circularImageView);
         }
 
@@ -947,5 +951,11 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
     }
 }

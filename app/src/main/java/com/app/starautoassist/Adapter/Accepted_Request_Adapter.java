@@ -42,7 +42,6 @@ public class Accepted_Request_Adapter extends RecyclerView.Adapter<Accepted_Requ
     private ArrayList<HashMap<String,String>> acceptedList;
     String type="";
     public Accepted_Request_Adapter(Context mContext, ArrayList<HashMap<String,String>> acceptedList) {
-
         this.mContext = mContext;
         this.acceptedList = acceptedList;
     }
@@ -50,18 +49,17 @@ public class Accepted_Request_Adapter extends RecyclerView.Adapter<Accepted_Requ
     @NonNull
     @Override
     public Accepted_Request_Adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_accepted_request, parent, false);
-
         return new MyViewHolder(itemView);
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull final Accepted_Request_Adapter.MyViewHolder holder, final int position) {
         final HashMap<String, String> itemMap = acceptedList.get(position);
-        holder.spname.setText(itemMap.get(Constants.service_name));
+        holder.spname.setText(itemMap.get(Constants.companyname));
         holder.serviceid.setText(itemMap.get(Constants.serviceid));
-        holder.companyname.setText(itemMap.get(Constants.companyname));
+        holder.servicetype.setText(itemMap.get(Constants.service_name));
         holder.address.setText(itemMap.get(Constants.address));
         holder.mobileno.setText(itemMap.get(Constants.serviceprovider_id));
         if (itemMap.get(Constants.status).equalsIgnoreCase("3")) {
@@ -106,19 +104,18 @@ public class Accepted_Request_Adapter extends RecyclerView.Adapter<Accepted_Requ
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView spname,companyname,address,serviceid,mobileno,accept,decline;
+        public TextView spname,servicetype,address,serviceid,mobileno,accept,decline;
         public LinearLayout communication;
         public MyViewHolder(View itemView) {
             super(itemView);
             spname = itemView.findViewById(R.id.sname);
-            companyname = itemView.findViewById(R.id.companynameval);
+            servicetype = itemView.findViewById(R.id.servicetypeval);
             address = itemView.findViewById(R.id.address);
             serviceid = itemView.findViewById(R.id.sidvalue);
             mobileno = itemView.findViewById(R.id.contactno);
             accept = itemView.findViewById(R.id.accept_req_btn);
             decline = itemView.findViewById(R.id.decline_req_btn);
             communication = itemView.findViewById(R.id.communicationLayout);
-
         }
     }
 

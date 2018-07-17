@@ -19,6 +19,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 
 import com.app.starautoassist.R;
@@ -51,7 +52,7 @@ public class NotificationUtilz {
 
         // notification icon
         final int icon = R.drawable.logo;
-       final Bitmap bigicon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_stat_name);
+       final Bitmap bigicon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.mininotification);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent resultPendingIntent = PendingIntent.getActivity(mContext,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -125,7 +126,7 @@ public class NotificationUtilz {
                 .setSound(alarmSound)
                 .setStyle(bigPictureStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
-                .setSmallIcon(R.drawable.ic_stat_name)
+                .setSmallIcon(R.drawable.mininotification)
                 .setLargeIcon(bigicon)
                 .setContentText(message);
 
@@ -199,7 +200,9 @@ public class NotificationUtilz {
     }
 
     public static long getTimeMilliSec(String timeStamp) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time=timeStamp;
+        Log.d(TAG, "getTimeMilliSec: ="+time);
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
         try {
             Date date = format.parse(timeStamp);
             return date.getTime();

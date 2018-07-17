@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.PreferenceManager;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 
 public class IntroActivity extends AppCompatActivity {
@@ -83,6 +84,11 @@ public class IntroActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
+    }
     private void addBottomDots(int currentPage) {
         dots = new TextView[layouts.length];
 

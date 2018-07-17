@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
@@ -79,7 +81,7 @@ public class Starautoassist_Application extends Application {
         // init facebook //
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         FacebookSdk.setApplicationId(Constants.App_ID);
-
+        enableStrictMode();
         Constants.ANDROID_ID = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
     }
@@ -391,6 +393,54 @@ public class Starautoassist_Application extends Application {
             return null;
         }
     };
+    private static void enableStrictMode() {
+        // strict mode requires API level 9 or later
+        if (Build.VERSION.SDK_INT < 9)
+            return;
 
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()
+                .penaltyLog()
+                .penaltyFlashScreen()
+                .build());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectActivityLeaks()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .detectLeakedRegistrationObjects()
+                    .penaltyLog()
+                    .build());
+        }
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        switch (level) {
+            case ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN:
+                freeMemory();
+                break;
+            case ComponentCallbacks2.TRIM_MEMORY_BACKGROUND:
+                freeMemory();
+                break;
+            case ComponentCallbacks2.TRIM_MEMORY_MODERATE:
+            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE:
+            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW:
+            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL:
+            case ComponentCallbacks2.TRIM_MEMORY_COMPLETE:
+                freeMemory();
+                break;
+        }
+    }
+
+    public static void freeMemory(){
+        System.runFinalization();
+        Runtime.getRuntime().gc();
+        System.gc();
+    }
 
 }

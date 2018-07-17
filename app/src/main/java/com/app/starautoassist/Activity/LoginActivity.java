@@ -750,6 +750,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
         }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
+    }
     public class Forget_Password extends AsyncTask<String, Integer, String> {
         private Context context;
         private String mobileno,password;

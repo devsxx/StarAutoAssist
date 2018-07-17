@@ -149,15 +149,20 @@ public class HomeActivity extends AppCompatActivity
                     // new push notification is received
                     String message = intent.getStringExtra("message");
                     Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
-                    notificationUtils = new NotificationUtilz(context);
+                    /*notificationUtils = new NotificationUtilz(context);
                     long timeStamp = System.currentTimeMillis();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    notificationUtils.showNotificationMessage(getString(R.string.app_name), message, String.valueOf(timeStamp), intent);
+                    notificationUtils.showNotificationMessage(getString(R.string.app_name), message, String.valueOf(timeStamp), intent);*/
                 }
             }
         };
 
         displayFirebaseRegId();
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
     }
 
     private void displayFirebaseRegId() {
@@ -374,8 +379,13 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Starautoassist_Application aController = new Starautoassist_Application();
+                SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
+                SharedPreferences.Editor edit=pref.edit();
                 aController.unregister(HomeActivity.this);
                 Constants.editor.clear();
+                edit.clear();
+                edit.apply();
+                edit.commit();
                 Constants.editor.commit();
                 /*if (AccessToken.getCurrentAccessToken() != null)
                 LoginManager.getInstance().logOut();*/

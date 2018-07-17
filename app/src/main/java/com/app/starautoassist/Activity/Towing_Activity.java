@@ -344,6 +344,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+
     private void setLocation() {
             if (flat == 0 && flon == 0) {
                 if (gps.canGetLocation()) {

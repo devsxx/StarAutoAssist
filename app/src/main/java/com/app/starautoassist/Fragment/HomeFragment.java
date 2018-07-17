@@ -31,6 +31,7 @@ import com.app.starautoassist.Adapter.ServiceAdapter;
 import com.app.starautoassist.Data.Service;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 
 
@@ -293,5 +294,10 @@ public class HomeFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
     }
 }

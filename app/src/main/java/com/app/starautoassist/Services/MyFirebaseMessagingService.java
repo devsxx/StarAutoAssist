@@ -46,7 +46,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
-
             try {
                 JSONObject json = new JSONObject(remoteMessage.getData().toString());
                 handleDataMessage(json);
@@ -61,7 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // app is in foreground, broadcast the push message
             Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
             pushNotification.putExtra("message", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+            LocalBroadcastManager.getInstance(MyFirebaseMessagingService.this).sendBroadcast(pushNotification);
 
             // play notification sound
             NotificationUtilz notificationUtils = new NotificationUtilz(getApplicationContext());
@@ -77,26 +76,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
             JSONObject data = json.getJSONObject("data");
 
-            String title = data.getString("title");
+            String id = data.getString("id");
             String message = data.getString("message");
-            boolean isBackground = data.getBoolean("is_background");
-            String imageUrl = data.getString("image");
+            String senderid = data.getString("senderid");
+            String imageUrl = "";
             String timestamp = data.getString("timestamp");
-            JSONObject payload = data.getJSONObject("payload");
 
-            Log.e(TAG, "title: " + title);
+            Log.e(TAG, "id: " + id);
             Log.e(TAG, "message: " + message);
-            Log.e(TAG, "isBackground: " + isBackground);
-            Log.e(TAG, "payload: " + payload.toString());
-            Log.e(TAG, "imageUrl: " + imageUrl);
-            Log.e(TAG, "timestamp: " + timestamp);
+            Log.e(TAG, "senderid: " + senderid);
+            Log.e(TAG, "imageurl: " + imageUrl);
+            Log.e(TAG, "time: " + timestamp);
 
 
             if (!NotificationUtilz.isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 pushNotification.putExtra("message", message);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+                LocalBroadcastManager.getInstance(MyFirebaseMessagingService.this).sendBroadcast(pushNotification);
 
 
                 // play notification sound
@@ -104,15 +101,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationUtils.playNotificationSound();
             } else {
                 // app is in background, show the notification in notification tray
-                Intent resultIntent = new Intent(this, SplashActivity.class);
+                Intent resultIntent = new Intent(MyFirebaseMessagingService.this, SplashActivity.class);
                 resultIntent.putExtra("message", message);
 
                 // check for image attachment
                 if (TextUtils.isEmpty(imageUrl)) {
-                    showNotificationMessage(this, title, message, timestamp, resultIntent);
+                    showNotificationMessage(MyFirebaseMessagingService.this, getString(R.string.app_name), message, timestamp, resultIntent);
                 } else {
                     // image is present, show notification with image
-                    showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+                    showNotificationMessageWithBigImage(getApplicationContext(), getString(R.string.app_name), message, timestamp, resultIntent, imageUrl);
                 }
             }
         } catch (JSONException e) {

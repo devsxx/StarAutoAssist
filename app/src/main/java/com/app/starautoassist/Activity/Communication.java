@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,6 +27,7 @@ import com.app.starautoassist.Adapter.Accepted_Request_Adapter;
 import com.app.starautoassist.Adapter.Review_Adapter;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.bumptech.glide.Glide;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -65,6 +67,7 @@ public class Communication extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communication);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         hashMap = (HashMap<String, String>) getIntent().getExtras().get("map");
         new Get_Review_Async(Communication.this).execute();
         name = (MaterialEditText) findViewById(R.id.fname);
@@ -132,6 +135,11 @@ public class Communication extends AppCompatActivity implements View.OnClickList
                 break;
         }
 
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Starautoassist_Application.freeMemory();
     }
 
     @Override
