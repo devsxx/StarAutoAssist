@@ -728,7 +728,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Constants.editor.putString("firstname", GetSet.getFirstname());
                         Constants.editor.putString("lastname", GetSet.getLastname());
                         Constants.editor.putString("email", GetSet.getEmail());
-                        Constants.editor.putString("mobileno", GetSet.getMobileno());
+                        Constants.editor.putString("mobileno", GetSet.getMobileno().trim());
                         Constants.editor.putString("address", GetSet.getAddress());
                         Constants.editor.putString("userimage", GetSet.getImagename());
                         Constants.editor.putString("userimageurl", GetSet.getImageUrl());
@@ -746,8 +746,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
         }
         }
     @Override
