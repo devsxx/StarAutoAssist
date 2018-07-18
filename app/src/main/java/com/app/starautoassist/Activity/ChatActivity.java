@@ -74,6 +74,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         messages = new ArrayList<>();
 
+        adapter = new ChatAdapter(senderid, ChatActivity.this, messages);
+        recyclerView.setAdapter(adapter);
+
         senderid = Constants.pref.getString("mobileno","");
 
         fetchMessages();
@@ -174,8 +177,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     
     public static String getTimeStamp() {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        return format.format(new Date().getTime());
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
+        Date date=new Date();
+        date.getTime();
+        return format.format(date);
     }
 
     @Override
@@ -189,7 +194,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     String stime = getTimeStamp();
                     new sendMessage( ChatActivity.this, senderid, receiver_id, smessage, stime).execute();
                 }
-
         }
 
     }
@@ -229,6 +233,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     .add("fromid", fromid.trim())
                     .add("toid", toid.trim())
                     .add("message", smessage.trim())
+                    .add("sentat", stime.trim())
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -257,19 +262,24 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
-            try {
-                jonj = new JSONObject(jsonData);
 
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "success")) {
-                    Message msg = new Message(senderid, smessage, stime);
-                    messages.add(msg);
-                    adapter.notifyDataSetChanged();
-                    scrollToBottom();
-                    editTextMessage.setText("");
-                    Toast.makeText(ChatActivity.this, "Message sent..", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(ChatActivity.this, jonj.getString("message"), Toast.LENGTH_SHORT).show();
+            try {
+                if (jsonData != null) {
+                    jonj = new JSONObject(jsonData);
+
+                    if (jonj.getString("status").equalsIgnoreCase(
+                            "success")) {
+                        Message msg = new Message(senderid, smessage, stime);
+                        messages.add(msg);
+                        adapter = new ChatAdapter(senderid, ChatActivity.this, messages);
+                        recyclerView.setAdapter(adapter);
+                        scrollToBottom();
+                        editTextMessage.setText("");
+                        Toast.makeText(ChatActivity.this, "Message sent..", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    Toast.makeText(ChatActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                 }
             }catch (JSONException e) {
                 e.printStackTrace();

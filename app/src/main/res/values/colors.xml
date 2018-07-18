@@ -22,6 +22,9 @@
     <color name="dot_light_screen3">#daa520</color>
     <color name="dot_light_screen4">#daa520</color>
 
+    <color name="chatleft">#a84edce4</color>
+    <color name="chatright">#a8f1b13b</color>
+
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>
         <item>@color/dot_light_screen2</item>

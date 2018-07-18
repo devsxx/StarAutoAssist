@@ -98,7 +98,7 @@ public class Constants {
     public static String registration_pushid="FCMRegistration.php?";
     public static String getprofile="getprofile.php?";
     public static String get_message="get_message.php?";
-    public static String send_message=FireBaseURL + "test_notification.php?";
+    public static String send_message="http://towbago.shadowws.in/jsons/test_notification.php?";
     public static String getpushid="get_token.php?";
     public static String getservices="getservices.php?";
     public static String get_req_status="get_req_status.php?";
