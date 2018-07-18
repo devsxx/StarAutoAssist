@@ -103,6 +103,9 @@ public class Communication extends AppCompatActivity implements View.OnClickList
         mapbtn.setOnClickListener(this);
         acceptbtn.setOnClickListener(this);
         declinebtn.setOnClickListener(this);
+
+        Constants.pref=getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
+        Constants.editor = Constants.pref.edit();
     }
 
     @Override
@@ -118,7 +121,9 @@ public class Communication extends AppCompatActivity implements View.OnClickList
                 startActivity(callIntent);
                 break;
             case R.id.chatbutton:
-
+                String client = Constants.pref.getString("mobileno", "");
+                String provider = hashMap.get(Constants.serviceprovider_id);
+                new fetchToken(this, client, provider).execute();
                 break;
             case R.id.mapbutton:
                 Intent intent=new Intent(Communication.this,TrackerActivity.class);
@@ -217,38 +222,40 @@ public class Communication extends AppCompatActivity implements View.OnClickList
             JSONObject jonj = null;
             try {
                 jonj = new JSONObject(jsonData);
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "success")) {
-                    String data=jonj.getString("data");
-                    JSONArray array=new JSONArray(data);
-                    reviewlist.clear();
-                    float ratingtotal = 0;
-                    for(int i=0;i<array.length();i++){
-                        map = new HashMap<String, String>();
-                        JSONObject object=array.getJSONObject(i);
-                        clientname=object.getString(Constants.firstname);
-                        if(object.getString(Constants.socialimage).equalsIgnoreCase(""))
-                            clientimage=object.getString(Constants.userimageurl);
-                        else
-                            clientimage=object.getString(Constants.socialimage);
-                        rating=object.getString(Constants.rating);
-                        ratingtotal= ratingtotal+Float.parseFloat(rating);
-                        reviews=object.getString(Constants.review);
-                        map.put(Constants.firstname,clientname);
-                        map.put(Constants.userimage,clientimage);
-                        map.put(Constants.rating,rating);
-                        map.put(Constants.review,reviews);
-                        reviewlist.add(map);
+                if(jsonData!=null) {
+                    if (jonj.getString("status").equalsIgnoreCase(
+                            "success")) {
+                        String data = jonj.getString("data");
+                        JSONArray array = new JSONArray(data);
+                        reviewlist.clear();
+                        float ratingtotal = 0;
+                        for (int i = 0; i < array.length(); i++) {
+                            map = new HashMap<String, String>();
+                            JSONObject object = array.getJSONObject(i);
+                            clientname = object.getString(Constants.firstname);
+                            if (object.getString(Constants.socialimage).equalsIgnoreCase(""))
+                                clientimage = object.getString(Constants.userimageurl);
+                            else
+                                clientimage = object.getString(Constants.socialimage);
+                            rating = object.getString(Constants.rating);
+                            ratingtotal = ratingtotal + Float.parseFloat(rating);
+                            reviews = object.getString(Constants.review);
+                            map.put(Constants.firstname, clientname);
+                            map.put(Constants.userimage, clientimage);
+                            map.put(Constants.rating, rating);
+                            map.put(Constants.review, reviews);
+                            reviewlist.add(map);
+                        }
+                        int count = array.length();
+                        overallrating = ratingtotal / count;
+                        ratingBar.setNumStars(5);
+                        ratingBar.setRating(overallrating);
+                        review_adapter = new Review_Adapter(Communication.this, reviewlist);
+                        layoutManager = new LinearLayoutManager(Communication.this, LinearLayoutManager.VERTICAL, false);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(review_adapter);
                     }
-                    int count=array.length();
-                    overallrating=ratingtotal/count;
-                    ratingBar.setNumStars(5);
-                    ratingBar.setRating(overallrating);
-                    review_adapter = new Review_Adapter(Communication.this, reviewlist);
-                    layoutManager = new LinearLayoutManager(Communication.this, LinearLayoutManager.VERTICAL, false);
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setAdapter(review_adapter);
-                } else {
+                }else {
                     recyclerView.setVisibility(View.GONE);
                 }
 
@@ -337,5 +344,82 @@ public class Communication extends AppCompatActivity implements View.OnClickList
             }
 
         }
+    }
+
+    private class fetchToken extends AsyncTask<String, Integer, String>{
+
+        private Context context;
+        private String url = Constants.BaseURL + Constants.getpushid;
+        ProgressDialog progress;
+        String  providerid,clientid;
+
+        public fetchToken(Context context, String clientid, String providerid) {
+            this.context = context;
+            this.clientid = clientid;
+            this.providerid = providerid;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = new ProgressDialog(context);
+            progress.setMessage("Please wait ....");
+            progress.setTitle("Loading");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.client_id, clientid)
+                    .add(Constants.serviceprovider_id, providerid)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            progress.dismiss();
+            String c_pushid, s_pushid;
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    Intent intent=new Intent(context, ChatActivity.class);
+                    intent.putExtra("receiverid",hashMap.get(Constants.serviceprovider_id));
+                    context.startActivity(intent);
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 }

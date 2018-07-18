@@ -67,6 +67,7 @@ public class Constants {
     // broadcast receiver intent filters
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final String PUSH_NOTIFICATION = "pushNotification";
+    public static final String DATA_NOTIFICATION = "dataNotification";
     // id to handle the notification in the notification tray
     public static final int NOTIFICATION_ID = 100;
     public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
@@ -76,6 +77,8 @@ public class Constants {
     //public static String BaseURL="http://starautoassist.com/services/";
     public static String BaseURL="http://towbago.shadowws.in/jsons/";
     public static String SPIMGURL="http://towbago.shadowws.in/jsons/images/providers/";
+    public static String FireBaseURL="http://towbago.shadowws.in/jsons/testfcm/";
+
     public static String registration="registration.php?";
     public static String uploadimage="uploadprofileimage.php?";
     public static String addcar="addcar.php?";
@@ -94,6 +97,9 @@ public class Constants {
     public static String socialreg="socialreg.php?";
     public static String registration_pushid="FCMRegistration.php?";
     public static String getprofile="getprofile.php?";
+    public static String get_message="get_message.php?";
+    public static String send_message=FireBaseURL + "test_notification.php?";
+    public static String getpushid="get_token.php?";
     public static String getservices="getservices.php?";
     public static String get_req_status="get_req_status.php?";
     public static String get_accepted_list="get_accepted_request.php?";

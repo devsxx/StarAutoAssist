@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.app.starautoassist.Activity.ChatActivity;
 import com.app.starautoassist.Activity.HomeActivity;
 import com.app.starautoassist.Activity.SplashActivity;
 import com.app.starautoassist.Others.Constants;
@@ -91,8 +92,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             if (!NotificationUtilz.isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
-                Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", message);
+                Intent pushNotification = new Intent(Constants.DATA_NOTIFICATION);
+                pushNotification.putExtra("data", json.toString());
                 LocalBroadcastManager.getInstance(MyFirebaseMessagingService.this).sendBroadcast(pushNotification);
 
 
@@ -101,7 +102,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationUtils.playNotificationSound();
             } else {
                 // app is in background, show the notification in notification tray
-                Intent resultIntent = new Intent(MyFirebaseMessagingService.this, SplashActivity.class);
+                Intent resultIntent = new Intent(MyFirebaseMessagingService.this, ChatActivity.class);
                 resultIntent.putExtra("message", message);
 
                 // check for image attachment

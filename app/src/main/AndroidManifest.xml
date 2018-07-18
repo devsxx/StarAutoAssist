@@ -130,6 +130,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.ProfileActivity" />
         <activity android:name=".Activity.SentRequestActivity" />
+        <activity android:name=".Activity.ChatActivity" />
         <activity android:name=".Activity.AcceptedRequestActivity" />
         <activity android:name=".Activity.ServiceHistoryActivity" />
         <activity android:name=".Activity.PaymentHistoryActivity" />

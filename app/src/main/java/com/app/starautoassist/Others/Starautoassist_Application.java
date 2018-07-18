@@ -85,6 +85,7 @@ public class Starautoassist_Application extends Application {
         Constants.ANDROID_ID = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -92,11 +93,13 @@ public class Starautoassist_Application extends Application {
         MultiDex.install(Starautoassist_Application.this);
     }
 
-    /** function for check the network **/
-    public static void registerReceiver(final Context ctx){
+    /**
+     * function for check the network
+     **/
+    public static void registerReceiver(final Context ctx) {
         if (networkStateReceiver == null) {
             Log.v("network dialog", "network dialog");
-            dialog = new Dialog(ctx , R.style.PostDialog);
+            dialog = new Dialog(ctx, R.style.PostDialog);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.setContentView(R.layout.network_dialog);
@@ -116,7 +119,7 @@ public class Starautoassist_Application extends Application {
                         Log.v("Disconnected", "Disconnected");
                         try {
                             networkError(dialog, context);
-                        } catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -127,24 +130,28 @@ public class Starautoassist_Application extends Application {
         }
 
     }
-    public static boolean checkLocationPermission(Context context)
-    {
+
+    public static boolean checkLocationPermission(Context context) {
         String permission = "android.permission.ACCESS_FINE_LOCATION";
         int res = context.checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
     }
 
-    /** function unregister the network intent checking **/
-    public static void unregisterReceiver(Context ctx){
+    /**
+     * function unregister the network intent checking
+     **/
+    public static void unregisterReceiver(Context ctx) {
         if (networkStateReceiver != null) {
-            if (dialog != null){
+            if (dialog != null) {
                 dialog.cancel();
             }
             dialog = null;
             ctx.unregisterReceiver(networkStateReceiver);
             networkStateReceiver = null;
         }
-    }private static void networkError(final Dialog dia, final Context ctx){
+    }
+
+    private static void networkError(final Dialog dia, final Context ctx) {
         try {
 
             TextView ok = dia.findViewById(R.id.alert_button);
@@ -153,7 +160,7 @@ public class Starautoassist_Application extends Application {
             ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (dialog != null){
+                    if (dialog != null) {
                         dialog.cancel();
                     }
                     dialog = null;
@@ -165,7 +172,7 @@ public class Starautoassist_Application extends Application {
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (dialog != null){
+                    if (dialog != null) {
                         dialog.cancel();
                     }
                     dialog = null;
@@ -173,17 +180,20 @@ public class Starautoassist_Application extends Application {
             });
             Log.v("show", "show=" + dia.isShowing());
             dia.show();
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
-        } catch (WindowManager.BadTokenException e){
+        } catch (WindowManager.BadTokenException e) {
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    /** To register the device for push notification **/
-    public void  register(Context context) {
-        for (int i = 1; i <=  5 ; i++) {
+
+    /**
+     * To register the device for push notification
+     **/
+    public void register(Context context) {
+        for (int i = 1; i <= 5; i++) {
 
             Log.v("Push-Notification", "Attempt #" + i + " to register");
 
@@ -215,11 +225,11 @@ public class Starautoassist_Application extends Application {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    JSONObject object=null;
+                    JSONObject object = null;
                     try {
-                        object=new JSONObject(jsonData);
+                        object = new JSONObject(jsonData);
 
-                        if(object.getString("status").equalsIgnoreCase("success")){
+                        if (object.getString("status").equalsIgnoreCase("success")) {
                             SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.SHARED_PREF, 0);
                             SharedPreferences.Editor editor = pref.edit();
                             editor.putString("regId", Constants.REGISTER_ID);
@@ -231,7 +241,7 @@ public class Starautoassist_Application extends Application {
                         e.printStackTrace();
                     }
 
-                    Log.v("json","json"+jsonData);
+                    Log.v("json", "json" + jsonData);
                 }
 
             });
@@ -245,8 +255,8 @@ public class Starautoassist_Application extends Application {
     }
 
     // Unregister this account/device pair within the server.
-  public   void unregister(final Context context) {
-        Log.v("Register_Id","Register_Id="+Constants.REGISTER_ID);
+    public void unregister(final Context context) {
+        Log.v("Register_Id", "Register_Id=" + Constants.REGISTER_ID);
         Log.v("unRegister", "unRegister");
 
 
@@ -259,7 +269,7 @@ public class Starautoassist_Application extends Application {
 
     }
 
-    public static String loadJSONFromAsset(Context context,String name) {
+    public static String loadJSONFromAsset(Context context, String name) {
         String json = null;
         try {
 
@@ -302,8 +312,10 @@ public class Starautoassist_Application extends Application {
         return false;
     }
 
-    /** for closing the keyboard while touch outside **/
-    public static void setupUI(Context context,View view) {
+    /**
+     * for closing the keyboard while touch outside
+     **/
+    public static void setupUI(Context context, View view) {
         final Activity act = (Activity) context;
         // Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
@@ -326,7 +338,7 @@ public class Starautoassist_Application extends Application {
 
                 View innerView = ((ViewGroup) view).getChildAt(i);
 
-                setupUI(act,innerView);
+                setupUI(act, innerView);
             }
         }
     }
@@ -344,13 +356,13 @@ public class Starautoassist_Application extends Application {
         }
     }
 
-    public static void dialog(Context ctx, String title,String content){
-        final Dialog dialog = new Dialog(ctx ,R.style.AlertDialog);
+    public static void dialog(Context ctx, String title, String content) {
+        final Dialog dialog = new Dialog(ctx, R.style.AlertDialog);
         Display display = ((Activity) ctx).getWindowManager().getDefaultDisplay();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.default_dialog);
-        dialog.getWindow().setLayout(display.getWidth()*90/100, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(display.getWidth() * 90 / 100, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(true);
 
         TextView alertTitle = dialog.findViewById(R.id.alert_title);
@@ -368,16 +380,19 @@ public class Starautoassist_Application extends Application {
             }
         });
 
-        if(!dialog.isShowing()){
+        if (!dialog.isShowing()) {
             dialog.show();
         }
 
     }
 
-    public static boolean isRTL(Context context){
+    public static boolean isRTL(Context context) {
         return context.getResources().getConfiguration().locale.toString().equals("ar");
     }
-    /** function for avoiding emoji typing in keyboard **/
+
+    /**
+     * function for avoiding emoji typing in keyboard
+     **/
     public static InputFilter EMOJI_FILTER = new InputFilter() {
 
         @Override
@@ -393,6 +408,7 @@ public class Starautoassist_Application extends Application {
             return null;
         }
     };
+
     private static void enableStrictMode() {
         // strict mode requires API level 9 or later
         if (Build.VERSION.SDK_INT < 9)
@@ -402,24 +418,15 @@ public class Starautoassist_Application extends Application {
                 .detectDiskReads()
                 .detectDiskWrites()
                 .detectNetwork()
+
                 .penaltyLog()
                 .penaltyFlashScreen()
                 .build());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectActivityLeaks()
-                    .detectLeakedSqlLiteObjects()
-                    .detectLeakedClosableObjects()
-                    .detectLeakedRegistrationObjects()
-                    .penaltyLog()
-                    .build());
-        }
-    }
 
+    }
     @Override
     public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
         switch (level) {
             case ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN:
                 freeMemory();
@@ -442,5 +449,4 @@ public class Starautoassist_Application extends Application {
         Runtime.getRuntime().gc();
         System.gc();
     }
-
 }

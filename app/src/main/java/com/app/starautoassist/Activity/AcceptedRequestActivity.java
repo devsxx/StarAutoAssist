@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.app.starautoassist.Adapter.Accepted_Request_Adapter;
 import com.app.starautoassist.Adapter.Sent_Request_Adapter;
@@ -107,56 +108,58 @@ public class AcceptedRequestActivity extends AppCompatActivity {
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
-                jonj = new JSONObject(jsonData);
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "success")) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    relativeLayout.setVisibility(View.GONE);
-                    String data=jonj.getString("data");
-                    JSONArray array=new JSONArray(data);
-                    accepted_list.clear();
-                    for(int i=0;i<array.length();i++){
-                        map = new HashMap<String, String>();
-                        JSONObject object=array.getJSONObject(i);
-                        sid=object.getString(Constants.serviceid);
-                        sname=object.getString(Constants.service_name);
-                        spcontact=object.getString(Constants.serviceprovider_id);
-                        spname=object.getString(Constants.firstname);
-                        companyname=object.getString(Constants.companyname);
-                        address=object.getString(Constants.address);
-                        providerimage=object.getString(Constants.providerimage);
-                        service_description=object.getString(Constants.service_description);
-                        status=object.getString(Constants.status);
-                        clientid=object.getString(Constants.client_id);
-                        pickuplocation=object.getString(Constants.pickup_location);
-                        droplocation=object.getString(Constants.drop_location);
-                       // rating=object.getString(Constants.rating);
-                       // reviews=object.getString(Constants.review);
+                if (jsonData != null) {
+                    jonj = new JSONObject(jsonData);
+                    if (jonj.getString("status").equalsIgnoreCase(
+                            "success")) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        relativeLayout.setVisibility(View.GONE);
+                        String data = jonj.getString("data");
+                        JSONArray array = new JSONArray(data);
+                        accepted_list.clear();
+                        for (int i = 0; i < array.length(); i++) {
+                            map = new HashMap<String, String>();
+                            JSONObject object = array.getJSONObject(i);
+                            sid = object.getString(Constants.serviceid);
+                            sname = object.getString(Constants.service_name);
+                            spcontact = object.getString(Constants.serviceprovider_id);
+                            spname = object.getString(Constants.firstname);
+                            companyname = object.getString(Constants.companyname);
+                            address = object.getString(Constants.address);
+                            providerimage = object.getString(Constants.providerimage);
+                            service_description = object.getString(Constants.service_description);
+                            status = object.getString(Constants.status);
+                            clientid = object.getString(Constants.client_id);
+                            pickuplocation = object.getString(Constants.pickup_location);
+                            droplocation = object.getString(Constants.drop_location);
+                            // rating=object.getString(Constants.rating);
+                            // reviews=object.getString(Constants.review);
 
 
-                        map.put(Constants.serviceid,sid);
-                        map.put(Constants.service_name,sname);
-                        map.put(Constants.firstname,spname);
-                        map.put(Constants.serviceprovider_id,spcontact);
-                        map.put(Constants.companyname,companyname);
-                        map.put(Constants.address,address);
-                        map.put(Constants.providerimage,providerimage);
-                        map.put(Constants.service_description,service_description);
-                        map.put(Constants.client_id,clientid);
-                        map.put(Constants.pickup_location,pickuplocation);
-                        map.put(Constants.drop_location,droplocation);
-                        map.put(Constants.status,status);
-                        accepted_list.add(map);
+                            map.put(Constants.serviceid, sid);
+                            map.put(Constants.service_name, sname);
+                            map.put(Constants.firstname, spname);
+                            map.put(Constants.serviceprovider_id, spcontact);
+                            map.put(Constants.companyname, companyname);
+                            map.put(Constants.address, address);
+                            map.put(Constants.providerimage, providerimage);
+                            map.put(Constants.service_description, service_description);
+                            map.put(Constants.client_id, clientid);
+                            map.put(Constants.pickup_location, pickuplocation);
+                            map.put(Constants.drop_location, droplocation);
+                            map.put(Constants.status, status);
+                            accepted_list.add(map);
+                        }
+                        acceptedAdapter = new Accepted_Request_Adapter(AcceptedRequestActivity.this, accepted_list);
+                        layoutManager = new LinearLayoutManager(AcceptedRequestActivity.this, LinearLayoutManager.VERTICAL, false);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(acceptedAdapter);
+                    } else {
+                        recyclerView.setVisibility(View.GONE);
+                        relativeLayout.setVisibility(View.VISIBLE);
                     }
-                    acceptedAdapter = new Accepted_Request_Adapter(AcceptedRequestActivity.this, accepted_list);
-                    layoutManager = new LinearLayoutManager(AcceptedRequestActivity.this, LinearLayoutManager.VERTICAL, false);
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setAdapter(acceptedAdapter);
-                } else {
-                    recyclerView.setVisibility(View.GONE);
-                    relativeLayout.setVisibility(View.VISIBLE);
-                }
-
+                }else
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
             }catch (JSONException e) {
                 e.printStackTrace();
             }

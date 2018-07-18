@@ -177,34 +177,37 @@ public class HomeFragment extends Fragment {
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
-                jonj = new JSONObject(jsonData);
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "success")) {
-                    String data = jonj.getString("data");
-                    JSONArray array = new JSONArray(data);
-                    Services_list.clear();
-                    for (int i = 0; i < array.length(); i++) {
-                        map = new HashMap<String, String>();
-                        JSONObject object = array.getJSONObject(i);
-                        sid = object.getString(Constants.serviceid);
-                        sname = object.getString(Constants.servicename);
-                        simg = object.getString(Constants.serviceimg);
-                        scharge = object.getString(Constants.servicecharge);
+                if (jsonData != null) {
+                    jonj = new JSONObject(jsonData);
+                    if (jonj.getString("status").equalsIgnoreCase(
+                            "success")) {
+                        String data = jonj.getString("data");
+                        JSONArray array = new JSONArray(data);
+                        Services_list.clear();
+                        for (int i = 0; i < array.length(); i++) {
+                            map = new HashMap<String, String>();
+                            JSONObject object = array.getJSONObject(i);
+                            sid = object.getString(Constants.serviceid);
+                            sname = object.getString(Constants.servicename);
+                            simg = object.getString(Constants.serviceimg);
+                            scharge = object.getString(Constants.servicecharge);
 
 
-                        map.put(Constants.serviceid, sid);
-                        map.put(Constants.servicename, sname);
-                        map.put(Constants.serviceimg, simg);
-                        map.put(Constants.servicecharge, scharge);
-                        Services_list.add(map);
+                            map.put(Constants.serviceid, sid);
+                            map.put(Constants.servicename, sname);
+                            map.put(Constants.serviceimg, simg);
+                            map.put(Constants.servicecharge, scharge);
+                            Services_list.add(map);
+                        }
+                        serviceAdapter = new ServiceAdapter(getActivity(), Services_list);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        recyclerView.setAdapter(serviceAdapter);
                     }
-                    serviceAdapter = new ServiceAdapter(getActivity(), Services_list);
-                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                    recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-                    recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    recyclerView.setAdapter(serviceAdapter);
-                }
-            } catch (JSONException e) {
+                }else
+                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -263,32 +266,35 @@ public class HomeFragment extends Fragment {
             JSONObject jonj = null;
             HashMap<String, String> hashMap;
             try {
-                jonj = new JSONObject(jsonData);
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "success")) {
-                    String data = jonj.getString("message");
-                    JSONArray array = new JSONArray(data);
-                    mycarslist.clear();
-                    for (int i = 0; i < array.length(); i++) {
-                        map = new HashMap<String, String>();
-                        JSONObject object = array.getJSONObject(i);
-                        id = object.getString(Constants.cno);
-                        carmodel = object.getString(Constants.model);
-                        carbrand = object.getString(Constants.brand);
-                        plateno = object.getString(Constants.plateno);
-                        flatbed = object.getString(Constants.flatbed);
-                        logo = object.getString(Constants.logo);
+                if(jsonData!=null) {
+                    jonj = new JSONObject(jsonData);
+                    if (jonj.getString("status").equalsIgnoreCase(
+                            "success")) {
+                        String data = jonj.getString("message");
+                        JSONArray array = new JSONArray(data);
+                        mycarslist.clear();
+                        for (int i = 0; i < array.length(); i++) {
+                            map = new HashMap<String, String>();
+                            JSONObject object = array.getJSONObject(i);
+                            id = object.getString(Constants.cno);
+                            carmodel = object.getString(Constants.model);
+                            carbrand = object.getString(Constants.brand);
+                            plateno = object.getString(Constants.plateno);
+                            flatbed = object.getString(Constants.flatbed);
+                            logo = object.getString(Constants.logo);
 
-                        map.put(Constants.cno, id);
-                        map.put(Constants.model, carmodel);
-                        map.put(Constants.brand, carbrand);
-                        map.put(Constants.plateno, plateno);
-                        map.put(Constants.flatbed, flatbed);
-                        map.put(Constants.logo, logo);
-                        mycarslist.add(map);
-                    }
-                } else
-                    Toast.makeText(getContext(), jonj.getString("message"), Toast.LENGTH_SHORT).show();
+                            map.put(Constants.cno, id);
+                            map.put(Constants.model, carmodel);
+                            map.put(Constants.brand, carbrand);
+                            map.put(Constants.plateno, plateno);
+                            map.put(Constants.flatbed, flatbed);
+                            map.put(Constants.logo, logo);
+                            mycarslist.add(map);
+                        }
+                    }else
+                        Toast.makeText(getContext(), jonj.getString("message"), Toast.LENGTH_SHORT).show();
+                }else
+                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
 
             } catch (JSONException e) {
                 e.printStackTrace();

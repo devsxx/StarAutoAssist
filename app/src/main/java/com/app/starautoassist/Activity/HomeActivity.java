@@ -149,10 +149,10 @@ public class HomeActivity extends AppCompatActivity
                     // new push notification is received
                     String message = intent.getStringExtra("message");
                     Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
-                    /*notificationUtils = new NotificationUtilz(context);
+                    notificationUtils = new NotificationUtilz(context);
                     long timeStamp = System.currentTimeMillis();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    notificationUtils.showNotificationMessage(getString(R.string.app_name), message, String.valueOf(timeStamp), intent);*/
+                    notificationUtils.showNotificationMessage(getString(R.string.app_name), message, String.valueOf(timeStamp), intent);
                 }
             }
         };
