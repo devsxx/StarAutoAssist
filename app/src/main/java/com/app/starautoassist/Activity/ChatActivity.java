@@ -63,9 +63,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         receiver_id = intent.getStringExtra("receiverid");
         Constants.pref=getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("Directing you to chat...");
-       /* dialog.show();*/
 
         recyclerView = findViewById(R.id.rv_chat);
         recyclerView.setHasFixedSize(true);

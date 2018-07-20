@@ -42,7 +42,7 @@ android {
 
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.facebook.android:facebook-login:[4,5)'
@@ -67,6 +67,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
     implementation 'com.google.android.gms:play-services-location:11.8.0'
+    implementation files('libs/ipay_hosted_standard_sdk_20180514.jar')
 }
 apply plugin: 'com.android.application'
 
