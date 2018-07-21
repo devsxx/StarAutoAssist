@@ -75,9 +75,9 @@ public class Constants {
 
     //Requests
     //public static String BaseURL="http://starautoassist.com/services/";
-    public static String BaseURL="http://towbago.shadowws.in/jsons/";
-    public static String SPIMGURL="http://towbago.shadowws.in/jsons/images/providers/";
-    public static String FireBaseURL="http://towbago.shadowws.in/jsons/testfcm/";
+    public static String BaseURL="https://starautoassist.com/jsons/";
+    public static String SPIMGURL="https://starautoassist.com/jsons/images/providers/";
+    public static String send_message="https://starautoassist.com/jsons/test_notification.php?";
 
     public static String registration="registration.php?";
     public static String uploadimage="uploadprofileimage.php?";
@@ -98,7 +98,7 @@ public class Constants {
     public static String registration_pushid="FCMRegistration.php?";
     public static String getprofile="getprofile.php?";
     public static String get_message="get_message.php?";
-    public static String send_message="http://towbago.shadowws.in/jsons/test_notification.php?";
+
     public static String getpushid="get_token.php?";
     public static String getservices="getservices.php?";
     public static String get_req_status="get_req_status.php?";
