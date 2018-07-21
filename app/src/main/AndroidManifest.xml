@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.read_contacts" />
@@ -47,12 +47,14 @@
         <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".Activity.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -138,7 +140,8 @@
         <activity android:name=".Activity.Fuel_Activity" />
         <activity android:name=".Activity.TrackerActivity" />
         <activity android:name=".Activity.JumpstartActivity" />
-        <activity android:name=".Activity.Communication"
+        <activity
+            android:name=".Activity.Communication"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Activity.TyreActivity" />
         <activity android:name=".Activity.NotificationServiceActivity" />
@@ -146,8 +149,10 @@
         <service
             android:name=".Services.Tracker_Service"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
+        <activity android:name=".Activity.CompletedServicesActivity" />
+        <activity android:name=".Activity.Completed_Services_Payment_Activity"></activity>
     </application>
 
 </manifest>

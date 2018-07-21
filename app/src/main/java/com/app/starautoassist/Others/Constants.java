@@ -113,9 +113,8 @@ public class Constants {
     public static String changepassword="changepassword.php?";
     public static String forgotpassword="forgotpassword.php?";
     public static Boolean isLocationpermission_enabled=false;
-
-
-
+    public static String completedservice="completed_service.php?";
+    public static String servicepayment="service_ payment.php?";
 
 
 }

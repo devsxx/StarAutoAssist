@@ -279,7 +279,13 @@ public class HomeActivity extends AppCompatActivity
             Intent sentrequestintent = new Intent(this, SentRequestActivity.class);
             startActivity(sentrequestintent);
 
-        } else if (id == R.id.nav_servicehistory) {
+        }
+        else if (id == R.id.nav_completedservices) {
+
+            Intent completedintent = new Intent(this, CompletedServicesActivity.class);
+            startActivity(completedintent);
+
+        }else if (id == R.id.nav_servicehistory) {
 
         /*    Intent servicehistoryintent = new Intent(this, ServiceHistoryActivity.class);
             startActivity(servicehistoryintent);
