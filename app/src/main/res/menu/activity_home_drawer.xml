@@ -25,6 +25,10 @@
             android:icon="@drawable/ic_system_update_alt_orange_700_18dp"
             android:title="Accepted Request" />
         <item
+            android:id="@+id/nav_completedservices"
+            android:icon="@drawable/ic_check_orange_24dp"
+            android:title="Completed Servcies" />
+        <item
             android:id="@+id/nav_servicehistory"
             android:icon="@drawable/ic_history_orange_700_18dp"
             android:title="Service History" />

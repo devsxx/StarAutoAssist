@@ -346,31 +346,37 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
-                jonj = new JSONObject(jsonData);
 
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "success")) {
-                    String data = jonj.getString("message");
-                    JSONArray array = new JSONArray(data);
+                if (jsonData != null) {
+                    jonj = new JSONObject(jsonData);
 
-                    for (int i = 0; i < array.length(); i++) {
+                    if (jonj.getString("status").equalsIgnoreCase(
+                            "success")) {
+                        String data = jonj.getString("message");
+                        JSONArray array = new JSONArray(data);
 
-                        JSONObject object = array.getJSONObject(i);
+                        for (int i = 0; i < array.length(); i++) {
 
-                        sid = object.getString("sentid");
-                        smsg = object.getString("message");
-                        stime = object.getString("sentat");
+                            JSONObject object = array.getJSONObject(i);
 
-                        Message objmsg = new Message(sid, smsg, stime);
-                        messages.add(objmsg);
+                            sid = object.getString("sentid");
+                            smsg = object.getString("message");
+                            stime = object.getString("sentat");
+
+                            Message objmsg = new Message(sid, smsg, stime);
+                            messages.add(objmsg);
+                        }
+
+                        adapter = new ChatAdapter(senderid, ChatActivity.this, messages);
+                        recyclerView.setAdapter(adapter);
+                        scrollToBottom();
+
+                    } else {
+                        Toast.makeText(ChatActivity.this, "Enter your message here..", Toast.LENGTH_SHORT).show();
                     }
-
-                    adapter = new ChatAdapter(senderid, ChatActivity.this, messages);
-                    recyclerView.setAdapter(adapter);
-                    scrollToBottom();
-
-                }else {
-                    Toast.makeText(ChatActivity.this, "message", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(ChatActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
             }catch (JSONException e) {
                 e.printStackTrace();
