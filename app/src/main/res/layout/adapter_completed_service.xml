@@ -6,6 +6,7 @@
         android:id="@+id/completed_layout"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
+        android:background="@drawable/border_edittext"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,25 +21,52 @@
             android:layout_height="match_parent">
             <TextView
                 android:paddingLeft="10dp"
-                android:layout_weight="0.5"
+                android:layout_weight="1.2"
+                android:padding="5dp"
                 android:id="@+id/complete_tv_sid"
                 android:text="ServiceId"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
                 android:paddingLeft="10dp"
-                android:layout_weight="1.5"
-                android:id="@+id/complete_tv_sname"
-                android:text="ServiceName"
-                android:layout_width="wrap_content"
+                android:layout_weight="0.8"
+                android:padding="5dp"
+                android:id="@+id/serviceidval"
+                android:text="Service Id"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
-            android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:weightSum="1"
-            android:orientation="vertical"
-            android:id="@+id/name_layout"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:id="@+id/valuelayout"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:paddingLeft="10dp"
+                android:layout_weight="1.2"
+                android:padding="5dp"
+                android:id="@+id/servicenametxt"
+                android:text="Service Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:paddingLeft="10dp"
+                android:layout_weight="0.8"
+                android:padding="5dp"
+                android:id="@+id/servicenameval"
+                android:text="Service Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:id="@+id/namelayout"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
@@ -46,8 +74,44 @@
             <TextView
                 android:paddingLeft="10dp"
                 android:text="ServiceAmount"
-                android:layout_weight="1"
+                android:padding="5dp"
+                android:layout_weight="1.2"
                 android:id="@+id/complete_tv_samount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:paddingLeft="10dp"
+                android:layout_weight="0.8"
+                android:padding="5dp"
+                android:id="@+id/serviceamt"
+                android:text="Service Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:id="@+id/statuslayout"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:paddingLeft="10dp"
+                android:text="Status"
+                android:padding="5dp"
+                android:layout_weight="1.2"
+                android:id="@+id/statustxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:paddingLeft="10dp"
+                android:layout_weight="0.8"
+                android:padding="5dp"
+                android:id="@+id/statusval"
+                android:text="Status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

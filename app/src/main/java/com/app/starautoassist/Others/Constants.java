@@ -37,6 +37,7 @@ public class Constants {
     public static String service_name="service_name";
     public static String serviceprovider_id="serviceprovider_id";
     public static String companyname="companyname";
+    public static String company_name="company_name";
     public static String address="address";
     public static String providerimage="providerimage";
     public static String service_description="service_description";
@@ -74,10 +75,13 @@ public class Constants {
     public static final String SHARED_PREF = "ah_firebase";
 
     //Requests
-    //public static String BaseURL="http://starautoassist.com/services/";
     public static String BaseURL="https://starautoassist.com/jsons/";
     public static String SPIMGURL="https://starautoassist.com/jsons/images/providers/";
     public static String send_message="https://starautoassist.com/jsons/test_notification.php?";
+    public static String backendurl_callback="https://starautoassist.com/jsons/paymentcheck.php?";
+  /*  public static String BaseURL="http://towbago.shadowws.in/jsons/";
+    public static String SPIMGURL="http://towbago.shadowws.in/jsons/images/providers/";
+    public static String send_message="http://towbago.shadowws.in/jsons/test_notification.php?";*/
 
     public static String registration="registration.php?";
     public static String uploadimage="uploadprofileimage.php?";
@@ -114,7 +118,7 @@ public class Constants {
     public static String forgotpassword="forgotpassword.php?";
     public static Boolean isLocationpermission_enabled=false;
     public static String completedservice="completed_service.php?";
-    public static String servicepayment="service_ payment.php?";
+    public static String receive_bill ="receive_bill.php?";
 
 
 }

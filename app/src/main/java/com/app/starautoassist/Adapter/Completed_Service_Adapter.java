@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.starautoassist.Activity.Completed_Services_Payment_Activity;
+import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
 
 import java.util.ArrayList;
@@ -39,16 +40,19 @@ public class Completed_Service_Adapter extends RecyclerView.Adapter<Completed_Se
 
         final HashMap<String, String> itemMap = completed_list.get(position);
 
-        holder.sid.setText(itemMap.get(""));
-        holder.sname.setText(itemMap.get(""));
-        holder.samount.setText(itemMap.get(""));
-
+        holder.sid.setText(itemMap.get("service_id"));
+        holder.sname.setText(itemMap.get(Constants.service_name));
+        holder.samount.setText(itemMap.get("totalamount"));
+        if(itemMap.get("status").equals("0"))
+            holder.status.setText("Pay & close service");
+        else
+            holder.status.setText("Payment Done");
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent intent = new Intent(mContext, Completed_Services_Payment_Activity.class);
-                intent.putExtra("sid", itemMap.get(""));
+                intent.putExtra("data", itemMap);
                 mContext.startActivity(intent);
             }
         });
@@ -62,15 +66,16 @@ public class Completed_Service_Adapter extends RecyclerView.Adapter<Completed_Se
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView sid, sname, samount;
+        private TextView sid, sname,status, samount;
         private LinearLayout  linearLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            sid = itemView.findViewById(R.id.complete_tv_sid);
-            sname = itemView.findViewById(R.id.complete_tv_sname);
-            samount = itemView.findViewById(R.id.complete_tv_samount);
+            sid = itemView.findViewById(R.id.serviceidval);
+            sname = itemView.findViewById(R.id.servicenameval);
+            samount = itemView.findViewById(R.id.serviceamt);
+            status = itemView.findViewById(R.id.statusval);
             linearLayout = itemView.findViewById(R.id.completed_layout);
         }
     }

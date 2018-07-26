@@ -1,5 +1,6 @@
 package com.app.starautoassist.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -39,19 +40,20 @@ public class CompletedServicesActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv_completed);
 
-        new completedService(this).execute();
+        new servicePayment(CompletedServicesActivity.this).execute();
 
     }
 
-    private class completedService extends AsyncTask<String, IntroActivity, String>{
+    @SuppressLint("StaticFieldLeak")
+    private class servicePayment extends AsyncTask<String, Integer, String>{
 
         Context context;
-        String url = Constants.BaseURL+Constants.completedservice;
+        String url = Constants.BaseURL+Constants.receive_bill;
         ProgressDialog progress;
         HashMap<String, String> map;
-        String sid, sname, samount;
+        String sid,sername, proname,id,serviceid,sp_id,des,status, compname, tollprice, spareprice, extraprice, nightprice, totalprice;
 
-        public completedService(Context context) {
+        public servicePayment(Context context) {
             this.context = context;
         }
 
@@ -67,13 +69,12 @@ public class CompletedServicesActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-
+            Constants.pref=getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
             String jsonData = null;
             Response response = null;
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
-                  /*  .add("", )
-                    .add("", )*/
+                    .add("client_id",Constants.pref.getString("mobileno",""))
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -111,29 +112,47 @@ public class CompletedServicesActivity extends AppCompatActivity {
                             "success")) {
                         String data = jonj.getString("data");
                         JSONArray array = new JSONArray(data);
-
                         completed_list.clear();
 
                         for (int i = 0; i < array.length(); i++) {
                             map = new HashMap<String, String>();
                             JSONObject object = array.getJSONObject(i);
-
-                            sid = object.getString("");
-                            sname = object.getString("");
-                            samount = object.getString("");
-
-                            map.put("", sid);
-                            map.put("", sname);
-                            map.put("", samount);
+                            id = object.getString(Constants.id);
+                            map = new HashMap<String, String>();
+                            serviceid = object.getString("service_id");
+                            sp_id = object.getString(Constants.serviceprovider_id);
+                            sername = object.getString(Constants.service_name);
+                            proname = object.getString("sp_name");
+                            compname = object.getString(Constants.company_name);
+                            tollprice = object.getString("tollamount");
+                            spareprice = object.getString("spareamount");
+                            extraprice = object.getString("extraamount");
+                            nightprice = object.getString("nightamount");
+                            totalprice = object.getString("totalamount");
+                            des = object.getString("description");
+                            status = object.getString("status");
+                            map.put("service_id", serviceid);
+                            map.put(Constants.serviceprovider_id, sp_id);
+                            map.put(Constants.service_name, sername);
+                            map.put("sp_name", serviceid);
+                            map.put(Constants.company_name, compname);
+                            map.put("tollamount", tollprice);
+                            map.put("spareamount", spareprice);
+                            map.put("extraamount", extraprice);
+                            map.put("nightamount", nightprice);
+                            map.put("totalamount", totalprice);
+                            map.put("description", des);
+                            map.put("status", status);
 
                             completed_list.add(map);
-
                         }
                         completedServiceAdapter = new Completed_Service_Adapter(CompletedServicesActivity.this, completed_list);
                         layoutManager = new LinearLayoutManager(CompletedServicesActivity.this, LinearLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(completedServiceAdapter);
+
                     }
+
                 }
                 else {
                     Toast.makeText(CompletedServicesActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();

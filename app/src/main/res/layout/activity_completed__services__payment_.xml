@@ -5,143 +5,281 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.Completed_Services_Payment_Activity">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_marginBottom="10dp"
+        android:id="@+id/parentLayout"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
         <TextView
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginTop="10dp"
             android:gravity="center"
+            android:padding="10dp"
             android:text="Bill Receipt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <LinearLayout
-            android:paddingLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
+    </LinearLayout>
+
+        <ScrollView
             android:layout_width="match_parent"
+            android:id="@+id/scrollview"
+            android:layout_below="@+id/parentLayout"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/complete_tv_pname"
-                android:layout_weight="1"
-                android:text="ProviderName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:paddingLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/complete_tv_cname"
-                android:layout_weight="1"
-                android:text="CompanyName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border_edittext"
+    android:orientation="vertical">
         <LinearLayout
             android:paddingLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:id="@+id/complete_tv_sername"
-                android:layout_weight="1"
-                android:text="ServiceName"
+                android:id="@+id/providertxt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Provider Name" />
+
+            <TextView
+                android:id="@+id/providerval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Provider Name" />
         </LinearLayout>
         <LinearLayout
             android:paddingLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:id="@+id/complete_tv_toll"
-                android:layout_weight="1"
-                android:text="TollAmount"
+                android:id="@+id/companytxt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Company Name" />
+
+            <TextView
+                android:id="@+id/companyval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Company Name" />
         </LinearLayout>
         <LinearLayout
             android:paddingLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:id="@+id/complete_tv_spare"
-                android:layout_weight="1"
-                android:text="SpareAmount"
+                android:id="@+id/servicenametxt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Service Name" />
+
+            <TextView
+                android:id="@+id/servicenameval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Service Name" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/serviceidtxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Service ID" />
+
+            <TextView
+                android:id="@+id/serviceidval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Service ID" />
+        </LinearLayout>
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_edittext"
+        android:orientation="vertical">
+        <LinearLayout
+            android:paddingLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tolltxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Toll Amount" />
+
+            <TextView
+                android:id="@+id/tollval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Toll Amount" />
         </LinearLayout>
         <LinearLayout
             android:paddingLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:id="@+id/complete_tv_extra"
-                android:layout_weight="1"
-                android:text="ExtraAmount"
+                android:id="@+id/sparetxt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Spare Amount" />
+
+            <TextView
+                android:id="@+id/spareval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Spare Amount" />
         </LinearLayout>
         <LinearLayout
             android:paddingLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:id="@+id/complete_tv_night"
-                android:layout_weight="1"
-                android:text="NightAmount"
+                android:id="@+id/extratxt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Extra Amount" />
+
+            <TextView
+                android:id="@+id/extraval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Extra Amount" />
         </LinearLayout>
         <LinearLayout
             android:paddingLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:id="@+id/complete_tv_total"
-                android:layout_weight="1"
-                android:text="TotalAmount"
+                android:id="@+id/nighttxt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Night Amount" />
+
+            <TextView
+                android:id="@+id/nightval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Night Amount" />
+        </LinearLayout>
+        <LinearLayout
+            android:paddingLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/destxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Description" />
+
+            <TextView
+                android:id="@+id/desval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Description" />
+        </LinearLayout>
+        <LinearLayout
+            android:paddingLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/totaltxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TotalAmount" />
+
+            <TextView
+                android:id="@+id/totalval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TotalAmount" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/complete_btn_pay"
-            android:textSize="18sp"
-            android:background="@color/colorAccent"
+            android:textSize="15sp"
+            android:padding="10dp"
+            android:background="@color/colorPrimary"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:text="Proceed to Pay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+</LinearLayout>
+
+    </ScrollView>
+
 </RelativeLayout>

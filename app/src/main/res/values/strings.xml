@@ -1,6 +1,8 @@
 <resources>
 
     <string name="app_name">Star Auto Assist</string>
+    <string name="merchant_key">ievKqscLGr</string>
+    <string name="merchant_code">M03214</string>
 
     <string name="facebook_app_id">203876700441500</string>
     <string name="fb_login_protocol_scheme">fb203876700441500</string>
