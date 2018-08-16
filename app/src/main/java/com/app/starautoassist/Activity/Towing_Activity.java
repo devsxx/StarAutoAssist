@@ -1006,7 +1006,6 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         @Override
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
-            progress.dismiss();
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
@@ -1015,7 +1014,6 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         "success")) {
                     // TODO: request code here
                     Toast.makeText(context,"Transaction saved successfully",Toast.LENGTH_SHORT).show();
-
                 }else {
                     Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
                     finish();

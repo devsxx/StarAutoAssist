@@ -632,7 +632,6 @@ public class Fuel_Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
-            progress.dismiss();
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
