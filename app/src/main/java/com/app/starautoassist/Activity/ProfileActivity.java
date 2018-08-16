@@ -96,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Profile");
+        getSupportActionBar().setTitle("Star Auto Assist");
         setContentView(R.layout.activity_profile);
 
         circularImageView = findViewById(R.id.civ_profile);
@@ -254,7 +254,7 @@ public class ProfileActivity extends AppCompatActivity {
     public class VerifyOTP extends AsyncTask<String, Integer, String> {
         private Context context;
         private String mobileno, otp;
-        private String url = Constants.BaseURL + Constants.verifyOTP;
+        private String url = Constants.BaseURL + Constants.socialverifyOTP;
         @Nullable
         String user_id;
 
@@ -279,6 +279,7 @@ public class ProfileActivity extends AppCompatActivity {
             RequestBody body = new FormBody.Builder()
                     .add(Constants.mobileno, mobileno)
                     .add(Constants.otp, otp)
+                    .add(Constants.type, GetSet.getUser_type())
                     .build();
             Request request = new Request.Builder()
                     .url(url)

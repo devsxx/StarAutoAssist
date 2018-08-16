@@ -44,7 +44,7 @@ public class AcceptedRequestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Accepted Request");
+        getSupportActionBar().setTitle("Star Auto Assist");
         setContentView(R.layout.activity_accepted_request);
         recyclerView= findViewById(R.id.req_recyclerview);
         relativeLayout=findViewById(R.id.nodatalayout);
@@ -166,6 +166,4 @@ public class AcceptedRequestActivity extends AppCompatActivity {
 
         }
     }
-
-
 }

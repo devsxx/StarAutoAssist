@@ -51,4 +51,6 @@
     <color name="colorDivider">#737373</color>
     <color name="colorMap">#FAE6D6</color>
     <color name="gray">#eac9c9c9</color>
+    <color name="bg">#f8ededed</color>
+    <color name="trans">#aac1c1c1</color>
 </resources>

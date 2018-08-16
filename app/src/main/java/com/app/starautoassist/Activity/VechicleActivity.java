@@ -62,7 +62,7 @@ public class VechicleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("My Vechicle");
+        getSupportActionBar().setTitle("Star Auto Assist");
         setContentView(R.layout.activity_vechicle);
 
         Constants.pref = getApplicationContext().getSharedPreferences("StarAutoAssist",

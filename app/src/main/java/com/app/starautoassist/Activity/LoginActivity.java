@@ -3,9 +3,11 @@ package com.app.starautoassist.Activity;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,11 +20,13 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -112,6 +116,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     AccessTokenTracker accessTokenTracker;
     SharedPreferences pref ;
     SharedPreferences.Editor editor;
+    BroadcastReceiver receiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -507,7 +512,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_otp:
                 if(!mobilenoforget.getText().toString().equals("")&&mobilenoforget.getText().toString().length()>6) {
                     mobile_no = mobilenoforget.getText().toString().trim();
-                    // new GetOTP(getApplicationContext(), mobile_no).execute();
+                     new GetOTP(getApplicationContext(), mobile_no).execute();
                     //Toast.makeText(getApplicationContext(),"Otp sent to your mobile successfully",Toast.LENGTH_SHORT).show();
                     try {
                         mobilenoforget.setVisibility(View.GONE);
@@ -521,8 +526,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_confirm:
                 String otp = confirmotpcode.getText().toString().trim();
-                //   new VerifyOTP(getApplicationContext(), GetSet.getMobileno(), otp).execute();
-                new VerifyOTP(LoginActivity.this, mobile_no, "1234").execute();
+                  new VerifyOTP(getApplicationContext(), mobile_no, otp).execute();
+               // new VerifyOTP(LoginActivity.this, mobile_no, "1234").execute();
                 break;
             case R.id.log_tv_forgot:
                 scrollView.setVisibility(View.GONE);
@@ -572,7 +577,111 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             alertDialog.show();
         }
     }
+    public class GetOTP extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String mobileno;
+        private String url = Constants.BaseURL + Constants.getOTP;
+        ProgressDialog progress;
+        @Nullable
+        String user_id;
 
+        public GetOTP(Context ctx, String mobileno) {
+            context = ctx;
+            this.mobileno = mobileno;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = new ProgressDialog(context);
+            progress.setMessage("Please wait ....");
+            progress.setTitle("Loading");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.show();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.mobileno, mobileno)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            progress.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "true")) {
+                    mobile_no=mobileno;
+                    //Toast.makeText(getApplicationContext(),"Otp sent to your mobile successfully",Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder confirmotpbuilder = new AlertDialog.Builder(getApplicationContext());
+                    LayoutInflater confirmotpinflater;
+                    confirmotpinflater = getLayoutInflater();
+                    View confirmotpview = confirmotpinflater.inflate(R.layout.confirm_otp_dialog, null);
+                    confirmotpbuilder.setView(confirmotpview);
+                    confirmotpbuilder.setTitle("Please wait for Confirmation !");
+                    confirmotpbuilder.setCancelable(false);
+                    final AlertDialog confirmotpdialog = confirmotpbuilder.create();
+                    confirmotpdialog.show();
+                    final EditText confirmotpcode = confirmotpdialog.findViewById(R.id.confirmotp_code);
+                    Button btnconfirm = confirmotpdialog.findViewById(R.id.btn_confirm);
+                    receiver = new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            if (intent.getAction().equalsIgnoreCase("otp")) {
+                                final String message = intent.getStringExtra("message");
+                                confirmotpcode.setText(message);
+                                //Do whatever you want with the code here
+                            }
+                        }
+                    };
+                    btnconfirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String otp = confirmotpcode.getText().toString().trim();
+                             new VerifyOTP(getApplicationContext(), mobile_no, otp).execute();
+                            confirmotpdialog.dismiss();
+                           // new VerifyOTP(LoginActivity.this, mobile_no, "1234").execute();
+
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(LoginActivity.this, jonj.getString("message").trim(), Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 
     public class VerifyOTP extends AsyncTask<String, Integer, String> {
         private Context context;
@@ -825,6 +934,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         // For Internet checking
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("otp"));
         Starautoassist_Application.registerReceiver(LoginActivity.this);
     }
 
@@ -832,6 +942,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onPause() {
         super.onPause();
         // For Internet disconnect checking
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
         Starautoassist_Application.unregisterReceiver(LoginActivity.this);
     }
 

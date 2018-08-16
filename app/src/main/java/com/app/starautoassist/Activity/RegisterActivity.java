@@ -1,11 +1,14 @@
 package com.app.starautoassist.Activity;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,6 +54,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     String mobile_no="";
     private SpotsDialog progressDialog;
     EditText etotpphone,confirmotpcode;
+    BroadcastReceiver receiver;
+    AlertDialog confirmotpdialog;
     Button btnotp,btnconfirm;
     HashMap<String,String> socialMap;
     LinearLayout otpLay;
@@ -63,7 +68,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_register);
 
         etemail = findViewById(R.id.reg_et_email);
@@ -97,6 +101,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
         // For Internet checking
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("otp"));
         Starautoassist_Application.registerReceiver(RegisterActivity.this);
     }
 
@@ -104,6 +109,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onPause() {
         super.onPause();
         // For Internet disconnect checking
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
         Starautoassist_Application.unregisterReceiver(RegisterActivity.this);
     }
 
@@ -139,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_otp:
                 if(!etotpphone.getText().toString().equals("")&&etotpphone.getText().toString().length()>6) {
                     mobile_no = etotpphone.getText().toString().trim();
-                    // new GetOTP(getApplicationContext(), mobile_no).execute();
+                    new GetOTP(getApplicationContext(), mobile_no).execute();
                     //Toast.makeText(getApplicationContext(),"Otp sent to your mobile successfully",Toast.LENGTH_SHORT).show();
                     try {
                         etotpphone.setVisibility(View.GONE);
@@ -154,10 +160,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btn_confirm:
                 String otp = confirmotpcode.getText().toString().trim();
-                //   new VerifyOTP(getApplicationContext(), GetSet.getMobileno(), otp).execute();
-                new VerifyOTP(RegisterActivity.this, mobile_no, "1234").execute();
+                new VerifyOTP(getApplicationContext(), mobile_no, otp).execute();
+               // new VerifyOTP(RegisterActivity.this, mobile_no, "1234").execute();
                 break;
-
         }
     }
 
@@ -177,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progress = new ProgressDialog(context);
+            progress = new ProgressDialog(RegisterActivity.this);
             progress.setMessage("Please wait ....");
             progress.setTitle("Loading");
             progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -222,28 +227,36 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             try {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
+                        "success")) {
                     mobile_no=mobileno;
                     //Toast.makeText(getApplicationContext(),"Otp sent to your mobile successfully",Toast.LENGTH_SHORT).show();
-                    AlertDialog.Builder confirmotpbuilder = new AlertDialog.Builder(getApplicationContext());
+                    /*AlertDialog.Builder confirmotpbuilder = new AlertDialog.Builder(getApplicationContext());
                     LayoutInflater confirmotpinflater;
                     confirmotpinflater = getLayoutInflater();
                     View confirmotpview = confirmotpinflater.inflate(R.layout.confirm_otp_dialog, null);
                     confirmotpbuilder.setView(confirmotpview);
                     confirmotpbuilder.setTitle("Please wait for Confirmation !");
                     confirmotpbuilder.setCancelable(false);
-                    final AlertDialog confirmotpdialog = confirmotpbuilder.create();
+                    confirmotpdialog = confirmotpbuilder.create();
                     confirmotpdialog.show();
                     final EditText confirmotpcode = confirmotpdialog.findViewById(R.id.confirmotp_code);
-                    Button btnconfirm = confirmotpdialog.findViewById(R.id.btn_confirm);
-
+                    Button btnconfirm = confirmotpdialog.findViewById(R.id.btn_confirm);*/
+                    receiver = new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            if (intent.getAction().equalsIgnoreCase("otp")) {
+                                final String message = intent.getStringExtra("message");
+                                confirmotpcode.setText(message);
+                                //Do whatever you want with the code here
+                            }
+                        }
+                    };
                     btnconfirm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             String otp = confirmotpcode.getText().toString().trim();
-                        //   new VerifyOTP(getApplicationContext(), GetSet.getMobileno(), otp).execute();
-                            confirmotpdialog.dismiss();
-                           new VerifyOTP(RegisterActivity.this, mobile_no, "1234").execute();
+                          new VerifyOTP(getApplicationContext(), mobile_no, otp).execute();
+                          // new VerifyOTP(RegisterActivity.this, mobile_no, "1234").execute();
 
                         }
                     });

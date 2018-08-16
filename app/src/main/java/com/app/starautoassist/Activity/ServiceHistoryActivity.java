@@ -10,7 +10,7 @@ public class ServiceHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Service History");
+        getSupportActionBar().setTitle("Star Auto Assist");
         setContentView(R.layout.activity_service_history);
     }
 }

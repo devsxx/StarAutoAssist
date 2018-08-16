@@ -4,21 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash"
+    android:background="@color/bg"
     tools:context=".Activity.TyreActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:id="@+id/tyreparent">
     <LinearLayout
-        android:gravity="center"
-        android:layout_marginTop="15dp"
         android:id="@+id/image_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="160dp"
+        android:elevation="4dp"
+        android:translationZ="2dp"
+        android:background="@color/white"
+        android:gravity="center">
 
         <ImageView
-            android:src="@drawable/logo"
-            android:layout_width="150dp"
-            android:layout_height="150dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/flat" />
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="FLAT TYRE"
+        android:elevation="4dp"
+        android:translationZ="2dp"
+        android:id="@+id/title"
+        android:layout_marginTop="60dp"
+        android:textSize="21sp"
+        android:textColor="@color/white" />
+
+
     <!--<LinearLayout
         android:layout_below="@+id/image_layout"
         android:id="@+id/fare_layout"
@@ -60,26 +81,84 @@
         android:orientation="vertical"
         android:gravity="center"
         android:id="@+id/service_layout"
-        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="Service Charge"
-            android:gravity="center"
+            android:text="Our Service"
+            android:textStyle="bold"
+            android:gravity="left"
             android:padding="10dp"
             android:textSize="16sp"
             android:background="@drawable/border_empty_edittext"
             android:layout_width="match_parent"
             android:layout_height="40dp" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:translationZ="2dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_below="@+id/title"
+            android:lineSpacingExtra="1.5dp"
+            android:padding="10dp"
+            android:id="@+id/tyredescription"
+            android:textAlignment="gravity"
+            android:textSize="11sp"
+            android:textColor="@color/black"
+            android:paddingLeft="5dp"/>
+        </android.support.v7.widget.CardView>
 
         <TextView
-            android:id="@+id/jumpstart_tv_charge"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:text="How To Engage Us"
+            android:gravity="left"
             android:padding="10dp"
-            android:textSize="20sp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="@drawable/border_empty_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15sp"
+            android:elevation="4dp"
+            android:translationZ="2dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:id="@+id/tyredescription1"
+            android:translationZ="2dp"
+            android:textSize="11sp"
+            android:lineSpacingExtra="1.5dp"
+            android:padding="5dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/black" />
+        </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="30dp"
+            android:layout_gravity="left"
+            android:textSize="17sp"
+            android:text="@string/based_fare"
+            android:textColor="@color/black"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/jumpstart_tv_charge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingRight="30dp"
+            android:textSize="17sp"
             android:text="price"
-            android:textAlignment="center"
             android:textColor="@color/black"
             android:visibility="visible" />
         <TextView
@@ -95,14 +174,45 @@
     </LinearLayout>
     <Button
         android:layout_marginTop="30dp"
-        android:text="Send Request"
-        android:textColor="#FFFFFF"
+        android:text="@string/pay_send"
+        android:elevation="4dp"
+        android:translationZ="2dp"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:id="@+id/jumpstart_btn_send"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/round_button"
+        android:background="@drawable/roundcorner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/resultlaytyre">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/payment_success"
+            android:id="@+id/resultpage"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/resulttextvalue"
+            android:layout_above="@+id/okbtn"
+            android:layout_marginBottom="100dp"
+            android:padding="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/white"
+            android:text="SEND REQUEST"
+            android:id="@+id/okbtn"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp"/>
 
-
+    </RelativeLayout>
 </RelativeLayout>

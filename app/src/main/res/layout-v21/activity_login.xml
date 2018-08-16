@@ -93,8 +93,6 @@
                 app:met_primaryColor="?colorAccent"
                 android:background="@drawable/border_edittext"
                 android:id="@+id/log_et_pass"
-                android:elevation="4dp"
-                android:translationZ="2dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="0.3"
                 android:hint="@string/password"

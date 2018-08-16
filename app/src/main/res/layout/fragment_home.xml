@@ -1,16 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/splash"
+    android:background="@color/bg"
     tools:context=".Fragment.HomeFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <com.app.starautoassist.Helper.AutoScrollViewPager
+        android:id="@+id/carouselView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+    <me.relex.circleindicator.CircleIndicator
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/indicator"
+        app:ci_drawable="@drawable/white_radius"
+        app:ci_drawable_unselected="@color/black"
+        android:layout_below="@id/carouselView"
+        android:padding="10dp">
 
+    </me.relex.circleindicator.CircleIndicator>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/title"
+    android:text="Services"
+    android:textSize="22sp"
+    android:layout_below="@id/indicator"
+    android:padding="5dp"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_home"
+        android:layout_below="@id/title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
-
-</FrameLayout>
+    </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

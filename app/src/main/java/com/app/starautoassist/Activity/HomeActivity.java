@@ -77,7 +77,6 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -301,41 +300,8 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_changepasssword) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            LayoutInflater layoutInflater = this.getLayoutInflater();
-            View view = layoutInflater.inflate(R.layout.change_password_dialog, null);
-
-            builder.setView(view);
-            builder.setTitle("Reset Your Password :");
-            builder.setCancelable(true);
-
-            dialog = builder.create();
-            dialog.show();
-
-            final EditText etoldpass = dialog.findViewById(R.id.et_change_oldpass);
-            final EditText etnewpass = dialog.findViewById(R.id.et_change_newpass);
-            final EditText etconfirmpass = dialog.findViewById(R.id.et_change_confirmpass);
-            Button btnchangepass = dialog.findViewById(R.id.btn_changepass);
-
-            btnchangepass.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String oldpass = etoldpass.getText().toString();
-                    String newpass = etnewpass.getText().toString();
-                    String confirmpass = etconfirmpass.getText().toString();
-
-                    if (newpass.equals(confirmpass)){
-                        //proceed to further code
-                        new Change_Password(HomeActivity.this,GetSet.getMobileno(),oldpass,newpass).execute();
-
-
-                    }else {
-
-                        Toast.makeText(HomeActivity.this, "Password do not Match!", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
+            Intent intent=new Intent(HomeActivity.this,Settings.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
             Intent shareintent = new Intent(Intent.ACTION_SEND);
@@ -414,72 +380,7 @@ public class HomeActivity extends AppCompatActivity
             dialog.show();
         }
     }
-    public class Change_Password extends AsyncTask<String, Integer, String> {
-        private Context context;
-        private String mobileno, oldpass,newpass;
-        private String url = Constants.BaseURL + Constants.changepassword;
 
-        public Change_Password(Context ctx, String mobileno, String oldpass,String newpass) {
-            context = ctx;
-            this.mobileno = mobileno;
-            this.oldpass = oldpass;
-            this.newpass = newpass;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Nullable
-        @Override
-        protected String doInBackground(String... params) {
-            String jsonData = null;
-            Response response = null;
-            OkHttpClient client = new OkHttpClient();
-            RequestBody body = new FormBody.Builder()
-                    .add(Constants.mobileno, mobileno)
-                    .add("oldpassword", oldpass)
-                    .add("newpassword", newpass)
-                    .build();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-            Call call = client.newCall(request);
-
-            try {
-                response = call.execute();
-
-                if (response.isSuccessful()) {
-                    jsonData = response.body().string();
-                } else {
-                    jsonData = null;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return jsonData;
-        }
-
-        @Override
-        protected void onPostExecute(String jsonData) {
-            super.onPostExecute(jsonData);
-            Log.v("result", "" + jsonData);
-            JSONObject jonj = null;
-            try {
-                jonj = new JSONObject(jsonData);
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "success")) {
-                    Toast.makeText(getApplicationContext(),"Password changed successfully",Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }else Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
 
 

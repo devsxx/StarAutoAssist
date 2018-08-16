@@ -106,5 +106,15 @@
     <string name="select_model">Select Model</string>
     <string name="send_response">Send Response</string>
     <string name="description">* If any extra charges comes will need to pay at the end of service done. Like toll,spares,night service and etc</string>
+    <string name="flattyredes">We change your tyre with the spare or have the tyre repaired, in case you have a flat tyre.<br /></string>
+    <string name="tyre_ser_des"><![CDATA[Thank you for using Star Auto Assist.<br/><p>Our service charge starts from RM60. Additional charges may apply for other services (e.g tyre replacement) ONLY IF agreed with the service provider.</p>]]></string>
+
+    <string name="fuel_des"><![CDATA[Thank you for using Star Auto Assist.<br/><p>Our service charge starts from RM60. Additional charges will be incurred according to the type of fuel you choose.</p>]]></string>
+    <string name="fuel_des1">Please select the “Fuel Type” below and click “SEND REQUEST”</string>
+
+    <string name="jumpstartdes"><![CDATA[Thank you for using Star Auto Assist.<br/><p>Our service charge starts from RM60. Additional charges may apply for other services (e.g battery replacement) ONLY IF agreed with the service provider.</p>]]></string>
+    <string name="jumpstartdes1">Please click “SEND REQUEST” below</string>
+    <string name="based_fare">Based Fare</string>
+    <string name="pay_send"><![CDATA[PAY & SEND REQUEST]]></string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.app.starautoassist.Activity;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,6 +50,9 @@ import android.widget.Toast;
 import com.app.starautoassist.Adapter.PlacesAutoCompleteAdapter;
 import com.app.starautoassist.Helper.GPSTracker;
 import com.app.starautoassist.Helper.GetSet;
+import com.app.starautoassist.Helper.ResultDelegate;
+import com.app.starautoassist.Helper.ResultPaymentMessage;
+import com.app.starautoassist.Helper.ResultPaymentObject;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
@@ -58,6 +63,9 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.ipay.IPayIH;
+import com.ipay.IPayIHPayment;
+import com.ipay.IPayIHResultDelegate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +73,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -72,6 +82,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import okhttp3.Call;
@@ -81,13 +92,19 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.app.starautoassist.Others.Constants.resultExtra;
+import static com.app.starautoassist.Others.Constants.resultInfo;
+import static com.app.starautoassist.Others.Constants.resultTitle;
+
 public class Towing_Activity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, TextWatcher {
     MapView mapView;
     private GoogleMap map;
+    public  final String DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public  Random RANDOM = new Random();
     String TAG="Towing_Activity";
     GoogleApiClient mGoogleApiClient;
     LocationManager locationManager;
-    TextView setFrom, setTo;
+    TextView setFrom, setTo,okbutton;
     ImageView myLocation;
     int screenHeight, screenWidth;
     public static boolean locationfound = false;
@@ -98,9 +115,13 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     AutoCompleteTextView from, to;
     GPSTracker gps;
     TextView submitbtn;
+    TextView resultval;
+    ImageView resulimage;
     String amount="",brand="",model="",flatbed="";
     RelativeLayout fromLayout, toLayout, next;
+    RelativeLayout resultLay,parentLay;
     private LatLng center;
+    String ref;
     SupportMapFragment mapFragment;
     private Geocoder geocoder;
     public String tow_type="";
@@ -113,7 +134,6 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Towing Service");
         setContentView(R.layout.activity_location);
         fromLayout = findViewById(R.id.fromlay);
         toLayout = findViewById(R.id.droplay);
@@ -121,6 +141,11 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         myLocation = findViewById(R.id.my_location);
         from = findViewById(R.id.fromaddress);
         to = findViewById(R.id.toaddress);
+        parentLay=findViewById(R.id.towingparent);
+        resultLay=findViewById(R.id.resultlaytowing);
+        resultval=findViewById(R.id.resulttextvalue);
+        resulimage=findViewById(R.id.resultpage);
+        okbutton=findViewById(R.id.okbtn);
         submitbtn = findViewById(R.id.apply);
         setFrom = findViewById(R.id.fromset);
         setTo = findViewById(R.id.toset);
@@ -423,7 +448,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         dialog.setContentView(R.layout.bill_page_dialog);
                         TextView brandname = (TextView) dialog.findViewById(R.id.brandval);
                         TextView modelname = (TextView) dialog.findViewById(R.id.modelval);
-                        TextView sname = (TextView) dialog.findViewById(R.id.servicename);
+                        final TextView sname = (TextView) dialog.findViewById(R.id.servicename);
                         TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
                         TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
                         TextView des = (TextView) dialog.findViewById(R.id.towdes);
@@ -442,7 +467,37 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                                 Log.d(TAG, "T.Lat&Lon: "+tlat+" "+tlon);
                                 Log.d(TAG, "From Towing_Activity: "+from.getText().toString().trim());
                                 Log.d(TAG, "To Towing_Activity: "+to.getText().toString().trim());
-                                new Towing_Request_Async(Towing_Activity.this,tow_type).execute();
+                                //Payment IPAY88
+                                try {
+                                    IPayIHPayment payment = new IPayIHPayment();
+                                    payment.setMerchantCode(Constants.MerchantCode);
+                                    payment.setMerchantKey(Constants.MerchantKey);
+                                    payment.setPaymentId("");
+                                    payment.setCurrency(Constants.Currency);
+                                    ref=randomString(10);
+                                    payment.setRefNo(ref);
+                                    //payment.setAmount(amount);
+                                    payment.setAmount("1.0");
+
+                                    payment.setProdDesc("Towing Service fee");
+                                    payment.setUserName(GetSet.getUserName());
+                                    payment.setUserEmail(GetSet.getEmail());
+                                    payment.setUserContact(GetSet.getMobileno());
+                                    payment.setRemark("");
+                                    payment.setLang(Constants.Lang);
+                                    payment.setCountry(Constants.Country);
+                                    payment.setBackendPostURL(Constants.backendPostURL);
+                                    payment.setResponseURL(Constants.responsetURL);
+
+
+                                    Intent selectionIntent = IPayIH.getInstance().checkout(payment
+                                            , Towing_Activity.this,new ResultDelegate(), IPayIH.PAY_METHOD_CREDIT_CARD);
+                                    startActivityForResult(selectionIntent, 1);
+                                    dialog.dismiss();
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                         });
                         cancel.setOnClickListener(new View.OnClickListener() {
@@ -466,6 +521,67 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
+
+
+
+
+        public  String randomString(int len) {
+            StringBuilder sb = new StringBuilder(len);
+
+            for (int i = 0; i < len; i++) {
+                sb.append(DATA.charAt(RANDOM.nextInt(DATA.length())));
+            }
+
+            return sb.toString();
+        }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode != 1 || data == null) {
+            return;
+
+        }
+
+        ResultPaymentMessage resultPaymentMessage = new ResultPaymentMessage();
+
+        if (resultTitle != null) {
+            if(resultTitle.equalsIgnoreCase("SUCCESS"))
+            {
+                new Payment_Async(Towing_Activity.this).execute();
+                parentLay.setVisibility(View.GONE);
+                resultLay.setVisibility(View.VISIBLE);
+                resulimage.setImageDrawable(getResources().getDrawable(R.drawable.payment_success));
+                resultval.setText("Your Transaction Id is: "+GetSet.getTransid());
+                okbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new Towing_Request_Async(Towing_Activity.this,tow_type).execute();
+                    }
+                });
+            }else {
+                parentLay.setVisibility(View.GONE);
+                resultLay.setVisibility(View.VISIBLE);
+                resulimage.setImageDrawable(getResources().getDrawable(R.drawable.payment_failed));
+                resultval.setTextColor(getResources().getColor(R.color.white));
+                resultval.setText("Failed due to: "+GetSet.getErrDes());
+                okbutton.setText("OK");
+                okbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(Towing_Activity.this,HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
+            resultTitle = null;
+        }
+
+    }
+
+
 
     @Override
     protected void onResume() {
@@ -572,6 +688,10 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
             }
         });
     }
+
+
+
+
 
 
     /** for get the address from lat, lon **/
@@ -780,6 +900,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                     .add("model", model)
                     .add("pickup_location", flat+","+flon)
                     .add("drop_location", tlat+","+tlon)
+                    .add("transid", GetSet.getTransid())
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -812,6 +933,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
                    // TODO: request code here
+                    GetSet.setTransid(null);
                     Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
                     finish();
                     Intent i = new Intent(Towing_Activity.this, SentRequestActivity.class);
@@ -829,5 +951,83 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
 
         }
     }
+    public class Payment_Async extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String url = Constants.BaseURL + Constants.payment_req;
+        ProgressDialog progress;
+        @Nullable
+        String user_id;
+
+        public Payment_Async(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            GetSet.setMobileno(Constants.pref.getString("mobileno",""));
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.client_id, GetSet.getMobileno())
+                    .add(Constants.client_name, Constants.pref.getString("firstname",""))
+                    .add(Constants.amount, amount)
+                    .add(Constants.refno, ref)
+                    .add(Constants.des, "Towing service fee")
+                    .add(Constants.email, Constants.pref.getString("email",""))
+                    .add(Constants.transid, GetSet.getTransid())
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            progress.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    // TODO: request code here
+                    Toast.makeText(context,"Transaction saved successfully",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
+                    finish();
+                    Intent i = new Intent(Towing_Activity.this, HomeActivity.class);
+                    startActivity(i);
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 
 }

@@ -11,6 +11,17 @@ public class Constants {
     /** FaceBook App id **/
     public static final String App_ID = "203876700441500";
 
+    //PAYMENT
+    public static final String MerchantKey = "ievKqscLGr";
+    public static final String MerchantCode = "M03214";
+    public static final String Country = "MY";
+    public static final String Currency = "MYR";
+    public static final String Lang = "ISO-8859-1";
+    public static final String backendPostURL = "www.starautoassist.com/payment1.php?";
+    public static final String responsetURL = "www.starautoassist.com/response.php?";
+    public static String resultTitle;
+    public static String resultInfo;
+    public static String resultExtra;
     //Keywords
     public static String mobileno="mobileno";
     public static String password="password";
@@ -24,6 +35,7 @@ public class Constants {
     public static String status="status";
     public static String timestamp="timestamp";
     public static String email="email";
+    public static String transid="transid";
     public static String id="id";
     public static String cno="cno";
     public static String model="model";
@@ -34,6 +46,7 @@ public class Constants {
 
     public static String serviceid="serviceid";
     public static String servicename="servicename";
+    public static String image="image";
     public static String service_name="service_name";
     public static String serviceprovider_id="serviceprovider_id";
     public static String companyname="companyname";
@@ -43,6 +56,10 @@ public class Constants {
     public static String service_description="service_description";
     public static String overall_rating="overall_rating";
     public static String client_id="client_id";
+    public static String client_name="client_name";
+    public static String amount="amount";
+    public static String refno="refno";
+    public static String des="des";
     public static String pickup_location="pickup_location";
     public static String drop_location="drop_location";
     public static String lat="lat";
@@ -96,6 +113,7 @@ public class Constants {
     public static String getOTP="getotp.php?";
     public static String getSocialOTP="socialotp.php?";
     public static String verifyOTP="verifyotp.php?";
+    public static String socialverifyOTP="socialverifyotp.php?";
     public static String profile="profile.php?";
 
     public static String socialreg="socialreg.php?";
@@ -105,6 +123,7 @@ public class Constants {
 
     public static String getpushid="get_token.php?";
     public static String getservices="getservices.php?";
+    public static String getbanners="get_banners.php?";
     public static String get_req_status="get_req_status.php?";
     public static String get_accepted_list="get_accepted_request.php?";
     public static String get_fuel_request="getfueldetails.php?";
@@ -113,6 +132,7 @@ public class Constants {
     public static String send_req_flattyre="send_request_tyre.php?";
     public static String send_req_jumpstart="send_request_jumpstart.php?";
     public static String send_req_fuel="send_request_fuel.php?";
+    public static String payment_req="transaction_register.php?";
     public static String uploadprofileimage="uploadprofileimage.php?";
     public static String changepassword="changepassword.php?";
     public static String forgotpassword="forgotpassword.php?";

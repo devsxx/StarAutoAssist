@@ -44,11 +44,9 @@ public class SentRequestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Sent Request");
+        getSupportActionBar().setTitle("Star Auto Assist");
         setContentView(R.layout.activity_sent_request);
-
         recyclerView= findViewById(R.id.req_recyclerview);
-
         new Get_Sent_Services_Async(SentRequestActivity.this).execute();
     }
 

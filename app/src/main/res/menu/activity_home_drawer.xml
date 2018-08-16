@@ -38,12 +38,12 @@
             android:title="Payment History" />
     </group>
 
-    <item android:title="Setting">
-        <menu>
+
+
             <item
                 android:id="@+id/nav_changepasssword"
                 android:icon="@drawable/ic_loop_orange_700_18dp"
-                android:title="Change Password" />
+                android:title="Settings" />
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_share_orange_700_18dp"
@@ -54,6 +54,5 @@
                 android:icon="@drawable/ic_info_orange_700_18dp"
                 android:title="Logout" />
 
-        </menu>
-    </item>
+
 </menu>

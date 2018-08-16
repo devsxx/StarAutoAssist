@@ -4,19 +4,139 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash"
+    android:background="@color/bg"
     android:orientation="vertical"
     tools:context=".Activity.Fuel_Activity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:id="@+id/fuelparent">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <android.support.v7.widget.CardView
+        android:id="@+id/image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="160dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/outfuel" />
+    </android.support.v7.widget.CardView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="OUT OF FUEL SERVICE"
+        android:elevation="4dp"
+        android:translationZ="2dp"
+        android:id="@+id/title"
+        android:layout_marginTop="60dp"
+        android:textSize="21sp"
+        android:textColor="@color/black" />
 
 
+    <LinearLayout
+        android:layout_below="@+id/image_layout"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/service_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:textStyle="bold"
+        android:text="Our Service"
+        android:gravity="left"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:background="@drawable/border_empty_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:translationZ="2dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fuel_description"
+            android:background="@color/white"
+            android:layout_below="@+id/title"
+            android:lineSpacingExtra="1.5dp"
+            android:padding="10dp"
+            android:textAlignment="gravity"
+            android:textSize="11sp"
+            android:textColor="@color/black"
+
+            android:paddingLeft="5dp"/>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:text="How To Engage Us"
+        android:gravity="left"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:background="@drawable/border_empty_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15sp"
+        android:elevation="4dp"
+        android:translationZ="2dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:id="@+id/fuel_description1"
+            android:translationZ="2dp"
+            android:padding="5dp"
+            android:textSize="11sp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:lineSpacingExtra="1.5dp"
+            android:textColor="@color/black" />
+    </android.support.v7.widget.CardView>
+    </LinearLayout>
+    <TextView
+        android:text="Select Fuel details"
+        android:gravity="left"
+        android:id="@+id/fueldettitle"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/service_layout"
+        android:textStyle="bold"
+        android:background="@drawable/border_empty_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/fueldettitle">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
             <LinearLayout
-                android:layout_marginTop="20dp"
-                android:id="@+id/select_layout"
                 android:weightSum="2"
                 android:padding="5dp"
+                android:id="@+id/select_layout"
+                android:orientation="horizontal"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -38,12 +158,13 @@
                 </Spinner>
             </LinearLayout>
 
-    <LinearLayout
 
+    <LinearLayout
         android:layout_marginTop="15dp"
         android:id="@+id/spin_layout"
         android:weightSum="5"
         android:padding="5dp"
+        android:layout_marginBottom="60dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@+id/select_layout"
@@ -77,6 +198,8 @@
             android:layout_height="match_parent">
         </Spinner>
     </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
    <!-- <LinearLayout
         android:layout_marginTop="15dp"
         android:layout_below="@+id/spin_layout"
@@ -106,16 +229,49 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>-->
-
+    </RelativeLayout>
+</ScrollView>
     <Button
         android:layout_marginTop="30dp"
         android:text="Send Request"
-        android:textColor="#FFFFFF"
+        android:elevation="4dp"
+        android:translationZ="2dp"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:id="@+id/fuel_btn_proceed"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/round_button"
+        android:background="@drawable/roundcorner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/resultlayfuel">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/payment_success"
+            android:id="@+id/resultpage"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/resulttextvalue"
+            android:layout_above="@+id/okbtn"
+            android:layout_marginBottom="100dp"
+            android:padding="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/white"
+            android:text="SEND REQUEST"
+            android:id="@+id/okbtn"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp"/>
 
+    </RelativeLayout>
 </RelativeLayout>

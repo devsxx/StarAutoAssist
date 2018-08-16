@@ -4,7 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AppCusTheme"
     tools:context=".Activity.Towing_Activity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:id="@+id/towingparent">
 
     <fragment
         android:id="@+id/map"
@@ -194,17 +200,50 @@
             <TextView
                 android:layout_weight="1"
                 android:id="@+id/apply"
+                android:text="@string/pay_send"
+                android:elevation="4dp"
+                android:translationZ="2dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/roundcorner"
                 android:gravity="center"
                 android:padding="15sp"
                 android:singleLine="true"
-                android:text="SEND REQUEST"
                 android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/white"
                 />
         </LinearLayout>
     </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/resultlaytowing">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/payment_success"
+            android:id="@+id/resultpage"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/resulttextvalue"
+            android:layout_above="@+id/okbtn"
+            android:layout_marginBottom="100dp"
+            android:padding="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/white"
+            android:text="SEND REQUEST"
+            android:id="@+id/okbtn"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp"/>
 
+    </RelativeLayout>
 </RelativeLayout>

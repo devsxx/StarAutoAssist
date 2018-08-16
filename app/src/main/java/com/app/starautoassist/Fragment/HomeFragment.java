@@ -18,24 +18,34 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.app.starautoassist.Activity.AcceptedRequestActivity;
 import com.app.starautoassist.Activity.HomeActivity;
+import com.app.starautoassist.Adapter.BannerAdapter;
 import com.app.starautoassist.Adapter.ServiceAdapter;
 import com.app.starautoassist.Data.Service;
+import com.app.starautoassist.Helper.AutoScrollViewPager;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
+import com.bumptech.glide.Glide;
+
 
 
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -43,10 +53,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import me.relex.circleindicator.CircleIndicator;
 import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -63,8 +75,10 @@ public class HomeFragment extends Fragment {
     private ServiceAdapter serviceAdapter;
     public static ArrayList<HashMap<String, String>> Services_list = new ArrayList<HashMap<String, String>>();
     public static ArrayList<HashMap<String, String>> mycarslist = new ArrayList<HashMap<String, String>>();
+    public static ArrayList<String> banners=new ArrayList<String>();
     LocationManager locationManager;
-
+    AutoScrollViewPager viewPager;
+    CircleIndicator circleIndicator;
     public HomeFragment() {
 
     }
@@ -74,6 +88,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        viewPager= (AutoScrollViewPager) view.findViewById(R.id.carouselView);
+        circleIndicator=(CircleIndicator)view.findViewById(R.id.indicator);
+        new Get_Banners(getActivity()).execute();
         new Get_Services_Async(getActivity()).execute();
         new MyCarList(getActivity()).execute();
         recyclerView = view.findViewById(R.id.rv_home);
@@ -200,8 +217,10 @@ public class HomeFragment extends Fragment {
                             Services_list.add(map);
                         }
                         serviceAdapter = new ServiceAdapter(getActivity(), Services_list);
-                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+                       LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                        recyclerView.setLayoutManager(layoutManager);
+                       /* recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));*/
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                         recyclerView.setAdapter(serviceAdapter);
                     }
@@ -306,4 +325,90 @@ public class HomeFragment extends Fragment {
         super.onLowMemory();
         Starautoassist_Application.freeMemory();
     }
+
+    public class Get_Banners extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String url = Constants.BaseURL + Constants.getbanners;
+        ProgressDialog progress;
+        @Nullable
+        String user_id;
+        HashMap<String, String> map;
+
+        public Get_Banners(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            viewPager.setVisibility(View.GONE);
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                if (jsonData != null) {
+                    viewPager.setVisibility(View.VISIBLE);
+                    jonj = new JSONObject(jsonData);
+                    if (jonj.getString("status").equalsIgnoreCase(
+                            "success")) {
+                        String data = jonj.getString("data");
+                        JSONArray array = new JSONArray(data);
+                        banners.clear();
+                        for (int i = 0; i < array.length(); i++) {
+
+                            JSONObject object = array.getJSONObject(i);
+                            String banner = object.getString(Constants.image);
+                            banners.add(banner);
+                        }
+                        viewPager.startAutoScroll();
+                        viewPager.setInterval(3000);
+                        viewPager.setCycle(true);
+                        viewPager.setStopScrollWhenTouch(true);
+
+
+                        PagerAdapter adapter = new BannerAdapter(getActivity(),banners);
+                        viewPager.setAdapter(adapter);
+                        circleIndicator.setViewPager(viewPager);
+                        circleIndicator.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.zoom_out));
+
+                    }
+                }else
+                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 }

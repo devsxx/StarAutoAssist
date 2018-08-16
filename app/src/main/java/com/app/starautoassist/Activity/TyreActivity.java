@@ -17,30 +17,39 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.starautoassist.Helper.GPSTracker;
 import com.app.starautoassist.Helper.GetSet;
+import com.app.starautoassist.Helper.ResultDelegate;
+import com.app.starautoassist.Helper.ResultPaymentMessage;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
+import com.ipay.IPayIH;
+import com.ipay.IPayIHPayment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -49,14 +58,22 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.app.starautoassist.Others.Constants.resultTitle;
+
 public class TyreActivity extends AppCompatActivity {
 
-    private TextView tvfare, tvcharge;
+    private TextView tyredes,tyredes1, tvcharge;
     private Button btnsend;
     GPSTracker gpsTracker;
+    RelativeLayout resultLay,parentLay;
+    TextView resultval,okbutton;
+    ImageView resulimage;
     Double lat=0.0,lon=0.0;
+    String ref;
     String amount="",model="",brand="";
     String latlon;
+    public  final String DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public Random RANDOM = new Random();
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     @Override
     public void onLowMemory() {
@@ -66,11 +83,19 @@ public class TyreActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Tyre Service");
         setContentView(R.layout.activity_tyre);
 
-        tvcharge = findViewById(R.id.jumpstart_tv_charge);
+        tvcharge= findViewById(R.id.jumpstart_tv_charge);
         btnsend = findViewById(R.id.jumpstart_btn_send);
+        tyredes = findViewById(R.id.tyredescription);
+        tyredes1 = findViewById(R.id.tyredescription1);
+        parentLay=findViewById(R.id.tyreparent);
+        resultLay=findViewById(R.id.resultlaytyre);
+        resultval=findViewById(R.id.resulttextvalue);
+        resulimage=findViewById(R.id.resultpage);
+        okbutton=findViewById(R.id.okbtn);
+        tyredes.setText(Html.fromHtml(getString(R.string.tyre_ser_des)));
+        tyredes1.setText(Html.fromHtml(getString(R.string.jumpstartdes1)));
         setlocation();
 
         if(getIntent().hasExtra("service_chrg")) {
@@ -109,7 +134,36 @@ public class TyreActivity extends AppCompatActivity {
                     confirmbtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            new Flattyre_Request_Async(TyreActivity.this).execute();
+                            try {
+                                IPayIHPayment payment = new IPayIHPayment();
+                                payment.setMerchantCode(Constants.MerchantCode);
+                                payment.setMerchantKey(Constants.MerchantKey);
+                                payment.setPaymentId("");
+                                payment.setCurrency(Constants.Currency);
+                                ref=randomString(10);
+                                payment.setRefNo(ref);
+                                //payment.setAmount(amount);
+                                payment.setAmount("1.0");
+
+                                payment.setProdDesc("Towing Service fee");
+                                payment.setUserName(GetSet.getUserName());
+                                payment.setUserEmail(GetSet.getEmail());
+                                payment.setUserContact(GetSet.getMobileno());
+                                payment.setRemark("");
+                                payment.setLang(Constants.Lang);
+                                payment.setCountry(Constants.Country);
+                                payment.setBackendPostURL(Constants.backendPostURL);
+                                payment.setResponseURL(Constants.responsetURL);
+
+
+                                Intent selectionIntent = IPayIH.getInstance().checkout(payment
+                                        , TyreActivity.this,new ResultDelegate(), IPayIH.PAY_METHOD_CREDIT_CARD);
+                                startActivityForResult(selectionIntent, 1);
+                                dialog.dismiss();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                     });
                     cancel.setOnClickListener(new View.OnClickListener() {
@@ -134,8 +188,65 @@ public class TyreActivity extends AppCompatActivity {
 
             }
         });
-        tvcharge.setText(amount);
+        tvcharge.setText("RM "+amount);
     }
+
+    public  String randomString(int len) {
+        StringBuilder sb = new StringBuilder(len);
+
+        for (int i = 0; i < len; i++) {
+            sb.append(DATA.charAt(RANDOM.nextInt(DATA.length())));
+        }
+
+        return sb.toString();
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode != 1 || data == null) {
+            return;
+
+        }
+
+        ResultPaymentMessage resultPaymentMessage = new ResultPaymentMessage();
+
+        if (resultTitle != null) {
+            if(resultTitle.equalsIgnoreCase("SUCCESS"))
+            {
+                new Payment_Async(TyreActivity.this).execute();
+                parentLay.setVisibility(View.GONE);
+                resultLay.setVisibility(View.VISIBLE);
+                resulimage.setImageDrawable(getResources().getDrawable(R.drawable.payment_success));
+                resultval.setText("Your Transaction Id is: "+GetSet.getTransid());
+                okbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new Flattyre_Request_Async(TyreActivity.this).execute();
+                    }
+                });
+            }else {
+                parentLay.setVisibility(View.GONE);
+                resultLay.setVisibility(View.VISIBLE);
+                resulimage.setImageDrawable(getResources().getDrawable(R.drawable.payment_failed));
+                resultval.setTextColor(getResources().getColor(R.color.white));
+                resultval.setText("Failed due to: "+GetSet.getErrDes());
+                okbutton.setText("OK");
+                okbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(TyreActivity.this,HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
+            resultTitle = null;
+        }
+
+    }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -186,6 +297,7 @@ public class TyreActivity extends AppCompatActivity {
                     .add("brand", brand)
                     .add("model", model)
                     .add("client_location", lat+","+lon)
+                    .add("transid", GetSet.getTransid())
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -217,6 +329,7 @@ public class TyreActivity extends AppCompatActivity {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
+                    GetSet.setTransid(null);
                     Toast.makeText(context,"Request send successfully",Toast.LENGTH_SHORT).show();
                     finish();
                     Intent i = new Intent(TyreActivity.this, SentRequestActivity.class);
@@ -325,6 +438,83 @@ public class TyreActivity extends AppCompatActivity {
             break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+    public class Payment_Async extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String url = Constants.BaseURL + Constants.payment_req;
+        ProgressDialog progress;
+        @Nullable
+        String user_id;
+
+        public Payment_Async(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Nullable
+        @Override
+        protected String doInBackground(String... params) {
+            String jsonData = null;
+            Response response = null;
+            GetSet.setMobileno(Constants.pref.getString("mobileno",""));
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add(Constants.client_id, GetSet.getMobileno())
+                    .add(Constants.client_name, Constants.pref.getString("firstname",""))
+                    .add(Constants.amount, amount)
+                    .add(Constants.refno, ref)
+                    .add(Constants.des, "Flattyre service fee")
+                    .add(Constants.email, Constants.pref.getString("email",""))
+                    .add(Constants.transid, GetSet.getTransid())
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+
+            try {
+                response = call.execute();
+
+                if (response.isSuccessful()) {
+                    jsonData = response.body().string();
+                } else {
+                    jsonData = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonData;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            progress.dismiss();
+            Log.v("result", "" + jsonData);
+            JSONObject jonj = null;
+            try {
+                jonj = new JSONObject(jsonData);
+                if (jonj.getString("status").equalsIgnoreCase(
+                        "success")) {
+                    // TODO: request code here
+                    Toast.makeText(context,"Transaction saved successfully",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Toast.makeText(context,jonj.getString("message"),Toast.LENGTH_SHORT).show();
+                    finish();
+                    Intent i = new Intent(TyreActivity.this, HomeActivity.class);
+                    startActivity(i);
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

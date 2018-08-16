@@ -75,6 +75,12 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <receiver android:name=".Helper.IncomingSms">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+
         <!-- ./Firebase Notifications -->
         <!--
      Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -125,7 +131,9 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyB9EVYM7q1cnpzqZWGHUWy0EemS-yUST3Y" />
 
-        <activity android:name=".Activity.Towing_Activity" />
+        <activity
+            android:name=".Activity.Towing_Activity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.HomeActivity"
             android:label="@string/title_activity_home"
@@ -137,13 +145,19 @@
         <activity android:name=".Activity.ServiceHistoryActivity" />
         <activity android:name=".Activity.PaymentHistoryActivity" />
         <activity android:name=".Activity.VechicleActivity" />
-        <activity android:name=".Activity.Fuel_Activity" />
+        <activity
+            android:name=".Activity.Fuel_Activity"
+            android:theme="@style/AppTheme" />
         <activity android:name=".Activity.TrackerActivity" />
-        <activity android:name=".Activity.JumpstartActivity" />
+        <activity
+            android:name=".Activity.JumpstartActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.Communication"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".Activity.TyreActivity" />
+        <activity
+            android:name=".Activity.TyreActivity"
+            android:theme="@style/AppTheme" />
         <activity android:name=".Activity.NotificationServiceActivity" />
 
         <service
@@ -152,7 +166,15 @@
             android:exported="true" />
 
         <activity android:name=".Activity.CompletedServicesActivity" />
-        <activity android:name=".Activity.Completed_Services_Payment_Activity"></activity>
+        <activity android:name=".Activity.Completed_Services_Payment_Activity" />
+        <activity android:name=".Activity.Settings" />
+        <activity android:name=".Activity.Change_Password"></activity>
+        <activity
+            android:name="com.ipay.IPayIHActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.ipay.IPayIHAcitivityR"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

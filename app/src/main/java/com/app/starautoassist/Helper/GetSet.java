@@ -199,6 +199,34 @@ public class GetSet {
         GetSet.imageUrl = imageUrl;
     }
 
+    public static String getTransid() {
+        return transid;
+    }
+
+    public static void setTransid(String transid) {
+        GetSet.transid = transid;
+    }
+
+    public static String getErrDes() {
+        return errDes;
+    }
+
+    public static void setErrDes(String errDes) {
+        GetSet.errDes = errDes;
+    }
+
+    public static String getPaystatus() {
+        return paystatus;
+    }
+
+    public static void setPaystatus(String paystatus) {
+        GetSet.paystatus = paystatus;
+    }
+
+    //Pay
+    public static String transid;
+    public static String errDes;
+    public static String paystatus;
 
 
     public static void reset() {

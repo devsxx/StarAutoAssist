@@ -6,6 +6,7 @@
     android:layout_marginTop="10dp"
     android:background="@drawable/border_dialog"
     android:gravity="center"
+    android:theme="@style/AlertDialog.AppCompat"
     android:layout_height="match_parent">
 
     <EditText

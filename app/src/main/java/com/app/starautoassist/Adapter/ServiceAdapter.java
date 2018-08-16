@@ -49,15 +49,15 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_home, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         final HashMap<String, String> itemMap=serviceList.get(position);
-         holder.title.setText(itemMap.get(Constants.servicename));
-        Glide   .with(mContext)
+        // holder.title.setText(itemMap.get(Constants.servicename));
+        Glide
+                .with(mContext)
                 .load(itemMap.get(Constants.serviceimg))
                 .into(holder.image);
 
@@ -159,14 +159,14 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView title;
+      public TextView title;
         public ImageView image;
         public LinearLayout linearLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            title = itemView.findViewById(R.id.servicetitle);
+          title = itemView.findViewById(R.id.servicetitle);
             image = itemView.findViewById(R.id.serviceimage);
             linearLayout = itemView.findViewById(R.id.lv_service);
 
