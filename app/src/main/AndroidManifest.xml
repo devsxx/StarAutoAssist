@@ -75,9 +75,10 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <receiver android:name=".Helper.IncomingSms">
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
@@ -168,13 +169,15 @@
         <activity android:name=".Activity.CompletedServicesActivity" />
         <activity android:name=".Activity.Completed_Services_Payment_Activity" />
         <activity android:name=".Activity.Settings" />
-        <activity android:name=".Activity.Change_Password"></activity>
+        <activity android:name=".Activity.Change_Password" />
         <activity
             android:name="com.ipay.IPayIHActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.ipay.IPayIHAcitivityR"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".Activity.PaymentDetailedHistoryActivity" />
+        <activity android:name=".Activity.ServiceDetailedHistoryActivity"></activity>
     </application>
 
 </manifest>

@@ -139,6 +139,8 @@ public class Constants {
     public static Boolean isLocationpermission_enabled=false;
     public static String completedservice="completed_service.php?";
     public static String receive_bill ="receive_bill.php?";
+    public static String payment_history ="payment_history.php?";
+    public static String service_history ="service_history.php?";
 
 
 }
