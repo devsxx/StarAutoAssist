@@ -4,14 +4,34 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/title"
+        android:gravity="center"
+        android:text="SERVICE DETAILS"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/prov"
+        android:textSize="15sp"
+        android:layout_below="@+id/title"
+        android:text="Provider's Details"/>
     <android.support.v7.widget.CardView
         android:id="@+id/cv_service_detail_history1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_below="@id/prov"
         android:elevation="3dp"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
@@ -23,10 +43,9 @@
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_weight="1"
-                android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:weightSum="2"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <LinearLayout
@@ -34,7 +53,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
                     android:weightSum="2"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
@@ -42,7 +61,35 @@
                     <TextView
                         android:paddingLeft="5dp"
                         android:layout_weight="1"
-                        android:text="Service Id :"
+                        android:text="Company Name"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_servicehistory_detail_companyname"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1.2"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text="Service Id"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_width="match_parent"
@@ -58,11 +105,225 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:paddingLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Provider Name"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_servicehistory_detail_providername"
+                    android:layout_marginTop="5dp"
+                    android:paddingLeft="5dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textSize="17sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="0.8"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:paddingLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Mobile no"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_servicehistory_detail_spid"
+                    android:layout_marginTop="5dp"
+                    android:paddingLeft="5dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textSize="17sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1.2"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:paddingLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Email"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_servicehistory_detail_email"
+                    android:layout_marginTop="5dp"
+                    android:paddingLeft="5dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textSize="17sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="15sp"
+        android:id="@+id/cardetails"
+        android:layout_below="@+id/cv_service_detail_history1"
+        android:text="Car Details"/>
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_car_detail_history"
+            android:layout_below="@+id/cardetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:elevation="3dp"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            card_view:cardCornerRadius="3dp">
+            <LinearLayout
+                android:weightSum="2"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:weightSum="4"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:weightSum="2"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Brand Name"
+                            android:paddingLeft="5dp"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/tv_brand"
+                            android:layout_marginTop="5dp"
+                            android:paddingLeft="5dp"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textSize="17sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:weightSum="2"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:paddingLeft="5dp"
+                            android:layout_weight="1"
+                            android:text="Brand Model"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/tv_model"
+                            android:layout_marginTop="5dp"
+                            android:paddingLeft="5dp"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textSize="17sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:weightSum="2"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:paddingLeft="5dp"
+                            android:layout_weight="1"
+                            android:text="Plate No"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/tv_plateno"
+                            android:layout_marginTop="5dp"
+                            android:paddingLeft="5dp"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textSize="17sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:id="@+id/servicedetails"
+            android:textSize="15sp"
+            android:layout_below="@+id/cv_car_detail_history"
+            android:text="Service Details"/>
     <android.support.v7.widget.CardView
         android:id="@+id/cv_payment_detail_history2"
-        android:layout_below="@+id/cv_service_detail_history1"
+        android:layout_below="@+id/servicedetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -121,6 +382,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:weightSum="2"
+                    android:id="@+id/servcietypelayout"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
@@ -155,13 +417,42 @@
                     <TextView
                         android:paddingLeft="5dp"
                         android:layout_weight="1"
-                        android:text="Service Date:"
+                        android:text="Pickup Address"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <TextView
-                        android:id="@+id/tv_servicehistory_detail_servicedate"
+                        android:id="@+id/tv_pickup"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:id="@+id/droplay"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text="Drop Address"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_drop"
                         android:layout_marginTop="5dp"
                         android:paddingLeft="5dp"
                         android:layout_weight="1"
@@ -183,13 +474,13 @@
                     <TextView
                         android:paddingLeft="5dp"
                         android:layout_weight="1"
-                        android:text="Provider Name:"
+                        android:text="Pay ID"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <TextView
-                        android:id="@+id/tv_servicehistory_detail_providername"
+                        android:id="@+id/tv_payid"
                         android:layout_marginTop="5dp"
                         android:paddingLeft="5dp"
                         android:layout_weight="1"
@@ -198,8 +489,67 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text="@string/Amount"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_amount"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text="Service Date"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_servicehistory_detail_servicedate"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
+    </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
 

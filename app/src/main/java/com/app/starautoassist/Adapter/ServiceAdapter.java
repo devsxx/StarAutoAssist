@@ -23,7 +23,6 @@ import com.app.starautoassist.Activity.ProfileActivity;
 import com.app.starautoassist.Activity.Towing_Activity;
 import com.app.starautoassist.Activity.TyreActivity;
 import com.app.starautoassist.Activity.VechicleActivity;
-import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
 import com.bumptech.glide.Glide;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.app.starautoassist.Fragment.HomeFragment.mycarslist;
-import static com.app.starautoassist.Others.Constants.isLocationpermission_enabled;
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHolder> {
 
@@ -81,7 +79,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
                             if (li != null) {
                                 view = li.inflate(R.layout.car_choice_list, null);
                             }
-                            ListView lv = (ListView) view.findViewById(R.id.dialoglist);
+                            ListView lv = view.findViewById(R.id.dialoglist);
 
                             // Change MyActivity.this and myListOfItems to your own values
                             Car_choice_adapter clad = new Car_choice_adapter(mContext, mycarslist);

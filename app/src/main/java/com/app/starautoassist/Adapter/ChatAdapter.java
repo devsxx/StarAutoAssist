@@ -80,8 +80,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
 
-            textViewMessage = (TextView) itemView.findViewById(R.id.textViewMessage);
-            textViewTime = (TextView) itemView.findViewById(R.id.textViewTime);
+            textViewMessage = itemView.findViewById(R.id.textViewMessage);
+            textViewTime = itemView.findViewById(R.id.textViewTime);
 
         }
     }

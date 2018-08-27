@@ -4,11 +4,20 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:id="@+id/title"
+        android:text="PAYMENT DETAILS"/>
+
     <android.support.v7.widget.CardView
         android:id="@+id/cv_payment_detail_history1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_below="@+id/title"
         android:layout_margin="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
@@ -126,7 +135,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_weight="1"
-                        android:text="Service Name :"
+                        android:text="Service Name "
                         android:paddingLeft="5dp"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -153,6 +162,38 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
                     <TextView
+                        android:layout_weight="1"
+                        android:text="Description "
+                        android:paddingLeft="5dp"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_payhistory_detail_des"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
                         android:paddingLeft="5dp"
                         android:layout_weight="1"
                         android:text="Service Amount:"
@@ -168,35 +209,7 @@
                         android:text=""
                         android:textSize="17sp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:weightSum="2"
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:paddingLeft="5dp"
-                        android:layout_weight="1"
-                        android:text="Service Date:"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/tv_payhistory_detail_servicedate"
-                        android:layout_marginTop="5dp"
-                        android:paddingLeft="5dp"
-                        android:layout_weight="1"
-                        android:text=""
-                        android:textSize="17sp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_marginRight="5dp"
@@ -226,6 +239,126 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text="Extra Amount:"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_payhistory_detail_extraamount"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text="Transaction Id:"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_payhistory_detail_transid2"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text="Total Amount Paid"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_payhistory_detail_total"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text="Service Date"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_payhistory_detail_servicedate"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="17sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

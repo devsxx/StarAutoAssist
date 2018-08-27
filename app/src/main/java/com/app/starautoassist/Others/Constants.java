@@ -1,7 +1,6 @@
 package com.app.starautoassist.Others;
 
 import android.content.SharedPreferences;
-import android.provider.Settings;
 
 public class Constants {
 
@@ -133,14 +132,17 @@ public class Constants {
     public static String send_req_jumpstart="send_request_jumpstart.php?";
     public static String send_req_fuel="send_request_fuel.php?";
     public static String payment_req="transaction_register.php?";
+    public static String extra_payment_req="transaction_update.php?";
+    public static String service_history="client_history.php?";
+    public static String payment_history="client_history.php?";
     public static String uploadprofileimage="uploadprofileimage.php?";
     public static String changepassword="changepassword.php?";
+    public static String send_feedback="send_feedback.php?";
     public static String forgotpassword="forgotpassword.php?";
     public static Boolean isLocationpermission_enabled=false;
     public static String completedservice="completed_service.php?";
     public static String receive_bill ="receive_bill.php?";
-    public static String payment_history ="payment_history.php?";
-    public static String service_history ="service_history.php?";
+    public static String send_rating ="send_rating.php?";
 
 
 }

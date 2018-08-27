@@ -5,7 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.Completed_Services_Payment_Activity">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:id="@+id/parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_marginBottom="10dp"
@@ -281,5 +285,35 @@
 </LinearLayout>
 
     </ScrollView>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/resultlay">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/payment_success"
+            android:id="@+id/resultpage"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/resulttextvalue"
+            android:layout_above="@+id/okbtn"
+            android:padding="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/white"
+            android:text="OK"
+            android:layout_marginTop="30dp"
+            android:id="@+id/okbtn"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp"/>
 
+    </RelativeLayout>
 </RelativeLayout>

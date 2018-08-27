@@ -19,12 +19,10 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -52,7 +50,6 @@ import com.app.starautoassist.Helper.GPSTracker;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Helper.ResultDelegate;
 import com.app.starautoassist.Helper.ResultPaymentMessage;
-import com.app.starautoassist.Helper.ResultPaymentObject;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
@@ -65,7 +62,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.ipay.IPayIH;
 import com.ipay.IPayIHPayment;
-import com.ipay.IPayIHResultDelegate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,14 +69,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -92,8 +85,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.app.starautoassist.Others.Constants.resultExtra;
-import static com.app.starautoassist.Others.Constants.resultInfo;
 import static com.app.starautoassist.Others.Constants.resultTitle;
 
 public class Towing_Activity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, TextWatcher {
@@ -369,7 +360,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    private void setLocation() {
+    /*private void setLocation() {
             if (flat == 0 && flon == 0) {
                 if (gps.canGetLocation()) {
                     if (Starautoassist_Application.isNetworkAvailable(Towing_Activity.this)) {
@@ -389,7 +380,7 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                 }
             }
             mapFragment.getMapAsync(this);
-        }
+        }*/
 
 
 
@@ -446,20 +437,20 @@ public class Towing_Activity extends AppCompatActivity implements View.OnClickLi
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         dialog.setContentView(R.layout.bill_page_dialog);
-                        TextView brandname = (TextView) dialog.findViewById(R.id.brandval);
-                        TextView modelname = (TextView) dialog.findViewById(R.id.modelval);
-                        final TextView sname = (TextView) dialog.findViewById(R.id.servicename);
-                        TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
-                        TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
-                        TextView des = (TextView) dialog.findViewById(R.id.towdes);
+                        TextView brandname = dialog.findViewById(R.id.brandval);
+                        TextView modelname = dialog.findViewById(R.id.modelval);
+                        final TextView sname = dialog.findViewById(R.id.servicename);
+                        TextView samount = dialog.findViewById(R.id.serviceamt);
+                        TextView total = dialog.findViewById(R.id.totalvalue);
+                        TextView des = dialog.findViewById(R.id.towdes);
                         des.setVisibility(View.VISIBLE);
                         brandname.setText(brand);
                         modelname.setText(model);
                         sname.setText(R.string.towing);
                         samount.setText(new StringBuilder().append("RM").append(" ").append(amount).toString());
                         total.setText(new StringBuilder().append("RM").append(" ").append(amount).append("  *").toString());
-                        Button confirmbtn = (Button) dialog.findViewById(R.id.confirmbtn);
-                        Button cancel = (Button) dialog.findViewById(R.id.cancelbtn);
+                        Button confirmbtn = dialog.findViewById(R.id.confirmbtn);
+                        Button cancel = dialog.findViewById(R.id.cancelbtn);
                         confirmbtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

@@ -2,6 +2,7 @@ package com.app.starautoassist.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.app.starautoassist.Adapter.Accepted_Request_Adapter;
-import com.app.starautoassist.Adapter.Sent_Request_Adapter;
-import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
 
@@ -35,11 +34,11 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class AcceptedRequestActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
+    public static ArrayList<HashMap<String, String>> accepted_list = new ArrayList<HashMap<String, String>>();
     LinearLayoutManager layoutManager;
     RelativeLayout relativeLayout;
+    private RecyclerView recyclerView;
     private Accepted_Request_Adapter acceptedAdapter;
-    public static ArrayList<HashMap<String, String>> accepted_list = new ArrayList<HashMap<String, String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +49,22 @@ public class AcceptedRequestActivity extends AppCompatActivity {
         relativeLayout=findViewById(R.id.nodatalayout);
         new Get_Accepted_List_Async(AcceptedRequestActivity.this).execute();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(AcceptedRequestActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     public class Get_Accepted_List_Async extends AsyncTask<String, Integer, String> {
-        private Context context;
-        private String url = Constants.BaseURL + Constants.get_accepted_list;
         ProgressDialog progress;
         @Nullable
         String user_id;
         HashMap<String, String> map;
+        private Context context;
+        private String url = Constants.BaseURL + Constants.get_accepted_list;
         public Get_Accepted_List_Async(Context ctx) {
             context = ctx;
         }

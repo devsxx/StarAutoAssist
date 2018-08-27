@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.Feedback">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:id="@+id/scrollview">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F2EEE5"
+        android:elevation="4dp"
+        android:id="@+id/titleimagelay"
+        android:translationZ="2dp"
+        android:gravity="center">
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/feed"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleimagelay"
+        android:id="@+id/title"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:text="Write to us..."
+        android:padding="5dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:id="@+id/feedback"
+        android:layout_marginTop="5dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/border_edittext"
+        android:layout_below="@+id/title"
+        android:padding="3dp"
+        android:lineSpacingExtra="1.5dp"
+        android:gravity="left"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/feedback"
+            android:layout_marginTop="10dp"
+            android:text="Star Auto Assist is administered by Star Auto Assist Sdn Bhd. Please call our customer service hotline 1-800-88-0202 for any enquiries."
+            android:padding="5dp"/>
+
+    </RelativeLayout>
+    </ScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:textColor="@color/white"
+        android:id="@+id/sendbtn"
+        android:padding="10dp"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:text="Send"/>
+
+</RelativeLayout>

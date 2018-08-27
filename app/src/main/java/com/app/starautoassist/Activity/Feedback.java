@@ -9,13 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
+import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 
 import org.json.JSONException;
@@ -30,56 +29,49 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Change_Password extends AppCompatActivity {
+public class Feedback extends AppCompatActivity {
     ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change__password);
-        final EditText etoldpass = findViewById(R.id.et_change_oldpass);
-        final EditText etnewpass = findViewById(R.id.et_change_newpass);
-        final EditText etconfirmpass = findViewById(R.id.et_change_confirmpass);
-        Button btnchangepass = findViewById(R.id.btn_changepass);
-
-        btnchangepass.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_feedback);
+        final EditText feedback=(EditText)findViewById(R.id.feedback);
+        TextView send=(TextView)findViewById(R.id.sendbtn);
+        Constants.pref=getApplicationContext().getSharedPreferences("StarAutoAssist",MODE_PRIVATE);
+        send.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String oldpass = etoldpass.getText().toString();
-                String newpass = etnewpass.getText().toString();
-                String confirmpass = etconfirmpass.getText().toString();
-
-                if (newpass.equals(confirmpass)){
-                    //proceed to further code
-                    new Change_Pass(Change_Password.this, GetSet.getMobileno(),oldpass,newpass).execute();
-
-
-                }else {
-
-                    Toast.makeText(Change_Password.this, "Password do not Match!", Toast.LENGTH_SHORT).show();
-                }
-
+            public void onClick(View view) {
+                String feed=feedback.getText().toString().trim();
+                new Send_Feedback(Feedback.this,feed).execute();
             }
         });
+
     }
 
-    public class Change_Pass extends AsyncTask<String, Integer, String> {
-        private Context context;
-        private String mobileno, oldpass,newpass;
-        private String url = Constants.BaseURL + Constants.changepassword;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(Feedback.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
-        public Change_Pass(Context ctx, String mobileno, String oldpass,String newpass) {
+    public class Send_Feedback extends AsyncTask<String, Integer, String> {
+        private Context context;
+        private String feeback;
+        private String url = Constants.BaseURL + Constants.send_feedback;
+
+        public Send_Feedback(Context ctx, String feeback) {
             context = ctx;
-            this.mobileno = mobileno;
-            this.oldpass = oldpass;
-            this.newpass = newpass;
+            this.feeback = feeback;
+
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog=new ProgressDialog(Change_Password.this);
-            progressDialog.setTitle("Changing password");
+            progressDialog=new ProgressDialog(Feedback.this);
+            progressDialog.setTitle("Sending Feedback");
             progressDialog.setMessage("Please wait... Loading");
             progressDialog.show();
 
@@ -92,9 +84,9 @@ public class Change_Password extends AppCompatActivity {
             Response response = null;
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
-                    .add(Constants.mobileno, mobileno)
-                    .add("oldpassword", oldpass)
-                    .add("newpassword", newpass)
+                    .add(Constants.mobileno, Constants.pref.getString("mobileno",""))
+                    .add(Constants.firstname, Constants.pref.getString("firstname",""))
+                    .add("feedback",feeback)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -126,15 +118,14 @@ public class Change_Password extends AppCompatActivity {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
-                    Intent intent=new Intent(Change_Password.this,HomeActivity.class);
+                    Intent intent=new Intent(Feedback.this,HomeActivity.class);
                     startActivity(intent);
                     finish();
-                    Toast.makeText(getApplicationContext(),"Password changed successfully",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Feedback send successfully",Toast.LENGTH_SHORT).show();
                 }else Toast.makeText(getApplicationContext(),jonj.getString("message"),Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
-
 }

@@ -2,7 +2,6 @@ package com.app.starautoassist.Others;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.provider.Settings;
 
 public class PreferenceManager {
 

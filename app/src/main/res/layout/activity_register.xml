@@ -136,13 +136,30 @@
             android:layout_marginTop="15dp"
             android:hint="@string/confirm_password"
             android:inputType="textPassword" />
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:id="@+id/condition"
+    android:layout_below="@id/reg_et_confirmpassword"
+    android:orientation="horizontal">
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/agree"
+            />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:id="@+id/termsnconditions"/>
+</LinearLayout>
         <Button
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:id="@+id/reg_btn_register"
             android:text="@string/register"
             android:paddingLeft="10dp"
-            android:layout_below="@+id/reg_et_confirmpassword"
+            android:layout_below="@+id/condition"
             android:background="@drawable/round_button"
             android:gravity="center"
             android:layout_alignParentBottom="true"
@@ -185,6 +202,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="15dp"
+                android:digits="0123456789"
                 android:visibility="visible"
                 android:layout_gravity="center"
                 android:inputType="phone" />

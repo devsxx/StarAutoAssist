@@ -2,15 +2,17 @@ package com.app.starautoassist.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.app.starautoassist.Adapter.PaymentHistoryAdapter;
 import com.app.starautoassist.Adapter.ServiceHistoryAdapter;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.R;
@@ -34,6 +36,7 @@ public class ServiceHistoryActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ServiceHistoryAdapter adapter;
+    RelativeLayout relativeLayout;
     private ArrayList<HashMap<String,String>> serviceHistoryList;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -46,11 +49,19 @@ public class ServiceHistoryActivity extends AppCompatActivity {
         new fetchServiceHistory(this).execute();
 
         recyclerView = findViewById(R.id.rv_service_history);
+        relativeLayout=findViewById(R.id.nodatalayout);
         serviceHistoryList = new ArrayList<HashMap<String, String>>();
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(ServiceHistoryActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     private class fetchServiceHistory extends AsyncTask<String, Integer, String> {
 
@@ -58,7 +69,7 @@ public class ServiceHistoryActivity extends AppCompatActivity {
         String url = Constants.BaseURL + Constants.service_history;
         ProgressDialog progress;
         HashMap<String,String> map;
-        String serviceid, servicename, servicetype, servicedate, providername;
+        String serviceid, servicename, spid,email,companyname,carbrand,carmodel,plateno,paddress,daddress,payid,amount,extramount,servicetype, servicedate, providername;
 
         public fetchServiceHistory(Context context) {
             this.context = context;
@@ -82,6 +93,7 @@ public class ServiceHistoryActivity extends AppCompatActivity {
             Response response = null;
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
+                    .add("client_id",Constants.pref.getString("mobileno",""))
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -111,34 +123,62 @@ public class ServiceHistoryActivity extends AppCompatActivity {
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
+                if (jsonData != null) {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
-
-                    String data = jonj.getString("");
+                    recyclerView.setVisibility(View.VISIBLE);
+                    relativeLayout.setVisibility(View.GONE);
+                    String data = jonj.getString("message");
                     JSONArray array = new JSONArray(data);
-                    for(int i=0;i<array.length();i++) {
+                    for (int i = 0; i < array.length(); i++) {
                         JSONObject jcat = array.getJSONObject(i);
-                        map=new HashMap<String, String>();
+                        map = new HashMap<String, String>();
 
-                        serviceid=jcat.getString("");
-                        servicename=jcat.getString("");
-                        servicetype=jcat.getString("");
-                        servicedate=jcat.getString("");
-                        providername=jcat.getString("");
+                        providername = jcat.getString("firstname");
+                        spid = jcat.getString("mobileno");
+                        email = jcat.getString("email");
+                        companyname = jcat.getString("companyname");
+                        carbrand = jcat.getString("carbrand");
+                        carmodel = jcat.getString("carmodel");
+                        plateno = jcat.getString("plateno");
+                        serviceid = jcat.getString("serviceid");
+                        servicename = jcat.getString("service_name");
+                        servicetype = jcat.getString("service_type");
+                        paddress = jcat.getString("pickupaddress");
+                        daddress = jcat.getString("dropaddress");
+                        payid = jcat.getString("payid");
+                        amount = jcat.getString("amount");
+                        extramount = jcat.getString("extraamount");
+                        servicedate = jcat.getString("date");
 
 
-                        map.put("date",serviceid);
-                        map.put("staff",servicename);
-                        map.put("subject", servicetype);
-                        map.put("standard", servicedate);
-                        map.put("description", providername);
+                        map.put("providername", providername);
+                        map.put("spid", spid);
+                        map.put("email", email);
+                        map.put("companyname", companyname);
+                        map.put("brand", carbrand);
+                        map.put("model", carmodel);
+                        map.put("plateno", plateno);
+                        map.put("serviceid", serviceid);
+                        map.put("servicename", servicename);
+                        map.put("servicetype", servicetype);
+                        map.put("paddress", paddress);
+                        map.put("daddress", daddress);
+                        map.put("payid", payid);
+                        map.put("amount", amount);
+                        map.put("extraamount", extramount);
+                        map.put("servicedate", servicedate);
 
                         serviceHistoryList.add(map);
                     }
 
-                    adapter = new ServiceHistoryAdapter(ServiceHistoryActivity.this,serviceHistoryList);
+                    adapter = new ServiceHistoryAdapter(ServiceHistoryActivity.this, serviceHistoryList);
                     recyclerView.setAdapter(adapter);
+                }else {
+                    recyclerView.setVisibility(View.GONE);
+                    relativeLayout.setVisibility(View.VISIBLE);
+                }
 
                 } else
                     Toast.makeText(context, jonj.getString("message"), Toast.LENGTH_SHORT).show();

@@ -73,7 +73,7 @@ public class Tracker_Service extends Service {
     public static class Get_location extends AsyncTask<String, Integer, String> {
         private Context context;
         private String url = Constants.BaseURL + Constants.get_location;
-        String lat,lon;
+        String lat,lon,ispicked;
         HashMap<String, String> map;
 
 
@@ -131,8 +131,10 @@ public class Tracker_Service extends Service {
                         JSONObject object = array.getJSONObject(i);
                         lat = object.getString(Constants.lat);
                         lon = object.getString(Constants.lon);
+                        ispicked = object.getString("ispickedup");
                         map.put(Constants.lat, lat);
                         map.put(Constants.lon, lon);
+                        map.put("ispickedup", ispicked);
                     }
                     Intent localBroadcastIntent = new Intent(ACTION);
                     localBroadcastIntent.putExtra("Location_Status", "Received");

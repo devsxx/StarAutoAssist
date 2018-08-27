@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -43,7 +42,6 @@ import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.ipay.IPayIH;
 import com.ipay.IPayIHPayment;
-import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -135,14 +133,14 @@ public class Fuel_Activity extends AppCompatActivity {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.setContentView(R.layout.bill_page_dialog);
-                    TextView brandname = (TextView) dialog.findViewById(R.id.brandval);
-                    TextView modelname = (TextView) dialog.findViewById(R.id.modelval);
-                    TextView sname = (TextView) dialog.findViewById(R.id.servicename);
-                    TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
-                    LinearLayout fuellay = (LinearLayout) dialog.findViewById(R.id.fuellay);
+                    TextView brandname = dialog.findViewById(R.id.brandval);
+                    TextView modelname = dialog.findViewById(R.id.modelval);
+                    TextView sname = dialog.findViewById(R.id.servicename);
+                    TextView samount = dialog.findViewById(R.id.serviceamt);
+                    LinearLayout fuellay = dialog.findViewById(R.id.fuellay);
                     fuellay.setVisibility(View.VISIBLE);
-                    TextView fuelamount = (TextView) dialog.findViewById(R.id.fuelval);
-                    TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                    TextView fuelamount = dialog.findViewById(R.id.fuelval);
+                    TextView total = dialog.findViewById(R.id.totalvalue);
                     brandname.setText(brand);
                     modelname.setText(model);
                     sname.setText(R.string.out_of_fuel);
@@ -150,8 +148,8 @@ public class Fuel_Activity extends AppCompatActivity {
                     fuelamount.setText(new StringBuilder().append("RM").append(" ").append(spinnerprice.getSelectedItem().toString()).toString());
                     int totalvalue= Integer.valueOf(amount)+Integer.valueOf(spinnerprice.getSelectedItem().toString());
                     total.setText(new StringBuilder().append("RM").append(" ").append(totalvalue).append("  *").toString());
-                    Button confirmbtn = (Button) dialog.findViewById(R.id.confirmbtn);
-                    Button cancel = (Button) dialog.findViewById(R.id.cancelbtn);
+                    Button confirmbtn = dialog.findViewById(R.id.confirmbtn);
+                    Button cancel = dialog.findViewById(R.id.cancelbtn);
                     confirmbtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

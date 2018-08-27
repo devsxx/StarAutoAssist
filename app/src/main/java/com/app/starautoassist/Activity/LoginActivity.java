@@ -16,7 +16,6 @@ import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,19 +48,15 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -88,7 +83,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.app.starautoassist.Others.Constants.isLocationpermission_enabled;
-import static com.app.starautoassist.Others.Starautoassist_Application.dialog;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -512,7 +506,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_otp:
                 if(!mobilenoforget.getText().toString().equals("")&&mobilenoforget.getText().toString().length()>6) {
                     mobile_no = mobilenoforget.getText().toString().trim();
-                     new GetOTP(getApplicationContext(), mobile_no).execute();
+                     new GetOTP(LoginActivity.this, mobile_no).execute();
                     //Toast.makeText(getApplicationContext(),"Otp sent to your mobile successfully",Toast.LENGTH_SHORT).show();
                     try {
                         mobilenoforget.setVisibility(View.GONE);
@@ -526,7 +520,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_confirm:
                 String otp = confirmotpcode.getText().toString().trim();
-                  new VerifyOTP(getApplicationContext(), mobile_no, otp).execute();
+                  new VerifyOTP(LoginActivity.this, mobile_no, otp).execute();
                // new VerifyOTP(LoginActivity.this, mobile_no, "1234").execute();
                 break;
             case R.id.log_tv_forgot:

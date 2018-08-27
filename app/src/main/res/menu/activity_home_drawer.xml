@@ -39,20 +39,27 @@
     </group>
 
 
+    <item
+        android:id="@+id/nav_changepasssword"
+        android:icon="@drawable/ic_loop_orange_700_18dp"
+        android:title="Settings" />
+    <item
+        android:id="@+id/nav_share"
+        android:icon="@drawable/ic_share_orange_700_18dp"
+        android:title="Share" />
+    <item
+        android:id="@+id/nav_feedback"
+        android:icon="@drawable/ic_feedback_black_24dp"
+        android:title="Feedback" />
+    <item
+        android:id="@+id/nav_aboutus"
+        android:icon="@drawable/ic_info_orange_700_18dp"
+        android:title="About Us" />
 
-            <item
-                android:id="@+id/nav_changepasssword"
-                android:icon="@drawable/ic_loop_orange_700_18dp"
-                android:title="Settings" />
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_share_orange_700_18dp"
-                android:title="Share" />
-
-            <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_info_orange_700_18dp"
-                android:title="Logout" />
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_power_settings_new_black_24dp"
+        android:title="Logout" />
 
 
 </menu>

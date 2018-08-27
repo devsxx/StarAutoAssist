@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.Aboutus">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/logoimg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:src="@drawable/logo" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/abouttitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/logoimg"
+                android:layout_marginLeft="5dp"
+                android:padding="10dp"
+                android:text="ABOUT US"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/aboutcontent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/abouttitle"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="10dp" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/aboutcontent"
+                android:layout_marginLeft="5dp"
+                android:padding="10dp"
+                android:text="ADDRESS"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/conpanyname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/address"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="10dp"
+                android:text="COMPANY NAME         :SMART TOW &amp; RESCUE SDN BHD" />
+            <TextView
+                android:id="@+id/regno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/conpanyname"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="10dp"
+                android:text="REGISTRATION NO       : 1279960-A" />
+            <TextView
+                android:id="@+id/contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/regno"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="10dp"
+                android:text="CONTACT NO                 : 1800-88-0202"/>
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contact"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="10dp"
+                android:text="EMAIL                              : admin@starautoassist.com" />
+            <TextView
+                android:id="@+id/add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/email"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="10dp"/>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

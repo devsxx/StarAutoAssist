@@ -1,14 +1,11 @@
 package com.app.starautoassist.Others;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentCallbacks2;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -19,9 +16,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.StrictMode;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
-import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -36,14 +31,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.app.starautoassist.Activity.LoginActivity;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.R;
-import com.app.starautoassist.Services.FirebaseInstanceIDService;
 import com.facebook.FacebookSdk;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
@@ -52,13 +43,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.crypto.Cipher;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -427,6 +411,7 @@ public class Starautoassist_Application extends Application {
     }
     @Override
     public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
         switch (level) {
             case ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN:
                 freeMemory();

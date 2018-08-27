@@ -1,51 +1,36 @@
 package com.app.starautoassist.Fragment;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.app.starautoassist.Activity.AcceptedRequestActivity;
-import com.app.starautoassist.Activity.HomeActivity;
 import com.app.starautoassist.Adapter.BannerAdapter;
 import com.app.starautoassist.Adapter.ServiceAdapter;
-import com.app.starautoassist.Data.Service;
 import com.app.starautoassist.Helper.AutoScrollViewPager;
 import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
-import com.bumptech.glide.Glide;
-
 
 
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -53,10 +38,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator;
 import okhttp3.Call;
@@ -65,8 +48,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static com.app.starautoassist.Others.Constants.isLocationpermission_enabled;
 
 
 public class HomeFragment extends Fragment {
@@ -88,8 +69,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        viewPager= (AutoScrollViewPager) view.findViewById(R.id.carouselView);
-        circleIndicator=(CircleIndicator)view.findViewById(R.id.indicator);
+        viewPager= view.findViewById(R.id.carouselView);
+        circleIndicator= view.findViewById(R.id.indicator);
         new Get_Banners(getActivity()).execute();
         new Get_Services_Async(getActivity()).execute();
         new MyCarList(getActivity()).execute();
@@ -394,7 +375,6 @@ public class HomeFragment extends Fragment {
                         viewPager.setInterval(3000);
                         viewPager.setCycle(true);
                         viewPager.setStopScrollWhenTouch(true);
-
 
                         PagerAdapter adapter = new BannerAdapter(getActivity(),banners);
                         viewPager.setAdapter(adapter);

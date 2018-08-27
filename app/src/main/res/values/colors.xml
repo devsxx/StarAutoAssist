@@ -41,6 +41,7 @@
 
     <color name="white">#ffffff</color>
     <color name="green">#77c959</color>
+    <color name="blue">#2282EB</color>
     <color name="black">#000000</color>
     <color name="darkgray">#d55e5e5e</color>
     <color name="divider">#e5ebf1</color>

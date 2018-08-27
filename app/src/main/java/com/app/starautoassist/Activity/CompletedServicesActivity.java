@@ -3,12 +3,15 @@ package com.app.starautoassist.Activity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.app.starautoassist.Adapter.Completed_Service_Adapter;
 import com.app.starautoassist.Others.Constants;
@@ -30,6 +33,7 @@ public class CompletedServicesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
+    RelativeLayout relativeLayout;
     private Completed_Service_Adapter completedServiceAdapter;
     public static ArrayList<HashMap<String, String>> completed_list = new ArrayList<HashMap<String, String>>();
 
@@ -39,9 +43,17 @@ public class CompletedServicesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_completed_services);
 
         recyclerView = findViewById(R.id.rv_completed);
-
+        relativeLayout=findViewById(R.id.nodatalayout);
         new servicePayment(CompletedServicesActivity.this).execute();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(CompletedServicesActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -110,6 +122,8 @@ public class CompletedServicesActivity extends AppCompatActivity {
 
                     if (jonj.getString("status").equalsIgnoreCase(
                             "success")) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        relativeLayout.setVisibility(View.GONE);
                         String data = jonj.getString("data");
                         JSONArray array = new JSONArray(data);
                         completed_list.clear();
@@ -134,7 +148,7 @@ public class CompletedServicesActivity extends AppCompatActivity {
                             map.put("service_id", serviceid);
                             map.put(Constants.serviceprovider_id, sp_id);
                             map.put(Constants.service_name, sername);
-                            map.put("sp_name", serviceid);
+                            map.put("sp_name", proname);
                             map.put(Constants.company_name, compname);
                             map.put("tollamount", tollprice);
                             map.put("spareamount", spareprice);
@@ -151,6 +165,9 @@ public class CompletedServicesActivity extends AppCompatActivity {
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(completedServiceAdapter);
 
+                    }else {
+                        recyclerView.setVisibility(View.GONE);
+                        relativeLayout.setVisibility(View.VISIBLE);
                     }
 
                 }

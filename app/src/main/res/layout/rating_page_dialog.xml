@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88000000"
+    android:layoutDirection="inherit">
+
+    <RelativeLayout
+        android:id="@+id/sharelay"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp">
+
+        <RelativeLayout
+            android:id="@+id/rlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/invite_dialog_bg"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/contactName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="35dp"
+                android:paddingBottom="5dp"
+                android:text="Rate &amp; Write review"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@color/primaryText"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/brandlayout"
+
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:orientation="horizontal"
+                android:layout_below="@+id/contactName"
+                android:weightSum="2"
+                >
+                <TextView
+                    android:id="@+id/brandtxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:layout_marginTop="10dp"
+                    android:text="Rating"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/primaryText" />
+
+                <com.hsalf.smilerating.SmileRating
+                    android:id="@+id/ratingval"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/primaryText" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/modellayout"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"
+                android:orientation="vertical"
+                android:layout_below="@+id/brandlayout"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Review"/>
+                <EditText
+                    android:id="@+id/reviewtxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="left"
+                    android:padding="5dp"
+                    android:text="Write your review..."
+                    android:inputType="textImeMultiLine"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="3dp"
+                    android:textColor="@color/primaryText" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:translationZ="2dp"
+                android:elevation="4dp"
+                android:layout_marginLeft="15sp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/btns"
+                android:layout_below="@+id/modellayout"
+                android:weightSum="2"
+                tools:targetApi="lollipop">
+                <Button
+                    android:id="@+id/cancelbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:background="@color/gray"
+                    android:layout_weight="1"
+                    android:text="@string/cancel"/>
+
+                <Button
+                    android:id="@+id/confirmbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:background="@color/colorPrimary"
+                    android:layout_weight="1"
+                    android:text="Submit"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/contactImg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:src="@drawable/roundlogo512"
+            app:civ_border_color="@color/colorPrimaryDark"
+            app:civ_border_width="2dp"
+            app:civ_shadow="true"
+            app:civ_shadow_color="@color/colorAccent"
+            app:civ_shadow_radius="10"
+            android:layout_alignBaseline="@+id/llay"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            app:border_color="@color/white"
+            app:border_width="5dp"
+            app:corner_radius="100dip"
+            app:round_background="true" />
+
+        <LinearLayout
+            android:id="@+id/llay"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_above="@+id/rlay"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

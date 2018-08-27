@@ -177,7 +177,10 @@
             android:name="com.ipay.IPayIHAcitivityR"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".Activity.PaymentDetailedHistoryActivity" />
-        <activity android:name=".Activity.ServiceDetailedHistoryActivity"></activity>
+        <activity android:name=".Activity.ServiceDetailedHistoryActivity" />
+        <activity android:name=".Activity.Aboutus" />
+        <activity android:name=".Activity.Feedback"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

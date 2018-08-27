@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.app.starautoassist.Activity.PaymentDetailedHistoryActivity;
+import com.app.starautoassist.Activity.ServiceDetailedHistoryActivity;
 import com.app.starautoassist.R;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class ServiceHistoryAdapter extends RecyclerView.Adapter<ServiceHistoryAd
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.payment_history_layout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_history_layout, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -40,21 +40,18 @@ public class ServiceHistoryAdapter extends RecyclerView.Adapter<ServiceHistoryAd
 
         final HashMap<String, String> itemMap=serviceHistoryList.get(position);
 
-        holder.serviceid.setText(itemMap.get(""));
-        holder.servicename.setText(itemMap.get(""));
-        holder.servicedate.setText(itemMap.get(""));
-        holder.providername.setText(itemMap.get(""));
+        holder.serviceid.setText(itemMap.get("serviceid"));
+        holder.servicename.setText(itemMap.get("servicename"));
+        holder.servicedate.setText(itemMap.get("servicedate"));
+        holder.providername.setText(itemMap.get("providername"));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(mContext, PaymentDetailedHistoryActivity.class);
-                intent.putExtra("serviceid", itemMap.get(""));
-                intent.putExtra("servicename", itemMap.get(""));
-                intent.putExtra("servicedate", itemMap.get(""));
-                intent.putExtra("servicetype", itemMap.get(""));
-                intent.putExtra("providername", itemMap.get(""));
+                Intent intent = new Intent(mContext, ServiceDetailedHistoryActivity.class);
+                intent.putExtra("data", itemMap);
+
                 mContext.startActivity(intent);
             }
         });
@@ -78,6 +75,7 @@ public class ServiceHistoryAdapter extends RecyclerView.Adapter<ServiceHistoryAd
             servicename = itemView.findViewById(R.id.tv_servicehistory_servicename);
             servicedate = itemView.findViewById(R.id.tv_servicehistory_servicedate);
             providername = itemView.findViewById(R.id.tv_servicehistory_providername);
+            cardView=itemView.findViewById(R.id.cv_service_history);
         }
     }
 }

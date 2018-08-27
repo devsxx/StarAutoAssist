@@ -38,22 +38,17 @@ public class PaymentHistoryAdapter extends RecyclerView.Adapter<PaymentHistoryAd
 
         final HashMap<String, String> itemMap=paymentHistoryList.get(position);
 
-        holder.payid.setText(itemMap.get(""));
-        holder.serviceid.setText(itemMap.get(""));
-        holder.amount.setText(itemMap.get(""));
-        holder.date.setText(itemMap.get(""));
+        holder.payid.setText(itemMap.get("payid"));
+        holder.serviceid.setText(itemMap.get("serviceid"));
+        holder.amount.setText((itemMap.get("amount")+itemMap.get("extraamount")));
+        holder.date.setText(itemMap.get("date"));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent intent = new Intent(mContext, PaymentDetailedHistoryActivity.class);
-                intent.putExtra("payid", itemMap.get(""));
-                intent.putExtra("serviceid", itemMap.get(""));
-                intent.putExtra("servicename", itemMap.get(""));
-                intent.putExtra("amount", itemMap.get(""));
-                intent.putExtra("date", itemMap.get(""));
-                intent.putExtra("transactionid", itemMap.get(""));
+                intent.putExtra("data", itemMap);
                 mContext.startActivity(intent);
             }
         });

@@ -2,12 +2,15 @@ package com.app.starautoassist.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.app.starautoassist.Adapter.PaymentHistoryAdapter;
@@ -35,6 +38,7 @@ public class PaymentHistoryActivity extends AppCompatActivity {
     private PaymentHistoryAdapter adapter;
     private ArrayList<HashMap<String,String>> paymentHistoryList;
     private RecyclerView.LayoutManager mLayoutManager;
+    RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +49,19 @@ public class PaymentHistoryActivity extends AppCompatActivity {
         new fetchPaymentHistory(this).execute();
 
         recyclerView = findViewById(R.id.rv_payment);
+        relativeLayout=findViewById(R.id.nodatalayout);
         paymentHistoryList = new ArrayList<HashMap<String, String>>();
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(PaymentHistoryActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private class fetchPaymentHistory extends AsyncTask<String, Integer, String> {
@@ -57,7 +70,7 @@ public class PaymentHistoryActivity extends AppCompatActivity {
         String url = Constants.BaseURL + Constants.payment_history;
         ProgressDialog progress;
         HashMap<String,String> map;
-        String payid, serviceid, amount, date, servicename, transactionid;
+        String payid, serviceid,description, examount,amount, date, servicename, transactionid2,transactionid;
 
         public fetchPaymentHistory(Context context) {
             this.context = context;
@@ -81,6 +94,7 @@ public class PaymentHistoryActivity extends AppCompatActivity {
             Response response = null;
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
+                    .add("client_id",Constants.pref.getString("mobileno",""))
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -110,36 +124,47 @@ public class PaymentHistoryActivity extends AppCompatActivity {
             Log.v("result", "" + jsonData);
             JSONObject jonj = null;
             try {
+                if (jsonData != null) {
                 jonj = new JSONObject(jsonData);
                 if (jonj.getString("status").equalsIgnoreCase(
                         "success")) {
-
-                    String data = jonj.getString("");
+                    recyclerView.setVisibility(View.VISIBLE);
+                    relativeLayout.setVisibility(View.GONE);
+                    String data = jonj.getString("message");
                     JSONArray array = new JSONArray(data);
-                    for(int i=0;i<array.length();i++) {
+                    for (int i = 0; i < array.length(); i++) {
                         JSONObject jcat = array.getJSONObject(i);
-                        map=new HashMap<String, String>();
+                        map = new HashMap<String, String>();
 
-                        payid=jcat.getString("");
-                        serviceid=jcat.getString("");
-                        servicename=jcat.getString("");
-                        amount=jcat.getString("");
-                        date=jcat.getString("");
-                        transactionid=jcat.getString("");
+                        payid = jcat.getString("payid");
+                        serviceid = jcat.getString("serviceid");
+                        description = jcat.getString("des");
+                        servicename = jcat.getString("service_name");
+                        amount = jcat.getString("amount");
+                        examount = jcat.getString("extraamount");
+                        date = jcat.getString("date");
+                        transactionid = jcat.getString("transid");
+                        transactionid2 = jcat.getString("transid2");
 
 
-                        map.put("id",payid);
-                        map.put("date",serviceid);
-                        map.put("staff",servicename);
-                        map.put("subject", amount);
-                        map.put("standard", date);
-                        map.put("description", transactionid);
-
+                        map.put("payid", payid);
+                        map.put("serviceid", serviceid);
+                        map.put("description", description);
+                        map.put("servicename", servicename);
+                        map.put("amount", amount);
+                        map.put("extraamount", examount);
+                        map.put("date", date);
+                        map.put("transid", transactionid);
+                        map.put("transid2", transactionid2);
                         paymentHistoryList.add(map);
                     }
 
-                    adapter = new PaymentHistoryAdapter(PaymentHistoryActivity.this,paymentHistoryList);
+                    adapter = new PaymentHistoryAdapter(PaymentHistoryActivity.this, paymentHistoryList);
                     recyclerView.setAdapter(adapter);
+                }else{
+                    recyclerView.setVisibility(View.VISIBLE);
+                    relativeLayout.setVisibility(View.GONE);
+                }
 
                 } else
                     Toast.makeText(context, jonj.getString("message"), Toast.LENGTH_SHORT).show();

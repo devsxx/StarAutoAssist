@@ -11,10 +11,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -24,7 +22,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -36,8 +33,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,18 +46,6 @@ import com.app.starautoassist.R;
 import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mikhaellopez.circularimageview.CircularImageView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -255,65 +238,80 @@ public class HomeActivity extends AppCompatActivity
         Fragment fragment = null;
 
         if (id == R.id.nav_home) {
-
             fragment = new HomeFragment();
 
         } else if (id == R.id.nav_profile) {
-
             Intent profileintent = new Intent(this, ProfileActivity.class);
+            profileintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(profileintent);
+            finish();
 
         } else if (id == R.id.nav_vechicle) {
-
             Intent vechicleintent = new Intent(this, VechicleActivity.class);
+            vechicleintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(vechicleintent);
+            finish();
 
         } else if (id == R.id.nav_acceptedrequest) {
-
             Intent vechicleintent = new Intent(this, AcceptedRequestActivity.class);
+            vechicleintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(vechicleintent);
+            finish();
         }
         else if (id == R.id.nav_sentrequest) {
-
             Intent sentrequestintent = new Intent(this, SentRequestActivity.class);
+            sentrequestintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(sentrequestintent);
+            finish();
 
         }
         else if (id == R.id.nav_completedservices) {
-
             Intent completedintent = new Intent(this, CompletedServicesActivity.class);
+            completedintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(completedintent);
+            finish();
 
         }else if (id == R.id.nav_servicehistory) {
-
-        /*    Intent servicehistoryintent = new Intent(this, ServiceHistoryActivity.class);
+            Intent servicehistoryintent = new Intent(this, ServiceHistoryActivity.class);
+            servicehistoryintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(servicehistoryintent);
-            finish();*/
-            Toast.makeText(this, "This feature will be available soon", Toast.LENGTH_SHORT).show();
+            finish();
 
         } else if (id == R.id.nav_paymenthistory) {
-
-//            Intent paymenthistoryintent = new Intent(this, PaymentHistoryActivity.class);
-//            startActivity(paymenthistoryintent);
-//            finish();
-            Toast.makeText(this, "This feature will be available soon", Toast.LENGTH_SHORT).show();
+            Intent paymenthistoryintent = new Intent(this, PaymentHistoryActivity.class);
+            paymenthistoryintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(paymenthistoryintent);
+            finish();
 
         } else if (id == R.id.nav_changepasssword) {
-
             Intent intent=new Intent(HomeActivity.this,Settings.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-
+            finish();
         } else if (id == R.id.nav_share) {
+            final String inviteContent = getString(R.string.invite_content) + " " + "https://play.google.com/store/apps/details?id=" +
+                    getApplicationContext().getPackageName();
             Intent shareintent = new Intent(Intent.ACTION_SEND);
             shareintent.setType("text/plain");
+            shareintent.putExtra(Intent.EXTRA_TEXT, inviteContent);
             startActivity(Intent.createChooser(shareintent, "Share Via"));
 
-        } else if (id == R.id.nav_logout) {
+        }else if (id == R.id.nav_feedback) {
+            Intent intent=new Intent(HomeActivity.this,Feedback.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.nav_aboutus) {
+            Intent intent=new Intent(HomeActivity.this,Aboutus.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
+        else if (id == R.id.nav_logout) {
             signoutdialog();
         }
 
         if (fragment != null){
-
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
             transaction.commit();

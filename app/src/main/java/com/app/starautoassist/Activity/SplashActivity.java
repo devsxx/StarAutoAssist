@@ -1,14 +1,11 @@
 package com.app.starautoassist.Activity;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -31,7 +28,7 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
         pref = getApplicationContext().getSharedPreferences("JoysalePref",MODE_PRIVATE);
-        logo = (ImageView) findViewById(R.id.splashlogo);
+        logo = findViewById(R.id.splashlogo);
         editor = pref.edit();
         if (Starautoassist_Application.isNetworkAvailable(SplashActivity.this)) {
         animate();

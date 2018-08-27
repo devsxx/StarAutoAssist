@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -40,7 +39,6 @@ import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
 import com.bumptech.glide.Glide;
-import com.facebook.CallbackManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -58,23 +56,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static android.graphics.BitmapFactory.decodeFile;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -141,6 +132,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(ProfileActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public class GetOTP extends AsyncTask<String, Integer, String> {
@@ -216,7 +215,7 @@ public class ProfileActivity extends AppCompatActivity {
                     // set prompts.xml to alertdialog builder
                     alertDialogBuilder.setView(promptsView);
 
-                    final EditText userInput = (EditText) promptsView
+                    final EditText userInput = promptsView
                             .findViewById(R.id.editTextResult);
 
                     // set dialog message

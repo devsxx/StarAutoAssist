@@ -43,19 +43,21 @@ public class Completed_Service_Adapter extends RecyclerView.Adapter<Completed_Se
         holder.sid.setText(itemMap.get("service_id"));
         holder.sname.setText(itemMap.get(Constants.service_name));
         holder.samount.setText(itemMap.get("totalamount"));
-        if(itemMap.get("status").equals("0"))
+        if(itemMap.get("status").equals("0")) {
             holder.status.setText("Pay & close service");
+            holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(mContext, Completed_Services_Payment_Activity.class);
+                    intent.putExtra("data", itemMap);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
         else
             holder.status.setText("Payment Done");
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Intent intent = new Intent(mContext, Completed_Services_Payment_Activity.class);
-                intent.putExtra("data", itemMap);
-                mContext.startActivity(intent);
-            }
-        });
 
     }
 

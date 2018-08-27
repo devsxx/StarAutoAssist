@@ -9,7 +9,7 @@
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="gps_settings">GPS Settings</string>
     <string name="gps_notenabled">GPS is not enabled. Do you want to go to settings menu?</string>
     <string name="need_permission_to_access">Need permission to access this page</string>
@@ -94,7 +94,7 @@
     <string name="enter_otp">Enter OTP</string>
     <string name="get_otp">Get OTP</string>
     <string name="confirm">Confirm</string>
-    <string name="forgotpassphrase">Don\'t worry... Please enter your mobile no below</string>
+    <string name="forgotpassphrase">Don\'t worry… Please enter your mobile no below</string>
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="phone">Phone</string>
     <string name="pin">Pin</string>
@@ -108,13 +108,19 @@
     <string name="description">* If any extra charges comes will need to pay at the end of service done. Like toll,spares,night service and etc</string>
     <string name="flattyredes">We change your tyre with the spare or have the tyre repaired, in case you have a flat tyre.<br /></string>
     <string name="tyre_ser_des"><![CDATA[Thank you for using Star Auto Assist.<br/><p>Our service charge starts from RM60. Additional charges may apply for other services (e.g tyre replacement) ONLY IF agreed with the service provider.</p>]]></string>
+    <string name="aboutus"><![CDATA[Welcome to Star Auto Assist.<br/> <br/>We understand how stressful it can be when your car broke down. That\'s why our roadside Ranger will work to get you quickly back on the road and driving again with transparent prices. No more Rip-Offs.<br/>Please note that our Customer Service Team is always ready to provide you with timely and efficient professional assistance at all times 24/7. </p>]]></string>
+    <string name="address"><![CDATA[ADDRESS: <br/>A-09-15, PINNACLE PETALING JAYA,<br/>
+                           JALAN 51A/223,<br/>
+                           PJS 52, 46100 PETALING JAYA<br/>
+                           SELANGOR.]]></string>
 
     <string name="fuel_des"><![CDATA[Thank you for using Star Auto Assist.<br/><p>Our service charge starts from RM60. Additional charges will be incurred according to the type of fuel you choose.</p>]]></string>
     <string name="fuel_des1">Please select the “Fuel Type” below and click “SEND REQUEST”</string>
-
+    <string name="invite_content">Get the best service on time where you need exactly and track them lively on our app.</string>
     <string name="jumpstartdes"><![CDATA[Thank you for using Star Auto Assist.<br/><p>Our service charge starts from RM60. Additional charges may apply for other services (e.g battery replacement) ONLY IF agreed with the service provider.</p>]]></string>
     <string name="jumpstartdes1">Please click “SEND REQUEST” below</string>
     <string name="based_fare">Based Fare</string>
+    <string name="terms"><![CDATA[I Agree <a href="https://starautoassist.com/private.php?"> Terms &amp; Conditions</a>.]]></string>
     <string name="pay_send"><![CDATA[PAY & SEND REQUEST]]></string>
 
 </resources>

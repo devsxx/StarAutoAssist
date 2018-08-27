@@ -7,20 +7,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.RelativeLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +27,6 @@ import com.app.starautoassist.Helper.GetSet;
 import com.app.starautoassist.Others.Constants;
 import com.app.starautoassist.Others.Starautoassist_Application;
 import com.app.starautoassist.R;
-import com.hsalf.smilerating.SmileRating;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONException;
@@ -59,6 +57,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     Button btnotp,btnconfirm;
     HashMap<String,String> socialMap;
     LinearLayout otpLay;
+    TextView term;
+    CheckBox agreement;
 
     @Override
     public void onLowMemory() {
@@ -74,6 +74,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etfirstname = findViewById(R.id.reg_et_firstname);
         etlastname = findViewById(R.id.reg_et_lastname);
         etpassword = findViewById(R.id.reg_et_password);
+        agreement=findViewById(R.id.agree);
+        term=findViewById(R.id.termsnconditions);
         etconfirmpassword = findViewById(R.id.reg_et_confirmpassword);
         btnregister = findViewById(R.id.reg_btn_register);
         otpLay= findViewById(R.id.otplayout);
@@ -89,11 +91,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             etlastname.setText(socialMap.get("lastName"));
             etemail.setText(socialMap.get("email"));
         }
-
         etotpphone = findViewById(R.id.et_otp_phone);
         btnotp = findViewById(R.id.btn_otp);
         confirmotpcode = findViewById(R.id.confirmotp_code);
         btnconfirm = findViewById(R.id.btn_confirm);
+
+        term.setText(Html.fromHtml("I Agree "+ "<a href='https://starautoassist.com/private.php?'>Terms &amp; Conditions</a>"));
+        term.setClickable(true);
+        term.setMovementMethod(LinkMovementMethod.getInstance());
+
         btnotp.setOnClickListener(this);
         btnconfirm.setOnClickListener(this);
     }
@@ -124,21 +130,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String email=etemail.getText().toString().trim();
                 String password=etpassword.getText().toString().trim();
                 String confirmpassword=etconfirmpassword.getText().toString().trim();
-                if(fname.equals("")){
-                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                }else if(lname.equals("")){
-                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                }else if(email.equals("")){
-                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                }else if(password.equals("")){
-                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                }else if(confirmpassword.equals("")){
-                    Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                }else if(!confirmpassword.equals(password)){
-                    Toast.makeText(RegisterActivity.this, "Password not match", Toast.LENGTH_SHORT).show();
-                }else {
-                    relativeLayout.setVisibility(View.GONE);
-                    otpLay.setVisibility(View.VISIBLE);
+                if(agreement.isChecked()) {
+                    if (fname.equals("")) {
+                        Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (lname.equals("")) {
+                        Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (email.equals("")) {
+                        Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (password.equals("")) {
+                        Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (confirmpassword.equals("")) {
+                        Toast.makeText(RegisterActivity.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (!confirmpassword.equals(password)) {
+                        Toast.makeText(RegisterActivity.this, "Password not match", Toast.LENGTH_SHORT).show();
+                    } else {
+                        relativeLayout.setVisibility(View.GONE);
+                        otpLay.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    Toast.makeText(RegisterActivity.this,"Please agree terms and conditions", Toast.LENGTH_SHORT).show();
                 }
 
                 break;

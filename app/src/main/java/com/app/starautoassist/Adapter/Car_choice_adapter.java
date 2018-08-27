@@ -1,13 +1,11 @@
 package com.app.starautoassist.Adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.starautoassist.Others.Constants;
@@ -50,10 +48,10 @@ public class Car_choice_adapter extends BaseAdapter {
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.adapter_car_choice, null);
             holder = new ViewHolder();
-            holder.brand = (TextView) convertView.findViewById(R.id.brand);
-            holder.model = (TextView) convertView.findViewById(R.id.model);
-            holder.plateno = (TextView) convertView.findViewById(R.id.pno);
-            holder.brandlogo = (ImageView) convertView.findViewById(R.id.brandlogo);
+            holder.brand = convertView.findViewById(R.id.brand);
+            holder.model = convertView.findViewById(R.id.model);
+            holder.plateno = convertView.findViewById(R.id.pno);
+            holder.brandlogo = convertView.findViewById(R.id.brandlogo);
             convertView.setTag(holder);
         }
         else {

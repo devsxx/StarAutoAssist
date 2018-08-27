@@ -119,18 +119,18 @@ public class TyreActivity extends AppCompatActivity {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.setContentView(R.layout.bill_page_dialog);
-                    TextView brandname = (TextView) dialog.findViewById(R.id.brandval);
-                    TextView modelname = (TextView) dialog.findViewById(R.id.modelval);
-                    TextView sname = (TextView) dialog.findViewById(R.id.servicename);
-                    TextView samount = (TextView) dialog.findViewById(R.id.serviceamt);
-                    TextView total = (TextView) dialog.findViewById(R.id.totalvalue);
+                    TextView brandname = dialog.findViewById(R.id.brandval);
+                    TextView modelname = dialog.findViewById(R.id.modelval);
+                    TextView sname = dialog.findViewById(R.id.servicename);
+                    TextView samount = dialog.findViewById(R.id.serviceamt);
+                    TextView total = dialog.findViewById(R.id.totalvalue);
                     brandname.setText(brand);
                     modelname.setText(model);
                     sname.setText(R.string.flat_tyre);
                     samount.setText(new StringBuilder().append("RM").append(" ").append(amount).toString());
                     total.setText(new StringBuilder().append("RM").append(" ").append(amount).append("  *").toString());
-                    Button confirmbtn = (Button) dialog.findViewById(R.id.confirmbtn);
-                    Button cancel = (Button) dialog.findViewById(R.id.cancelbtn);
+                    Button confirmbtn = dialog.findViewById(R.id.confirmbtn);
+                    Button cancel = dialog.findViewById(R.id.cancelbtn);
                     confirmbtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

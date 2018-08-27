@@ -233,7 +233,6 @@
             android:gravity="center"
             android:id="@+id/resulttextvalue"
             android:layout_above="@+id/okbtn"
-            android:layout_marginBottom="100dp"
             android:padding="5dp"/>
         <TextView
             android:layout_width="match_parent"
@@ -241,6 +240,7 @@
             android:gravity="center"
             android:background="@color/white"
             android:text="SEND REQUEST"
+            android:layout_marginTop="30dp"
             android:id="@+id/okbtn"
             android:layout_alignParentBottom="true"
             android:padding="10dp"/>

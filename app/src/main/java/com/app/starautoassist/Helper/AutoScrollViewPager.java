@@ -1,7 +1,6 @@
 package com.app.starautoassist.Helper;
 
 import android.content.Context;
-import android.graphics.Interpolator;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.MotionEventCompat;
@@ -9,7 +8,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.Scroller;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
