@@ -120,7 +120,12 @@
     <string name="jumpstartdes"><![CDATA[Thank you for using Star Auto Assist.<br/><p>Our service charge starts from RM60. Additional charges may apply for other services (e.g battery replacement) ONLY IF agreed with the service provider.</p>]]></string>
     <string name="jumpstartdes1">Please click “SEND REQUEST” below</string>
     <string name="based_fare">Based Fare</string>
+<!--
     <string name="terms"><![CDATA[I Agree <a href="https://starautoassist.com/private.php?"> Terms &amp; Conditions</a>.]]></string>
+-->
     <string name="pay_send"><![CDATA[PAY & SEND REQUEST]]></string>
-
+    <string name="termsnconditions">I agree to the Terms &amp; Conditions</string>
+    <string name="privacy"><u>Privacy Policy</u></string>
+    <string name="cancelpolicy"><u>Cancellation Refund</u></string>
+    <string name="terms"><u>Terms &amp; Conditions</u></string>
 </resources>

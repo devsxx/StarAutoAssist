@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".Activity.Aboutus">
     <ScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp">
+        android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -30,16 +30,19 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/logoimg"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:padding="10dp"
+                android:textStyle="bold"
                 android:text="ABOUT US"
                 android:textSize="18sp" />
 
-            <TextView
+            <com.uncopt.android.widget.text.justify.JustifiedTextView
                 android:id="@+id/aboutcontent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/abouttitle"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:paddingLeft="10dp" />
 
             <TextView
@@ -48,50 +51,191 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/aboutcontent"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:padding="10dp"
-                android:text="ADDRESS"
-                android:textSize="18sp" />
+                android:text="ADDRESS :"
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
-
-            <TextView
-                android:id="@+id/conpanyname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/company_layout"
                 android:layout_below="@+id/address"
-                android:layout_marginLeft="5dp"
-                android:paddingLeft="10dp"
-                android:text="COMPANY NAME         :SMART TOW &amp; RESCUE SDN BHD" />
-            <TextView
-                android:id="@+id/regno"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/conpanyname"
-                android:layout_marginLeft="5dp"
-                android:paddingLeft="10dp"
-                android:text="REGISTRATION NO       : 1279960-A" />
-            <TextView
-                android:id="@+id/contact"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:gravity="left"
+                    android:layout_weight="1.2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:paddingLeft="10dp"
+                    android:text="COMPANY NAME" />
+                <TextView
+                    android:maxLines="2"
+                    android:lines="2"
+                    android:layout_weight="0.8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="10dp"
+                    android:text=": SMART TOW &amp; RESCUE SDN BHD" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/register_layout"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/company_layout"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/regno"
-                android:layout_marginLeft="5dp"
-                android:paddingLeft="10dp"
-                android:text="CONTACT NO                 : 1800-88-0202"/>
-            <TextView
-                android:id="@+id/email"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1.2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:layout_gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="REGISTRATION NO" />
+                <TextView
+                    android:layout_weight="0.8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="10dp"
+                    android:text=": 1279960-A" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/contact_layout"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/register_layout"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/contact"
-                android:layout_marginLeft="5dp"
-                android:paddingLeft="10dp"
-                android:text="EMAIL                              : admin@starautoassist.com" />
-            <TextView
-                android:id="@+id/add"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1.2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="CONTACT NO" />
+                <TextView
+                    android:layout_weight="0.8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="10dp"
+                    android:text=": 1800-88-0202" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/email_layout"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/contact_layout"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/email"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1.2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="EMAIL" />
+                <TextView
+                    android:layout_weight="0.8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="10dp"
+                    android:text=": admin@starautoassist.com" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/address_layout"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/email_layout"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1.2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="ADDRESS" />
+                <TextView
+                    android:lines="5"
+                    android:maxLines="5"
+                    android:layout_weight="0.8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="10dp"
+                    android:text=": A-09-15,\n  PINNACLE PETALING JAYA,\n  JALAN 51A/223,\n  PJS 52, 46100 PETALING JAYA,\n  SELANGOR." />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:paddingLeft="10dp"/>
+                android:weightSum="3"
+                android:orientation="vertical"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:layout_below="@+id/address_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/privacy_tv"
+                    android:gravity="left"
+                    android:clickable="true"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/green"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:paddingLeft="10dp"
+                    android:text="@string/privacy" />
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:clickable="true"
+                    android:id="@+id/cancel_tv"
+                    android:textColor="@color/green"
+                    android:gravity="left"                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                   android:paddingLeft="10dp"
+                    android:text="@string/cancelpolicy"  />
+                <TextView
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"
+                    android:clickable="true"
+                    android:id="@+id/termscond_tv"
+                    android:textColor="@color/green"
+                    android:gravity="left"                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address"
+                    android:paddingLeft="10dp"
+                    android:text="@string/terms"  />
+            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

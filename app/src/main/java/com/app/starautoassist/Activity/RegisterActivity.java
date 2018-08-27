@@ -96,9 +96,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         confirmotpcode = findViewById(R.id.confirmotp_code);
         btnconfirm = findViewById(R.id.btn_confirm);
 
-        term.setText(Html.fromHtml("I Agree "+ "<a href='https://starautoassist.com/private.php?'>Terms &amp; Conditions</a>"));
+        String first = "I agree to the ";
+        String next = "<font color='#77c959'>Terms &amp; Conditions</font>";
+        term.setText(Html.fromHtml(first + next));
         term.setClickable(true);
-        term.setMovementMethod(LinkMovementMethod.getInstance());
+
+        /*term.setText(Html.fromHtml("I Agree "+ "<a href='https://starautoassist.com/private.php?'>Terms &amp; Conditions</a>"));
+        term.setClickable(true);
+        term.setMovementMethod(LinkMovementMethod.getInstance());*/
+
+        term.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(RegisterActivity.this, Terms.class));
+            }
+        });
 
         btnotp.setOnClickListener(this);
         btnconfirm.setOnClickListener(this);

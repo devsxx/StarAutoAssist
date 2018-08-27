@@ -69,6 +69,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:11.8.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.2.0'
     implementation(name: 'ipay_hosted_standard_sdk_20180514', ext: 'aar')
+    implementation 'com.uncopt:android.justified:1.0'
 }
 
 
