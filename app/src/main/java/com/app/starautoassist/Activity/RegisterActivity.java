@@ -53,7 +53,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private SpotsDialog progressDialog;
     EditText etotpphone,confirmotpcode;
     BroadcastReceiver receiver;
-    AlertDialog confirmotpdialog;
     Button btnotp,btnconfirm;
     HashMap<String,String> socialMap;
     LinearLayout otpLay;
@@ -74,7 +73,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etfirstname = findViewById(R.id.reg_et_firstname);
         etlastname = findViewById(R.id.reg_et_lastname);
         etpassword = findViewById(R.id.reg_et_password);
-        agreement=findViewById(R.id.agree);
+        agreement = findViewById(R.id.agree);
+
         term=findViewById(R.id.termsnconditions);
         etconfirmpassword = findViewById(R.id.reg_et_confirmpassword);
         btnregister = findViewById(R.id.reg_btn_register);

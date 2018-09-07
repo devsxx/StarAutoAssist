@@ -18,7 +18,7 @@ public class Terms extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getSupportActionBar().setTitle("Terms & Conditions");
         setContentView(R.layout.activity_terms);
 
         webView = findViewById(R.id.webview);
